@@ -28,7 +28,7 @@ export default async function ProjectsPage() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">50+</div>
+                <div className="text-2xl font-bold text-blue-600">10+</div>
                 <div className="text-sm text-gray-600">Projects Completed</div>
               </div>
               <div className="text-center">
@@ -200,7 +200,7 @@ export default async function ProjectsPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-cyan-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Ready to Build Something Amazing?
@@ -212,13 +212,13 @@ export default async function ProjectsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 bg-white text-cyan-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
             >
               Start a Project
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center justify-center px-8 py-3 border border-blue-400 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 border  text-white font-medium rounded-lg "
             >
               Learn More About Me
             </Link>

@@ -84,7 +84,7 @@ export default function Hero() {
                 <div className={`text-sm ${colors.textMuted}`}>Years Experience</div>
               </div>
               <div className="text-center">
-                <div className={`text-2xl font-bold ${colors.text}`}>50+</div>
+                <div className={`text-2xl font-bold ${colors.text}`}>10+</div>
                 <div className={`text-sm ${colors.textMuted}`}>Projects Completed</div>
               </div>
               <div className="text-center">

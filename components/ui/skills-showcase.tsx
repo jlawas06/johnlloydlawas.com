@@ -88,7 +88,7 @@ export default function SkillsShowcase() {
             className={cn(
               'px-4 py-2 rounded-full text-sm font-medium transition-colors',
               activeCategory === 'all'
-                ? `${colors.text} ${colors.background}`
+                ? `${colors.buttonText} ${colors.button}`
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             )}
           >
@@ -101,7 +101,7 @@ export default function SkillsShowcase() {
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium transition-colors',
                 activeCategory === category.name.toLowerCase()
-                  ? `${colors.text} ${colors.background}`
+                  ? `${colors.buttonText} ${colors.button}`
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
               )}
             >

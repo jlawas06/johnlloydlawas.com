@@ -152,7 +152,7 @@ export default function AboutPage() {
               <div className="text-gray-600">Years Experience</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-green-600">50+</div>
+              <div className="text-4xl font-bold text-green-600">10+</div>
               <div className="text-gray-600">Projects Completed</div>
             </div>
             <div className="space-y-2">
