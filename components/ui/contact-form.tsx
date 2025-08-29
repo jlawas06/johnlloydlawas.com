@@ -9,7 +9,12 @@ import { useTheme } from './theme-provider';
 interface FormData {
   name: string;
   email: string;
-  subject: string;
+  message: string;
+}
+
+interface ApiPayload {
+  name: string;
+  email: string;
   message: string;
 }
 
@@ -17,11 +22,11 @@ export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    subject: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string>('');
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const { colors } = useTheme();
 
@@ -38,9 +43,7 @@ export default function ContactForm() {
       newErrors.email = 'Please enter a valid email';
     }
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
+
 
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
@@ -56,18 +59,46 @@ export default function ContactForm() {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const payload: ApiPayload = {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message
+      };
+
+      const response = await fetch('https://n8n.johnlloydlawas.com/webhook/contact-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Check if response has content
+      const contentType = response.headers.get('content-type');
+      let responseData = null;
       
-      // In a real application, you would send the form data to your backend
-      console.log('Form submitted:', formData);
+      if (contentType && contentType.includes('application/json')) {
+        responseData = await response.json();
+      }
+
+      console.log('Form submitted successfully:', responseData);
       
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('Error submitting form:', error);
+      setSubmitError(
+        error instanceof Error 
+          ? `Failed to send message: ${error.message}` 
+          : 'Failed to send message. Please try again or contact me directly via email.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -81,6 +112,11 @@ export default function ContactForm() {
     if (errors[name as keyof FormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
+    
+    // Clear submit error when user starts typing
+    if (submitError) {
+      setSubmitError('');
+    }
   };
 
   if (isSubmitted) {
@@ -89,7 +125,7 @@ export default function ContactForm() {
         <CheckCircle size={64} className="mx-auto text-green-500 mb-4" />
         <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
         <p className="text-gray-600 mb-6">
-          Your message has been sent successfully. I&apos;ll get back to you as soon as possible.
+          Your message has been sent successfully! I&apos;ll get back to you as soon as possible.
         </p>
         <button
           type="button"
@@ -242,33 +278,13 @@ export default function ContactForm() {
               </div>
 
               <div>
-                <label htmlFor="subject" className={cn("block text-sm font-medium mb-2", colors.textSecondary)}>
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className={cn(
-                    "w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors",
-                    colors.formInput,
-                    errors.subject ? 'border-red-500' : colors.border
-                  )}
-                  placeholder="What's this about?"
-                />
-                {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
-              </div>
-
-              <div>
                 <label htmlFor="message" className={cn("block text-sm font-medium mb-2", colors.textSecondary)}>
                   Message *
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  rows={6}
+                  rows={8}
                   value={formData.message}
                   onChange={handleChange}
                   className={cn(
@@ -280,6 +296,12 @@ export default function ContactForm() {
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
               </div>
+
+              {submitError && (
+                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                  <p className="text-red-600 dark:text-red-400 text-sm">{submitError}</p>
+                </div>
+              )}
 
               <button
                 type="submit"
