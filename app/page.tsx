@@ -5,7 +5,7 @@ import SkillsShowcase from '@/components/ui/skills-showcase';
 
 export default function Home() {
   return (
-    <div className="transition-colors">
+    <div className="transition-colors duration-300">
       <Hero />
       <SkillsShowcase />
       <ExperienceTimeline />

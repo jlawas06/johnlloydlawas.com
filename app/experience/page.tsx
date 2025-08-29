@@ -1,4 +1,4 @@
-import ExperienceTimeline from '@/components/ui/experience-timeline';
+import ExperienceContent from '@/components/ui/experience-content';
 import { personalInfo } from '@/data/personal';
 import { getTotalExperience } from '@/lib/utils';
 import type { Metadata } from 'next';
@@ -9,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function ExperiencePage() {
-  return (
-    <div className="min-h-screen bg-white pt-16">
-      <ExperienceTimeline />
-    </div>
-  );
+  return <ExperienceContent />;
 }

@@ -1,4 +1,4 @@
-import SkillsShowcase from '@/components/ui/skills-showcase';
+import SkillsContent from '@/components/ui/skills-content';
 import { personalInfo } from '@/data/personal';
 import type { Metadata } from 'next';
 
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function SkillsPage() {
-  return (
-    <div className="min-h-screen bg-white pt-16">
-      <SkillsShowcase />
-    </div>
-  );
+  return <SkillsContent />;
 }

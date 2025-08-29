@@ -8,10 +8,9 @@ import { useTheme } from './theme-provider';
 interface SkillBarProps {
   name: string;
   proficiency: number;
-  category: string;
 }
 
-function SkillBar({ name, proficiency, category }: SkillBarProps) {
+function SkillBar({ name, proficiency }: SkillBarProps) {
   const { colors } = useTheme();
 
   return (
@@ -20,15 +19,11 @@ function SkillBar({ name, proficiency, category }: SkillBarProps) {
         <span className={cn("font-medium", colors.text)}>{name}</span>
         <span className={cn("text-sm", colors.textSecondary)}>{proficiency}%</span>
       </div>
-      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+      <div className={cn("w-full rounded-full h-2.5 transition-colors", colors.backgroundTertiary)}>
         <div
           className={cn(
             "h-2.5 rounded-full transition-all duration-1000 ease-out",
-            category === "Backend" && "bg-cyan-500 dark:bg-cyan-400",
-            category === "Frontend" && "bg-green-600 dark:bg-green-500",
-            category === "UI" && "bg-purple-600 dark:bg-purple-500",
-            category === "Database" && "bg-red-600 dark:bg-red-500",
-            (category === "Methodology" || category === "Practice" || category === "Testing" || category === "Tools") && "bg-orange-600 dark:bg-orange-500"
+            colors.accentBg.replace('bg-', 'bg-')
           )}
           style={{ width: `${proficiency}%` }}
         />
@@ -44,14 +39,6 @@ export default function SkillsShowcase() {
   const filteredCategories = activeCategory === 'all'
     ? skillCategories
     : skillCategories.filter(cat => cat.name.toLowerCase().includes(activeCategory.toLowerCase()));
-
-  const categoryColors = {
-    'Backend Development': 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
-    'Frontend Development': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    'UI Frameworks & Libraries': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-    'Database & Data': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    'Development Practices': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  };
 
   return (
     <section className={cn("py-20 transition-colors", colors.background)}>
@@ -120,10 +107,7 @@ export default function SkillsShowcase() {
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className={cn("text-xl font-semibold", colors.text)}>{category.name}</h3>
-                <span className={cn(
-                  'px-3 py-1 rounded-full text-xs font-medium',
-                  categoryColors[category.name as keyof typeof categoryColors] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                )}>
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200">
                   {category.skills.length} skills
                 </span>
               </div>
@@ -140,7 +124,6 @@ export default function SkillsShowcase() {
                     <SkillBar
                       name={skill.name}
                       proficiency={skill.proficiency}
-                      category={skill.category}
                     />
                     {skill.description && (
                       <p className="text-xs text-gray-500 mt-1">{skill.description}</p>
@@ -153,22 +136,22 @@ export default function SkillsShowcase() {
         </div>
 
         {/* Skills Summary */}
-        <div className={cn("mt-16 rounded-xl p-8 text-center transition-colors", colors.button, colors.buttonText)}>
-          <h3 className="text-2xl font-bold mb-4">Ready to Build Amazing Things</h3>
-          <p className="text-cyan-100 dark:text-cyan-200 mb-6 max-w-2xl mx-auto">
+        <div className={cn("mt-16 rounded-xl p-8 text-center transition-colors", colors.card, colors.border, "border")}>
+          <h3 className={cn("text-2xl font-bold mb-4 transition-colors", colors.text)}>Ready to Build Amazing Things</h3>
+          <p className={cn("mb-6 max-w-2xl mx-auto transition-colors", colors.textSecondary)}>
             With extensive experience across the full technology stack, I&apos;m equipped to tackle complex challenges
             and deliver scalable, maintainable solutions for enterprise applications.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/projects"
-              className={cn("inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-colors", colors.text, colors.background)}
+              className={cn("inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-colors", colors.button, colors.buttonText)}
             >
               View Projects
             </a>
             <a
               href="/contact"
-              className={cn("inline-flex items-center justify-center px-6 py-3 border font-medium rounded-lg transition-colors", colors.border, colors.buttonText)}
+              className={cn("inline-flex items-center justify-center px-6 py-3 border font-medium rounded-lg transition-colors", colors.buttonOutline, colors.text, colors.hover)}
             >
               Let&apos;s Work Together
             </a>

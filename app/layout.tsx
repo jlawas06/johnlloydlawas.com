@@ -132,14 +132,16 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased transition-colors`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased transition-colors duration-300`}
       >
         <ThemeProvider>
-          <Navigation />
-          <main className="min-h-screen pt-16">
-            {children}
-          </main>
-          <Footer />
+          <div className="min-h-screen transition-colors duration-300">
+            <Navigation />
+            <main className="min-h-screen pt-16">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>

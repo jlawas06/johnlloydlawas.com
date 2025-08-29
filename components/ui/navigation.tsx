@@ -47,7 +47,7 @@ export default function Navigation() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? `${colors.navBg} backdrop-blur-sm shadow-sm ${colors.border} border-b`
+          ? `${colors.navBg} backdrop-blur-sm shadow-sm ${colors.navBorder} border-b`
           : 'bg-transparent'
       )}
     >
@@ -56,7 +56,7 @@ export default function Navigation() {
           {/* Logo/Brand */}
           <Link
             href="/"
-            className={cn("text-xl font-bold transition-colors", colors.text, colors.accentHover)}
+            className={cn("text-xl font-bold transition-colors", colors.text, colors.linkHover)}
           >
             {personalInfo.name}
           </Link>
@@ -70,7 +70,7 @@ export default function Navigation() {
                 className={cn(
                   'transition-colors font-medium',
                   colors.textSecondary,
-                  colors.accentHover,
+                  colors.linkHover,
                   pathname === item.href && colors.accent
                 )}
               >
@@ -85,7 +85,7 @@ export default function Navigation() {
             <ThemeToggle />
             <button
               onClick={toggleMenu}
-              className={cn("p-2 rounded-md transition-colors", colors.textSecondary, colors.accentHover, colors.cardHover)}
+              className={cn("p-2 rounded-md transition-colors", colors.textSecondary, colors.linkHover, colors.hover)}
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -96,7 +96,7 @@ export default function Navigation() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className={cn("px-2 pt-2 pb-3 space-y-1 border-t", colors.card, colors.border)}>
+            <div className={cn("px-2 pt-2 pb-3 space-y-1 border-t", colors.card, colors.navBorder)}>
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
@@ -104,9 +104,9 @@ export default function Navigation() {
                   className={cn(
                     'block px-3 py-2 rounded-md transition-colors font-medium',
                     colors.textSecondary,
-                    colors.accentHover,
-                    colors.cardHover,
-                    pathname === item.href && `${colors.accent} ${colors.background}`
+                    colors.linkHover,
+                    colors.hover,
+                    pathname === item.href && `${colors.accent} ${colors.surface}`
                   )}
                 >
                   {item.label}
