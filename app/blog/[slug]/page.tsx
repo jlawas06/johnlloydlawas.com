@@ -1,12 +1,13 @@
 import BlogPostContent from '@/components/ui/blog-post-content';
+import BlogPostMDX from '@/components/ui/blog-post-mdx';
 import { getAllPosts, getPostBySlug } from '@/lib/posts';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -17,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
   
   if (!post) {
     return {
@@ -46,11 +48,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  return <BlogPostContent post={post} />;
+  return (
+    <BlogPostContent post={post}>
+      <BlogPostMDX content={post.content} />
+    </BlogPostContent>
+  );
 }

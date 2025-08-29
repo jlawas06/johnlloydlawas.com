@@ -2,8 +2,8 @@
 
 import { formatDate } from '@/lib/utils';
 import { ArrowLeft, Calendar, Clock, Share2, Tag } from 'lucide-react';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
+import ReadingProgress from './reading-progress';
 import { useTheme } from './theme-provider';
 
 interface BlogPost {
@@ -20,13 +20,15 @@ interface BlogPost {
 
 interface BlogPostContentProps {
   post: BlogPost;
+  children: React.ReactNode; // This will be the MDX content
 }
 
-export default function BlogPostContent({ post }: BlogPostContentProps) {
+export default function BlogPostContent({ post, children }: BlogPostContentProps) {
   const { colors } = useTheme();
 
   return (
     <div className={`min-h-screen pt-16 transition-colors duration-300 ${colors.background}`}>
+      <ReadingProgress />
       {/* Header */}
       <header className={`py-12 transition-colors duration-300 ${colors.backgroundSecondary}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,9 +87,27 @@ export default function BlogPostContent({ post }: BlogPostContentProps) {
       {/* Content */}
       <main className={`py-12 transition-colors duration-300 ${colors.background}`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <article className={`prose prose-lg max-w-none transition-colors ${colors.text === 'text-gray-900' ? 'prose-gray' : 'prose-invert'}`}>
-            <MDXRemote source={post.content} />
-          </article>
+          {/* Table of Contents */}
+          <div className={`mb-12 p-6 rounded-lg transition-colors ${colors.backgroundSecondary} ${colors.border} border`}>
+            <h3 className={`text-lg font-semibold mb-4 transition-colors ${colors.text}`}>
+              📋 Table of Contents
+            </h3>
+            <nav className="space-y-2">
+              <ul className={`space-y-1 text-sm transition-colors ${colors.textSecondary}`}>
+                <li><a href="#understanding-performance-bottlenecks" className={`hover:${colors.accent} transition-colors`}>Understanding Performance Bottlenecks</a></li>
+                <li><a href="#virtual-scrolling-for-large-datasets" className={`hover:${colors.accent} transition-colors`}>Virtual Scrolling for Large Datasets</a></li>
+                <li><a href="#state-management-performance" className={`hover:${colors.accent} transition-colors`}>State Management Performance</a></li>
+                <li><a href="#http-optimization-strategies" className={`hover:${colors.accent} transition-colors`}>HTTP Optimization Strategies</a></li>
+                <li><a href="#component-optimization" className={`hover:${colors.accent} transition-colors`}>Component Optimization</a></li>
+                <li><a href="#bundle-optimization" className={`hover:${colors.accent} transition-colors`}>Bundle Optimization</a></li>
+                <li><a href="#image-and-asset-optimization" className={`hover:${colors.accent} transition-colors`}>Image and Asset Optimization</a></li>
+                <li><a href="#real-world-performance-metrics" className={`hover:${colors.accent} transition-colors`}>Real-World Performance Metrics</a></li>
+                <li><a href="#performance-monitoring" className={`hover:${colors.accent} transition-colors`}>Performance Monitoring</a></li>
+                <li><a href="#key-takeaways" className={`hover:${colors.accent} transition-colors`}>Key Takeaways</a></li>
+              </ul>
+            </nav>
+          </div>
+          {children}
         </div>
       </main>
 
