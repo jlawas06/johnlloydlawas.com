@@ -109,7 +109,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
           <p>
-            © {currentYear} {personalInfo.name}. Built with Next.js, TypeScript, and TailwindCSS.
+            © {currentYear} {personalInfo.name}
           </p>
         </div>
       </div>
