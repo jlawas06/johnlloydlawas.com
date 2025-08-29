@@ -19,14 +19,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
-                About <span className="text-blue-600">Me</span>
+                About <span className="text-cyan-600">Me</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
                 {personalInfo.bio}
               </p>
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-2 text-gray-700">
-                  <MapPin size={20} className="text-blue-600" />
+                  <MapPin size={20} className="text-cyan-600" />
                   <span>{personalInfo.location.split(',').slice(-2).join(',').trim()}</span>
                 </div>
                 <div className="flex items-center space-x-2 text-gray-700">
@@ -38,7 +38,7 @@ export default function AboutPage() {
             
             {/* Profile placeholder */}
             <div className="relative flex justify-center lg:justify-end">
-              <div className="w-80 h-80 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl">
+              <div className="w-80 h-80 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-2xl flex items-center justify-center shadow-2xl">
                 <div className="text-white text-6xl font-bold">
                   {personalInfo.name.split(' ').map(n => n[0]).join('')}
                 </div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-blue-600">{totalYears}+</div>
+              <div className="text-4xl font-bold text-cyan-600">{totalYears}+</div>
               <div className="text-gray-600">Years Experience</div>
             </div>
             <div className="space-y-2">
@@ -168,25 +168,25 @@ export default function AboutPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-cyan-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
             Let&apos;s Work Together
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
+          <p className="text-xl text-cyan-100 mb-8">
             Ready to discuss your next international project? I&apos;d love to hear about your challenges 
             and explore how we can build something amazing together, regardless of your location.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 bg-white text-cyan-600 font-medium rounded-lg hover:bg-cyan-50 transition-colors"
             >
               Get In Touch
             </a>
             <a
               href="/projects"
-              className="inline-flex items-center justify-center px-8 py-3 border border-blue-400 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 border border-cyan-400 text-white font-medium rounded-lg hover:bg-cyan-700 transition-colors"
             >
               View My Work
             </a>

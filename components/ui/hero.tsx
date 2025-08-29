@@ -98,7 +98,7 @@ export default function Hero() {
           <div className="relative lg:h-[600px] flex items-center justify-center animate-slide-in-right">
             <div className="relative">
               {/* Placeholder for profile image */}
-              <div className="w-80 h-80 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl">
+              <div className="w-80 h-80 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl">
                 <div className="text-white text-6xl font-bold">
                   {personalInfo.name.split(' ').map(n => n[0]).join('')}
                 </div>

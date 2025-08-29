@@ -89,7 +89,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 bg-gray-800 rounded-full hover:bg-blue-600 transition-colors"
+                    className="p-2 bg-gray-800 rounded-full hover:bg-cyan-600 transition-colors"
                     aria-label={link.label}
                   >
                     <Icon size={20} />
