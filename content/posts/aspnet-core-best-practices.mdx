@@ -1,0 +1,278 @@
+---
+title: "ASP.NET Core Best Practices for Enterprise Applications"
+date: "2024-01-15"
+excerpt: "Essential patterns and practices I've learned from 7+ years of building enterprise applications with ASP.NET Core."
+tags: ["ASP.NET Core", "Enterprise", "Best Practices", "C#"]
+author: "John Lloyd Lawas"
+featured: true
+published: true
+---
+
+# ASP.NET Core Best Practices for Enterprise Applications
+
+Over my 7+ years of experience building enterprise applications with ASP.NET Core, I've learned valuable lessons about what works well in production environments. Here are the key practices that have helped me deliver maintainable, scalable applications.
+
+## 1. Project Structure and Organization
+
+### Clean Architecture Implementation
+
+```csharp
+// Example of dependency injection setup in Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Configure Entity Framework
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+```
+
+One of the most important decisions in enterprise applications is establishing a clear project structure. I typically use Clean Architecture principles:
+
+- **Core**: Contains business entities and interfaces
+- **Infrastructure**: Data access, external service integrations
+- **API**: Controllers, DTOs, and API-specific logic
+- **Application**: Business logic and use cases
+
+### Configuration Management
+
+```csharp
+// appsettings.json structure
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=MyApp;Trusted_Connection=true;"
+  },
+  "ApiSettings": {
+    "BaseUrl": "https://api.example.com",
+    "Timeout": 30,
+    "RetryAttempts": 3
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning"
+    }
+  }
+}
+```
+
+## 2. Error Handling and Logging
+
+### Global Exception Handling
+
+```csharp
+public class GlobalExceptionMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<GlobalExceptionMiddleware> _logger;
+
+    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unhandled exception occurred");
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = exception switch
+        {
+            ValidationException => StatusCodes.Status400BadRequest,
+            NotFoundException => StatusCodes.Status404NotFound,
+            UnauthorizedException => StatusCodes.Status401Unauthorized,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        var response = new
+        {
+            error = new
+            {
+                message = exception.Message,
+                statusCode = context.Response.StatusCode
+            }
+        };
+
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+    }
+}
+```
+
+## 3. API Design Principles
+
+### RESTful API Design
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    private readonly IUserService _userService;
+
+    public UsersController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<UserDto>>> GetUsers(
+        [FromQuery] UserSearchCriteria criteria)
+    {
+        var result = await _userService.GetUsersAsync(criteria);
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserDto>> GetUser(int id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null)
+            return NotFound();
+        
+        return Ok(user);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<UserDto>> CreateUser(CreateUserRequest request)
+    {
+        var user = await _userService.CreateUserAsync(request);
+        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+}
+```
+
+### Input Validation
+
+```csharp
+public class CreateUserRequest
+{
+    [Required]
+    [StringLength(100, MinimumLength = 2)]
+    public string FirstName { get; set; }
+
+    [Required]
+    [StringLength(100, MinimumLength = 2)]
+    public string LastName { get; set; }
+
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; }
+
+    [Phone]
+    public string PhoneNumber { get; set; }
+}
+```
+
+## 4. Database Best Practices
+
+### Entity Framework Configuration
+
+```csharp
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<User> Users { get; set; }
+    public DbSet<Order> Orders { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        
+        // Global query filters
+        modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+        
+        base.OnModelCreating(modelBuilder);
+    }
+}
+
+public class UserConfiguration : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        builder.HasKey(u => u.Id);
+        
+        builder.Property(u => u.Email)
+            .IsRequired()
+            .HasMaxLength(200)
+            .HasAnnotation("Index", true);
+            
+        builder.Property(u => u.FirstName)
+            .IsRequired()
+            .HasMaxLength(100);
+            
+        builder.Property(u => u.LastName)
+            .IsRequired()
+            .HasMaxLength(100);
+    }
+}
+```
+
+## 5. Security Considerations
+
+### Authentication and Authorization
+
+```csharp
+// JWT Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+// Authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ManagerOrAdmin", policy => 
+        policy.RequireRole("Manager", "Admin"));
+});
+```
+
+## Key Takeaways
+
+From my experience working on enterprise applications at companies like Nowcom Global Services and OSL International, these practices have proven essential:
+
+1. **Consistency**: Establish coding standards and stick to them across the team
+2. **Testability**: Design your code to be easily testable from the start
+3. **Performance**: Consider performance implications early, especially for high-traffic applications
+4. **Maintainability**: Write code that your future self (and colleagues) will thank you for
+5. **Documentation**: Keep your API documentation up-to-date and comprehensive
+
+## Conclusion
+
+Building enterprise applications with ASP.NET Core requires careful consideration of architecture, security, performance, and maintainability. These practices have served me well across multiple projects and teams. The key is to adapt them to your specific context while maintaining the core principles.
+
+What practices have you found most valuable in your ASP.NET Core projects? I'd love to hear about your experiences and learn from your insights.
+
+---
+
+*Have questions about implementing these practices in your project? Feel free to [reach out](/contact) - I'm always happy to discuss enterprise application development.*
