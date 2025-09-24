@@ -17,6 +17,6 @@ export const personalInfo: PersonalInfo = {
   phone: "+639626905612",
   email: "johnlloydlawas06@gmail.com",
   linkedin: "https://www.linkedin.com/in/john-lloyd-lawas/",
-  summary: "Full Stack Developer with 7+ years of experience specializing in developing web applications using ASP.NET Core/Framework and Angular. Skilled in architecting and executing customized, data-driven solutions hosted both on-premise and in the cloud.",
+  summary: "Full Stack Developer with 6+ years of experience specializing in developing web applications using ASP.NET Core/Framework and Angular. Skilled in architecting and executing customized, data-driven solutions hosted both on-premise and in the cloud.",
   bio: "Experienced Full Stack Developer with expertise in requirements analysis, design, development, testing, maintenance, enhancement, and production support of business applications. Passionate about creating scalable, efficient solutions for enterprise environments using modern technologies and agile methodologies.",
 };

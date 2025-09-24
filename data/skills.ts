@@ -21,7 +21,7 @@ export const skillCategories: SkillCategory[] = [
         name: "C#",
         category: "Backend",
         proficiency: 95,
-        description: "Advanced proficiency in C# with 7+ years of experience"
+        description: "Advanced proficiency in C# with 6+ years of experience"
       },
       {
         name: "ASP.NET Core",

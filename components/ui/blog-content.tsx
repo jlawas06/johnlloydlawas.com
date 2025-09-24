@@ -34,7 +34,7 @@ export default function BlogContent({ posts, tags }: BlogContentProps) {
               Technical Blog
             </h1>
             <p className={`text-xl max-w-3xl mx-auto mb-8 transition-colors ${colors.textSecondary}`}>
-              Insights and experiences from 7+ years of enterprise software development. 
+              Insights and experiences from 6+ years of enterprise software development. 
               Deep dives into ASP.NET Core, Angular, and modern development practices.
             </p>
             <div className="flex flex-wrap justify-center gap-2">

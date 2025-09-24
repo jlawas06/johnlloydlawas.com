@@ -34,7 +34,7 @@ export default function ProjectsContent({ projects }: ProjectsContentProps) {
             </h1>
             <p className={`text-xl max-w-3xl mx-auto mb-8 transition-colors ${colors.textSecondary}`}>
               A showcase of enterprise applications and software solutions I&apos;ve built 
-              over 7+ years of full-stack development experience.
+              over 6+ years of full-stack development experience.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
               <div className="text-center">
