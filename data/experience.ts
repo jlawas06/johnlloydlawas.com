@@ -21,7 +21,7 @@ export const experiences: Experience[] = [
     startDate: '2025-03',
     endDate: null,
     description:
-      'Building and maintaining Chrome extensions and SaaS products with heavy AI integration. Daily driver on Cursor and Claude Code to ship faster.',
+      'Building and maintaining Chrome extensions and SaaS products with heavy AI integration. Daily driver on Cursor and Claude Code to ship faster. Collaborated part-time with the team from October 2021 before converting to full-time in March 2025.',
     responsibilities: [
       'Maintain and extend a suite of Chrome extensions used in production',
       'Design and ship features across several SaaS products',
