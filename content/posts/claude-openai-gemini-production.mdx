@@ -1,0 +1,61 @@
+---
+title: "Claude vs OpenAI vs Gemini in Production: What I Reach For and Why"
+date: "2026-04-02"
+excerpt: "After shipping features backed by all three, they're not interchangeable. Here's how I actually pick per-use-case in real SaaS work."
+tags: ["AI", "LLM", "Claude", "OpenAI", "Gemini", "API"]
+author: "John Lloyd Lawas"
+featured: false
+published: true
+---
+
+Every "which LLM is best" benchmark misses the same thing: in production, you're not picking a winner, you're picking a toolbox. After shipping AI-backed features with Claude, OpenAI, and Gemini across a SaaS product and a Chrome extension, I've stopped thinking about them as competitors and started thinking about them as specialists.
+
+This isn't a leaderboard. It's my actual default per use case, and why.
+
+## Claude: long-context reasoning and code-shaped tasks
+
+Claude is my default when the prompt is long, the reasoning is chained, or the output has structure I care about. Summarizing a 30-page spec, generating code that has to match existing patterns, running agentic flows with tool calls - this is where I reach first.
+
+Two things make it stick: it handles long contexts without quietly losing the middle, and it's less likely to "helpfully" invent API shapes that don't exist. That matters when the output feeds back into code.
+
+Trade-offs: it's not the fastest to first token, and for short, simple classification tasks I can get the same quality cheaper elsewhere.
+
+## OpenAI: speed-sensitive paths and structured outputs
+
+OpenAI is my default when latency is a user-visible problem. Autocomplete-style UX, inline suggestions, anything where the user is waiting and watching tokens stream. The ecosystem is also the most mature - structured outputs, function calling, and SDKs are boring in the good way.
+
+It's also what I reach for when I need a reliable "fill this JSON schema" response with no excuses. Less prompt-engineering, fewer retries, more predictable billing.
+
+Trade-offs: on very long contexts it gets pricier fast, and for open-ended reasoning I still prefer Claude's shape.
+
+## Gemini: massive context and multimodal input
+
+Gemini earns its slot on two axes. First, the context window is silly-large, so "here's the entire codebase, answer questions about it" workflows are genuinely cheap. Second, multimodal - I've used it for extracting structured data from screenshots and PDFs in Chrome extension flows, and the quality has been the one that surprised me.
+
+Trade-offs: for pure code-shaped output I still nudge back to Claude, and the SDK ergonomics are slightly rougher than OpenAI's.
+
+## A minimal routing pattern
+
+In production I don't hardcode a provider anywhere user-facing. A tiny router keeps model choice swappable:
+
+```ts
+type Task = "code" | "classify" | "longdoc" | "extract";
+
+const routes: Record<Task, () => LLM> = {
+  code: () => claude("sonnet"),
+  classify: () => openai("gpt-fast"),
+  longdoc: () => gemini("pro"),
+  extract: () => gemini("pro"),
+};
+
+export const run = (task: Task, input: string) =>
+  routes[task]().complete(input);
+```
+
+Four lines of routing, one swap if a provider ships something better next week. No feature team has to care which model backs their call.
+
+## Model choice is a dependency, not a religion
+
+The mistake I made early on was picking a favorite and bending every feature to fit it. That ages badly. Models improve unevenly - Claude jumps ahead on code, OpenAI ships a faster tier, Gemini cuts prices on long context - and your product shouldn't need a rewrite each time.
+
+Treat model choice like you'd treat a database driver or a payment provider: encapsulate it, pick per job, and make it boring to swap. The best production AI stack I've built isn't the one using the "best" model. It's the one where I could stop caring which model I'm using and ship the feature.

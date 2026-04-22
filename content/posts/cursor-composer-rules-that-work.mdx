@@ -1,0 +1,59 @@
+---
+title: "Cursor Composer and the Rules That Actually Move the Needle"
+date: "2026-04-20"
+excerpt: "What I learned after a year of using Cursor Composer daily on SaaS and Chrome extension codebases - which rules earn their keep, and which just add noise."
+tags: ["Cursor", "AI", "Developer Tools", "Productivity"]
+author: "John Lloyd Lawas"
+featured: true
+published: true
+---
+
+When I first started using Cursor Composer, I did what most developers do: I wrote a giant `.cursorrules` file that read like a style guide. Imports in this order. Prefer this pattern. Don't do that. It felt productive. It wasn't.
+
+A year of daily use later - across a SaaS product, a Chrome extension, and a handful of side projects - I've stopped treating rules like documentation and started treating them like a shared memory between me and the model. A much smaller set, doing much more work.
+
+## Why rules matter more than prompts
+
+The problem with prompts is that they're temporary. Every new chat is a blank slate. If you have to re-explain "we use Xano for the backend, Supabase for auth, and the app is feature-flagged behind PostHog" at the start of every conversation, the model isn't helping you ship - it's taxing your attention.
+
+Rules are the opposite. They're persistent, cheap, and they compound. The catch is that their cost goes up with length. Every token in a rule file is a token not spent on your actual question. So the goal isn't to write the perfect rule - it's to write the smallest set that removes the most friction.
+
+## The three rules I actually keep
+
+After trimming ruthlessly, my rule files now contain three categories and almost nothing else.
+
+**1. Project conventions that are not obvious from the code.** Things like "API routes return `{ data, error }` not raw values" or "we use `@/lib/supabase/server` on the server and `@/lib/supabase/client` on the client." Stuff the model would get wrong on first try because there's no way to infer it from one file.
+
+**2. Architectural guardrails.** One-liners like "never add a new npm package without asking" or "prefer extending an existing component over creating a new one." These save me from drive-by scope creep more than anything else.
+
+**3. "Don't touch" lists.** Specific paths or patterns that are intentionally weird. Legacy code, generated files, migration scripts. "Don't refactor `lib/legacy-auth.ts` - it's load-bearing and tested manually." That single line has saved me from two broken deploys.
+
+A minimal example:
+
+```md
+# Project rules
+
+- Stack: Next.js 15 App Router, Supabase, Xano, Tailwind v4
+- API routes return { data, error }. Never throw in route handlers
+- Do not add npm packages without asking first
+- Do not modify content under /lib/legacy/*
+```
+
+That's it. Four lines. It out-performs a 300-line rules file from six months ago.
+
+## Anti-patterns I've stopped using
+
+The temptation is to turn rules into documentation. Don't. Things that don't belong in rules:
+
+- **Explanations of what the code does.** The model can read the code.
+- **Style preferences the formatter already enforces.** Prettier and ESLint are cheaper and never drift.
+- **Things you only care about sometimes.** Put them in the prompt or a comment.
+- **Ambitions.** "We aim to have full test coverage" is a lie the model will now include in PR descriptions.
+
+The last one is worth calling out. Rules should describe how the codebase is, not how you wish it was. Aspirational rules lead to aspirational code.
+
+## Rules as shared memory, not a manual
+
+The frame shift that made the biggest difference: treat your rules file like a teammate's onboarding notes, not a constitution. Teammates don't need to be told to use the formatter. They do need to know that `Xano` is the source of truth for user data, and that the one hairy legacy module should be left alone.
+
+Write the rules you'd leave for a senior developer joining on Monday. Delete everything else. Cursor gets sharper, and so does your thinking.

@@ -1,0 +1,58 @@
+---
+title: "Claude Code as a Daily Driver: Tips From Shipping Real Work"
+date: "2026-04-12"
+excerpt: "Claude Code quietly became the tool I reach for when Cursor's chat isn't enough. Here's how I actually use it day to day."
+tags: ["Claude Code", "AI", "CLI", "Workflow"]
+author: "John Lloyd Lawas"
+featured: true
+published: true
+---
+
+I use Cursor every day. I also use Claude Code every day. They're not competing for the same job, and figuring that out is what made both of them finally useful.
+
+Cursor is where I write. It's tight, visual, and the diff-in-editor feedback loop is hard to beat for anything under ~500 lines of change. Claude Code is where I think. It's a terminal, it has a longer attention span, and it doesn't mind chewing on a repo for five minutes while I grab coffee.
+
+## When I switch from Cursor to Claude Code
+
+My mental switch is roughly: if I can see the whole change on one screen, I stay in Cursor. The moment a task sprawls - across files, across concepts, or across time - I move to Claude Code.
+
+Three tasks it owns in my workflow:
+
+**1. Large refactors.** Renaming a domain concept across a SaaS codebase, replacing an entire auth provider, migrating a feature from REST to tRPC. These are the jobs where Cursor's "give me the diff" flow fights you because the diff is 40 files long.
+
+**2. Codebase Q&A.** When onboarding to a new project or returning to one after months away, Claude Code is a better explainer than a README. "Walk me through how a request flows from the Chrome extension popup to the Xano backend" saves me twenty minutes of spelunking.
+
+**3. Git babysitting.** Resolving merge conflicts, writing PR descriptions that match the actual diff, triaging CI failures. Boring, interruption-heavy work that Claude Code absorbs well because it can read files, run commands, and keep state across a long session.
+
+## The `CLAUDE.md` pattern that pays off
+
+The single best change to my workflow was committing a `CLAUDE.md` at the repo root. Not rules - context. The stuff a new engineer would want in their first hour.
+
+```md
+# Project context
+
+- Monorepo: /web (Next.js), /extension (Chrome MV3), /api (Xano)
+- Auth: Supabase on web, message-passed into extension
+- Env vars live in Doppler; never hardcode secrets
+- Primary deploy: Vercel for /web, web store for /extension
+- Local: pnpm dev runs web only; extension is loaded unpacked
+```
+
+Ten lines. Claude Code picks it up on every session and stops asking me what stack I'm on. Combined with Cursor's own rules, I almost never start a chat by re-explaining the project.
+
+## What still trips it up
+
+Claude Code is not a magic coworker. A few honest limits after months of daily use:
+
+- **Long-running servers.** It can start them, it can't "watch" them the way a human would. I still pair the CLI with a real terminal for dev servers.
+- **Interactive debugging.** Step-through debuggers and browser DevTools are still mine. Claude Code is great at reasoning about logs but bad at being inside a paused runtime.
+- **UI polish.** Pixel-level tweaks are faster in Cursor with the file open. Asking Claude Code to nudge padding is overkill.
+- **Anything with a tight feedback loop.** If iteration speed matters more than reasoning depth, I'm back in Cursor.
+
+## A coworker, not a faster autocomplete
+
+The framing that clicked for me: Cursor is a better keyboard, Claude Code is a better coworker. One makes me type faster. The other lets me hand off the kind of work I'd previously hesitate to even start because the setup cost was too high.
+
+Refactors I used to dread are now a twenty-minute conversation. Onboarding to an unfamiliar module takes a ten-line prompt instead of half a day. The wins aren't in raw speed - they're in which tasks are now worth doing at all.
+
+That's the real upgrade. Not faster code. A bigger surface area of work I'm willing to take on.

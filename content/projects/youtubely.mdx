@@ -1,0 +1,51 @@
+---
+title: "Youtubely"
+description: "Chrome extension that tracks YouTube video progress and lets you resume unfinished long-form videos from a local, privacy-first dashboard."
+technologies: ["Chrome Extension MV3", "TypeScript", "Chrome Storage API"]
+category: "Chrome Extension"
+featured: true
+published: true
+startDate: "2025-12-01"
+role: "Solo builder"
+duration: "ongoing"
+demoUrl: "https://chromewebstore.google.com/detail/mmkbjgcggekpdjahihcmhcpojiegclci"
+challenges:
+  - "YouTube's native Watch History is inconsistent across devices and signed-out states"
+  - "Long-form viewers (podcasts, tutorials, documentaries) need resume-at-second precision"
+  - "Doing it all without sending any data to external servers"
+solutions:
+  - "Content script auto-saves playback progress every 5 seconds to chrome.storage.local"
+  - "Dedicated popup dashboard listing unfinished videos, click-to-jump to the exact second"
+  - "Auto-cleanup when a video crosses 98% completion so the list stays tight"
+results:
+  - "Shipped as v1.0.0 on the Chrome Web Store"
+  - "Zero external dependencies — all data stays on the user's device"
+---
+
+# Youtubely
+
+## Context
+
+A smaller, focused spin-off from the AnswerIt AI extension stack. Built because YouTube's own Watch History kept losing my place on long videos — especially when signed out, or bouncing between devices. Fixing it myself was faster than waiting for Google.
+
+## Problem
+
+Long-form YouTube content — podcasts, coding streams, documentaries — is notoriously easy to lose track of. The native Watch History is inconsistent, doesn't always resume at the right second, and breaks entirely without a Google account. For viewers who want a reliable "where was I?" experience, there isn't a good answer out of the box.
+
+## Approach
+
+- **Capture:** a content script watches the HTML5 video element and writes playback progress to `chrome.storage.local` every 5 seconds.
+- **Dashboard:** the extension popup renders a dark-mode list of unfinished videos, each showing current progress.
+- **Resume:** clicking any entry opens the video and seeks to the exact saved second.
+- **Cleanup:** once a video hits 98% completion, it's auto-removed so the dashboard stays useful.
+- **Privacy:** nothing leaves the browser. No accounts, no server, no telemetry.
+
+## Outcome
+
+Public on the [Chrome Web Store](https://chromewebstore.google.com/detail/mmkbjgcggekpdjahihcmhcpojiegclci) as v1.0.0. It's a small, opinionated tool — the kind that fixes one annoyance completely instead of doing ten things poorly. Built in a weekend on top of the MV3 + TypeScript foundation from [AnswerIt AI](/projects/answerit-ai).
+
+## Stack notes
+
+- **Manifest V3** content script + popup
+- **chrome.storage.local** for timestamps (no external DB, no sync backend)
+- **TypeScript** for the parts that move
