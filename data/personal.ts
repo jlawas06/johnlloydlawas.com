@@ -5,6 +5,7 @@ export interface PersonalInfo {
   phone: string;
   email: string;
   linkedin: string;
+  github?: string;
   summary: string;
   bio: string;
   avatar?: string;

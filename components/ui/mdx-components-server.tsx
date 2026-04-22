@@ -1,5 +1,5 @@
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps {
   children?: React.ReactNode;
@@ -19,104 +19,102 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="code-block my-6 overflow-hidden rounded-md border border-[#27272a] bg-[#0a0a0a]">
+      <div className="flex items-center justify-between border-b border-[#27272a] px-4 py-1.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
+          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
+          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-[#a1a1aa]">
+          {language}
+        </span>
+      </div>
       <SyntaxHighlighter
-        style={oneLight} // Default to light theme for server rendering
+        style={vscDarkPlus}
         language={language}
-        PreTag="div"
+        PreTag="pre"
         customStyle={{
           margin: 0,
-          borderRadius: '0.5rem',
-          fontSize: '0.875rem',
-          lineHeight: '1.5',
+          padding: '1rem',
+          background: 'transparent',
+          fontSize: '0.8125rem',
+          lineHeight: '1.6',
         }}
         codeTagProps={{
           style: {
-            fontSize: '0.875rem',
-            fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Inconsolata, "Roboto Mono", monospace',
+            fontFamily:
+              'var(--font-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
           },
         }}
       >
         {String(children).replace(/\n$/, '')}
       </SyntaxHighlighter>
-      {language && (
-        <span className="absolute top-2 right-2 text-xs opacity-50 uppercase font-medium">
-          {language}
-        </span>
-      )}
     </div>
   );
 }
 
 function Table({ children }: { children: React.ReactNode }) {
   return (
-    <div className="overflow-x-auto my-6">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-        {children}
-      </table>
+    <div className="my-6 overflow-x-auto rounded border border-border">
+      <table className="w-full border-collapse">{children}</table>
     </div>
   );
 }
 
 function TableHead({ children }: { children: React.ReactNode }) {
-  return (
-    <thead className="bg-gray-50 dark:bg-gray-700">
-      {children}
-    </thead>
-  );
+  return <thead className="border-b border-border bg-muted">{children}</thead>;
 }
 
 function TableHeader({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+    <th className="px-4 py-2 text-left font-mono text-xs uppercase tracking-widest text-muted-foreground">
       {children}
     </th>
   );
 }
 
 function TableBody({ children }: { children: React.ReactNode }) {
-  return (
-    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-      {children}
-    </tbody>
-  );
+  return <tbody>{children}</tbody>;
 }
 
 function TableRow({ children }: { children: React.ReactNode }) {
-  return (
-    <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
-      {children}
-    </tr>
-  );
+  return <tr className="border-b border-border last:border-b-0">{children}</tr>;
 }
 
 function TableCell({ children }: { children: React.ReactNode }) {
-  return (
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-      {children}
-    </td>
-  );
+  return <td className="px-4 py-2 text-sm">{children}</td>;
 }
 
 function Blockquote({ children }: { children: React.ReactNode }) {
   return (
-    <blockquote className="border-l-4 border-blue-500 pl-4 py-2 my-4 italic bg-blue-50 dark:bg-blue-900/20">
+    <blockquote className="my-6 border-l-2 border-accent bg-muted/40 px-4 py-2 text-muted-foreground">
       {children}
     </blockquote>
   );
 }
 
-function Alert({ children, type = 'info' }: { children: React.ReactNode; type?: 'info' | 'warning' | 'success' | 'error' }) {
-  const alertStyles = {
-    info: 'bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700',
-    warning: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-700',
-    success: 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700',
-    error: 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700'
-  };
+function Alert({
+  children,
+  type = 'info',
+}: {
+  children: React.ReactNode;
+  type?: 'info' | 'warning' | 'success' | 'error';
+}) {
+  const marker = {
+    info: 'i',
+    warning: '!',
+    success: '✓',
+    error: '×',
+  }[type];
 
   return (
-    <div className={`p-4 my-4 border-l-4 rounded-r-lg ${alertStyles[type]}`}>
-      {children}
+    <div className="my-6 rounded border border-border bg-muted p-4">
+      <div className="mb-1 font-mono text-[11px] uppercase tracking-widest text-accent">
+        <span className="mr-2">[{marker}]</span>
+        {type}
+      </div>
+      <div className="text-sm text-foreground">{children}</div>
     </div>
   );
 }

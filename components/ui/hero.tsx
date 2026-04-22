@@ -1,123 +1,147 @@
 'use client';
 
 import { personalInfo } from '@/data/personal';
-import { getTotalExperience } from '@/lib/utils';
-import { Download, ExternalLink, Mail, MapPin } from 'lucide-react';
+import { cn, getTotalExperience } from '@/lib/utils';
+import { ArrowUpRight, Copy, Check, Download, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useTheme } from './theme-provider';
+import { useEffect, useState } from 'react';
+import { openCommandPalette } from './command-palette';
+import Kbd from './kbd';
+import TerminalWindow from './terminal-window';
+
+const LINES = [
+  { type: 'cmd', text: 'whoami' },
+  { type: 'out', text: personalInfo.name },
+  { type: 'cmd', text: 'cat role.txt' },
+  { type: 'out', text: personalInfo.title },
+  { type: 'cmd', text: 'cat stack.txt' },
+  { type: 'out', text: 'asp.net-core · angular · c# · typescript · sql-server · azure' },
+  { type: 'cmd', text: 'cat workflow.txt' },
+  { type: 'out', text: 'cursor · claude-code · openai · claude · gemini · chrome-extensions' },
+];
 
 export default function Hero() {
-  const totalYears = getTotalExperience();
-  const { colors } = useTheme();
+  const years = getTotalExperience();
+  const [copied, setCopied] = useState(false);
+  const [isMac, setIsMac] = useState(true);
+
+  useEffect(() => {
+    setIsMac(/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform));
+  }, []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${personalInfo.email}`;
+    }
+  };
 
   return (
-    <section className={`relative overflow-hidden min-h-screen flex items-center transition-colors ${colors.background}`}>
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="space-y-8 animate-fade-in">
-            <div className="space-y-4">
-              <div className={`flex items-center space-x-2 font-medium ${colors.accent}`}>
-                <MapPin size={18} />
-                <span>{personalInfo.location.split(',').slice(-2).join(',').trim()}</span>
-              </div>
-              
-              <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight ${colors.text}`}>
-                Hi, I&apos;m{' '}
-                <span className={colors.accent}>{personalInfo.name}</span>
-              </h1>
-              
-              <h2 className={`text-xl sm:text-2xl lg:text-3xl font-medium ${colors.textSecondary}`}>
-                {personalInfo.title}
-              </h2>
-              
-              <div className={`flex items-center space-x-4 text-lg ${colors.textSecondary}`}>
-                <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">
-                  {totalYears}+ Years Experience
-                </span>
-                <span className="bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200 px-3 py-1 rounded-full text-sm font-medium">
-                  Available Worldwide
-                </span>
-              </div>
-            </div>
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-60" />
+      <div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-16 sm:px-6 sm:pt-16 sm:pb-24 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-accent" />
+          <span>available for remote work</span>
+          <span className="text-border-strong">·</span>
+          <span>cebu city, ph (utc+8)</span>
+          <span className="text-border-strong">·</span>
+          <span>{years}+ yrs full-stack</span>
+        </div>
 
-            <p className={`text-lg leading-relaxed max-w-2xl ${colors.textSecondary}`}>
-              {personalInfo.summary}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/projects"
-                className={`inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-colors group ${colors.button} ${colors.buttonText}`}
-              >
-                View My Work
-                <ExternalLink size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              
-              <Link
-                href="/resume/john-lloyd-lawas-resume.pdf"
-                className={`inline-flex items-center justify-center px-6 py-3 border font-medium rounded-lg transition-colors group ${colors.border} ${colors.textSecondary} ${colors.cardHover}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Download Resume
-                <Download size={18} className="ml-2 group-hover:translate-y-1 transition-transform" />
-              </Link>
-              
-              <Link
-                href={`mailto:${personalInfo.email}`}
-                className={`inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-colors group ${colors.text} ${colors.card} ${colors.cardHover}`}
-              >
-                Get In Touch
-                <Mail size={18} className="ml-2" />
-              </Link>
-            </div>
-
-            {/* Quick stats */}
-            <div className={`grid grid-cols-3 gap-6 pt-8 border-t ${colors.border}`}>
-              <div className="text-center">
-                <div className={`text-2xl font-bold ${colors.text}`}>{totalYears}+</div>
-                <div className={`text-sm ${colors.textMuted}`}>Years Experience</div>
-              </div>
-              <div className="text-center">
-                <div className={`text-2xl font-bold ${colors.text}`}>10+</div>
-                <div className={`text-sm ${colors.textMuted}`}>Projects Completed</div>
-              </div>
-              <div className="text-center">
-                <div className={`text-2xl font-bold ${colors.text}`}>5</div>
-                <div className={`text-sm ${colors.textMuted}`}>Companies Worked</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Profile Image / Visual */}
-          <div className="relative lg:h-[600px] flex items-center justify-center animate-slide-in-right">
-            <div className="relative">
-              {/* Placeholder for profile image */}
-              <div className="w-80 h-80 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl">
-                <div className="text-white text-6xl font-bold">
-                  {personalInfo.name.split(' ').map(n => n[0]).join('')}
+        <TerminalWindow title="~/johnlloyd — zsh" className="reveal">
+          <div className="space-y-1 font-mono text-sm sm:text-[15px] leading-relaxed">
+            {LINES.map((line, i) =>
+              line.type === 'cmd' ? (
+                <div key={i} className="flex items-baseline gap-2">
+                  <span className="select-none text-accent">$</span>
+                  <span className="text-foreground">{line.text}</span>
                 </div>
-              </div>
-              
-              {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                <span className="text-2xl">⚡</span>
-              </div>
-              
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-green-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                <span className="text-xl">💻</span>
-              </div>
-              
-              <div className="absolute top-1/2 -left-8 w-12 h-12 bg-purple-400 rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-lg">🚀</span>
-              </div>
+              ) : (
+                <div key={i} className="pl-4 text-muted-foreground">
+                  {line.text}
+                </div>
+              )
+            )}
+            <div className="flex items-baseline gap-2 pt-1">
+              <span className="select-none text-accent">$</span>
+              <span className="caret" aria-hidden="true" />
             </div>
           </div>
+        </TerminalWindow>
+
+        <div className="mt-8 space-y-5 reveal" style={{ animationDelay: '80ms' }}>
+          <h1 className="max-w-3xl text-balance font-mono text-2xl font-medium leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            i build{' '}
+            <span className="text-accent">enterprise web apps</span>{' '}
+            with asp.net core and angular—modernizing legacy systems and shipping maintainable full-stack solutions.
+          </h1>
+
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {personalInfo.summary}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2">
+            <Link
+              href="/projects"
+              className={cn(
+                'group inline-flex items-center gap-2 rounded border border-accent bg-accent px-3.5 py-2 font-mono text-xs text-accent-foreground transition-colors hover:bg-accent-muted hover:text-accent'
+              )}
+            >
+              view projects
+              <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </Link>
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="group inline-flex items-center gap-2 rounded border border-border bg-card px-3.5 py-2 font-mono text-xs text-foreground transition-colors hover:border-border-strong"
+            >
+              {copied ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
+              {copied ? 'copied!' : 'copy email'}
+            </button>
+            <Link
+              href="/resume/john-lloyd-lawas-resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 rounded border border-border bg-card px-3.5 py-2 font-mono text-xs text-foreground transition-colors hover:border-border-strong"
+            >
+              <Download size={14} />
+              résumé.pdf
+            </Link>
+            <a
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 rounded border border-border bg-card px-3.5 py-2 font-mono text-xs text-foreground transition-colors hover:border-border-strong"
+            >
+              <Linkedin size={14} />
+              linkedin
+            </a>
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="group inline-flex items-center gap-2 rounded border border-border bg-card px-3.5 py-2 font-mono text-xs text-foreground transition-colors hover:border-border-strong"
+            >
+              <Mail size={14} />
+              mail
+            </a>
+          </div>
+
+          <p className="pt-2 text-xs text-muted-foreground">
+            press{' '}
+            <button
+              type="button"
+              onClick={() => openCommandPalette()}
+              className="inline-flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-foreground hover:border-border-strong"
+            >
+              <Kbd>{isMac ? '⌘' : 'ctrl'}</Kbd>
+              <Kbd>K</Kbd>
+            </button>{' '}
+            to jump anywhere, or{' '}
+            <Kbd>g</Kbd> then <Kbd>h / a / e / s / p / b / c</Kbd>
+          </p>
         </div>
       </div>
     </section>

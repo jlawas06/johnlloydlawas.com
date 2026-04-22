@@ -1,0 +1,55 @@
+---
+title: "Manufacturing Process System"
+description: "In-house web applications for automotive manufacturing processes at Lear Corporation — streamlining operator workflows across the shop floor."
+technologies: ["ASP.NET MVC", "C#", "JavaScript", "SQL Server", "jQuery"]
+category: "Enterprise Applications"
+featured: false
+published: true
+startDate: "2018-06-01"
+endDate: "2019-04-30"
+client: "Lear Corporation"
+role: "Software Developer Intern"
+teamSize: 4
+duration: "11 months"
+challenges:
+  - "Supporting operator workflows that change by shift and product line"
+  - "Running on tightly-controlled internal browsers with legacy policies"
+  - "Data integrity requirements across multiple plant systems"
+solutions:
+  - "Built ASP.NET MVC apps with server-rendered forms and progressive enhancement"
+  - "Introduced shared utility libraries to reduce duplicated form/validation code"
+  - "Added end-to-end audit trails on critical write paths"
+results:
+  - "Streamlined daily operator workflows on the shop floor"
+  - "Reduced manual paper handoffs across multiple lines"
+  - "Moved from intern to a full-time developer track based on shipped work"
+---
+
+# Manufacturing Process System
+
+## Context
+
+My first professional engineering role. Lear's internal team maintained a constellation of small web apps used by operators, leads, and engineers on the plant floor. Each shift had its own quirks, and the apps had to work on the same restricted internal browsers across every plant.
+
+## Problem
+
+- Operator workflows varied by product line, but the apps had grown duplicative — the same form patterns and validations reimplemented in three different places.
+- Browser compatibility was locked to an old baseline, which meant no relying on modern SPAs or bleeding-edge CSS.
+- Data integrity mattered: mistakes on the floor have a cost.
+
+## Approach
+
+- Wrote new features in ASP.NET MVC with server-rendered views and progressively enhanced JS — simple, robust, and compatible with the locked-down browser baseline.
+- Pulled common form and validation patterns into a shared library so new apps could be bootstrapped without reimplementing the basics.
+- Added audit trails on every critical write path, so every change could be traced to a user and a shift.
+
+## Outcome
+
+The new apps were faster to ship and easier to support. I went from intern to the full-time developer track based on the work that landed. More importantly, it taught me how much "unsexy" things like validation reuse and audit trails matter when real people rely on what you ship.
+
+## Stack notes
+
+- **ASP.NET MVC 5**
+- **C#**
+- **jQuery + vanilla JS** for progressive enhancement
+- **SQL Server** with stored procedures for audit-heavy paths

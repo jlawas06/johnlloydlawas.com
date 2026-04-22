@@ -1,116 +1,116 @@
-'use client';
-
 import { personalInfo } from '@/data/personal';
-import { Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useTheme } from './theme-provider';
 
-const socialLinks = [
+const columns = [
   {
-    href: personalInfo.linkedin,
-    label: 'LinkedIn',
-    icon: Linkedin,
+    label: 'site',
+    links: [
+      { href: '/', label: 'home' },
+      { href: '/about', label: 'about' },
+      { href: '/experience', label: 'experience' },
+      { href: '/skills', label: 'skills' },
+    ],
   },
   {
-    href: `mailto:${personalInfo.email}`,
-    label: 'Email',
-    icon: Mail,
+    label: 'work',
+    links: [
+      { href: '/projects', label: 'projects' },
+      { href: '/blog', label: 'blog' },
+      { href: '/uses', label: 'uses' },
+      { href: '/now', label: 'now' },
+    ],
   },
-];
-
-const quickLinks = [
-  { href: '/about', label: 'About' },
-  { href: '/experience', label: 'Experience' },
-  { href: '/skills', label: 'Skills' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-  const { colors } = useTheme();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className={`transition-colors duration-300 ${colors.backgroundSecondary === 'bg-white' ? 'bg-gray-900' : 'bg-gray-800'} text-white`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Contact Info */}
+    <footer className="mt-20 border-t border-border bg-background">
+      <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">{personalInfo.name}</h3>
-            <p className="text-gray-300 mb-4">{personalInfo.title}</p>
-            
-            <div className="space-y-2 text-sm text-gray-300">
-              <div className="flex items-center space-x-2">
-                <MapPin size={16} className="text-cyan-400" />
-                <span>{personalInfo.location}</span>
+            <div className="mb-3 font-mono text-sm text-foreground">
+              <span className="text-accent">~/</span>johnlloyd
+            </div>
+            <p className="max-w-xs text-xs text-muted-foreground">
+              Full-stack developer. ASP.NET Core + Angular. Based in Cebu City, working
+              remotely with teams worldwide.
+            </p>
+          </div>
+
+          {columns.map((col) => (
+            <div key={col.label}>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                <span className="text-accent">{'//'}</span> {col.label}
               </div>
-              <div className="flex items-center space-x-2">
-                <Phone size={16} className="text-cyan-400" />
-                <span>{personalInfo.phone}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Mail size={16} className="text-cyan-400" />
-                <a 
+              <ul className="space-y-1.5 font-mono text-xs">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <span className="text-subtle">./</span>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div>
+            <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+              <span className="text-accent">{'//'}</span> elsewhere
+            </div>
+            <ul className="space-y-1.5 font-mono text-xs">
+              <li>
+                <a
                   href={`mailto:${personalInfo.email}`}
-                  className="hover:text-cyan-300 transition-colors"
+                  className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {personalInfo.email}
+                  <Mail size={12} />
+                  email
                 </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-2">
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-300 hover:text-cyan-300 transition-colors text-sm"
+              </li>
+              <li>
+                <a
+                  href={personalInfo.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Social Links & Availability */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Connect</h3>
-            <div className="flex space-x-4 mb-4">
-              {socialLinks.map((link) => {
-                const Icon = link.icon;
-                return (
+                  <Linkedin size={12} />
+                  linkedin
+                </a>
+              </li>
+              {personalInfo.github && (
+                <li>
                   <a
-                    key={link.label}
-                    href={link.href}
+                    href={personalInfo.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 bg-gray-700 rounded-full hover:bg-cyan-600 transition-colors"
-                    aria-label={link.label}
+                    className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <Icon size={20} />
+                    <Github size={12} />
+                    github
                   </a>
-                );
-              })}
-            </div>
-            <div className="text-sm text-gray-300">
-              <p className="mb-2">
-                <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                Available for opportunities
-              </p>
-              <p>Based in Cebu City, Philippines • Serving clients worldwide</p>
-            </div>
+                </li>
+              )}
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>
-            © {currentYear} {personalInfo.name}
-          </p>
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 font-mono text-[11px] text-muted-foreground sm:flex-row sm:items-center">
+          <span>
+            © {year} {personalInfo.name.toLowerCase()}.
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+            built with next.js · deployed on vercel
+          </span>
         </div>
       </div>
     </footer>

@@ -1,36 +1,39 @@
 'use client';
 
-import { personalInfo } from '@/data/personal';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useTheme } from './theme-provider';
+import { openCommandPalette } from './command-palette';
+import Kbd from './kbd';
 import ThemeToggle from './theme-toggle';
 
 const navigationItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/experience', label: 'Experience' },
-  { href: '/skills', label: 'Skills' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'home' },
+  { href: '/about', label: 'about' },
+  { href: '/experience', label: 'experience' },
+  { href: '/skills', label: 'skills' },
+  { href: '/projects', label: 'projects' },
+  { href: '/blog', label: 'blog' },
+  { href: '/uses', label: 'uses' },
+  { href: '/contact', label: 'contact' },
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMac, setIsMac] = useState(true);
   const pathname = usePathname();
-  const { colors } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
+    setIsMac(/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform));
+  }, []);
 
-    window.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 4);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -38,84 +41,111 @@ export default function Navigation() {
     setIsOpen(false);
   }, [pathname]);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed inset-x-0 top-0 z-50 transition-all',
         isScrolled
-          ? `${colors.navBg} backdrop-blur-sm shadow-sm ${colors.navBorder} border-b`
-          : 'bg-transparent'
+          ? 'border-b border-border bg-background/75 backdrop-blur-md'
+          : 'border-b border-transparent bg-background/40 backdrop-blur-sm'
       )}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo/Brand */}
-          <Link
-            href="/"
-            className={cn("text-xl font-bold transition-colors", colors.text, colors.linkHover)}
-          >
-            {personalInfo.name}
-          </Link>
+      <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          aria-label="Home"
+          className="flex items-center gap-2 font-mono text-sm font-medium text-foreground"
+        >
+          <span className="text-accent">~/</span>
+          <span className="hidden sm:inline">johnlloyd</span>
+          <span className="sm:hidden">jl</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'transition-colors font-medium',
-                  colors.textSecondary,
-                  colors.linkHover,
-                  pathname === item.href && colors.accent
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <ThemeToggle />
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <ThemeToggle />
-            <button
-              onClick={toggleMenu}
-              className={cn("p-2 rounded-md transition-colors", colors.textSecondary, colors.linkHover, colors.hover)}
-              aria-label="Toggle menu"
+        <div className="hidden items-center gap-1 md:flex">
+          {navigationItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'rounded px-2 py-1 font-mono text-[13px] transition-colors',
+                isActive(item.href)
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+              <span className="text-subtle">./</span>
+              {item.label}
+              {isActive(item.href) && (
+                <span className="ml-0.5 text-accent">●</span>
+              )}
+            </Link>
+          ))}
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div className={cn("px-2 pt-2 pb-3 space-y-1 border-t", colors.card, colors.navBorder)}>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => openCommandPalette()}
+            aria-label="Open command palette"
+            className="group hidden items-center gap-2 rounded border border-border bg-muted/60 px-2.5 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:inline-flex"
+          >
+            <Search size={12} />
+            <span>search</span>
+            <span className="flex items-center gap-0.5">
+              <Kbd>{isMac ? '⌘' : 'ctrl'}</Kbd>
+              <Kbd>K</Kbd>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openCommandPalette()}
+            aria-label="Open command palette"
+            className="inline-flex h-8 w-8 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground sm:hidden"
+          >
+            <Search size={16} />
+          </button>
+
+          <ThemeToggle />
+
+          <button
+            type="button"
+            onClick={() => setIsOpen((v) => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            className="inline-flex h-8 w-8 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground md:hidden"
+          >
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </nav>
+
+      {isOpen && (
+        <div className="border-t border-border bg-background md:hidden">
+          <div className="mx-auto w-full max-w-5xl px-4 py-3 sm:px-6">
+            <div className="grid grid-cols-2 gap-1">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'block px-3 py-2 rounded-md transition-colors font-medium',
-                    colors.textSecondary,
-                    colors.linkHover,
-                    colors.hover,
-                    pathname === item.href && `${colors.accent} ${colors.surface}`
+                    'rounded px-2 py-2 font-mono text-sm transition-colors',
+                    isActive(item.href)
+                      ? 'bg-muted text-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
+                  <span className="text-subtle">./</span>
                   {item.label}
                 </Link>
               ))}
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </header>
   );
 }

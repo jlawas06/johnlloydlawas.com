@@ -1,61 +1,64 @@
 'use client';
 
-import { themeColors, ThemeColors, ThemeMode } from '@/lib/theme';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+
+export type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
-  theme: ThemeMode;
-  colors: ThemeColors;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<ThemeMode>('light');
+  const [theme, setThemeState] = useState<Theme>('dark');
 
   useEffect(() => {
-    // Check for saved theme preference or default to 'light'
-    const savedTheme = localStorage.getItem('theme') as ThemeMode;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    setTheme(initialTheme);
-    
-    // Apply theme to document
-    if (initialTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    setThemeState(current);
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    
-    // Apply theme to document
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+  const applyTheme = useCallback((next: Theme) => {
+    setThemeState(next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // ignore write errors (private mode etc.)
     }
-  };
+    document.documentElement.classList.toggle('dark', next === 'dark');
+  }, []);
 
-  const colors = themeColors[theme];
+  const toggleTheme = useCallback(() => {
+    applyTheme(theme === 'dark' ? 'light' : 'dark');
+  }, [theme, applyTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, colors, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme: applyTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
+  return ctx;
 }
+
+// Inline script that runs before hydration to avoid a flash of wrong theme.
+// Default is dark; respects saved preference first, then prefers-color-scheme.
+export const themeScript = `
+(function() {
+  try {
+    var saved = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'dark');
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  } catch (e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`;

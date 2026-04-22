@@ -1,0 +1,56 @@
+---
+title: "Aviation Logistics Platform"
+description: "Real-time logistics and scheduling system for the aviation industry, built with ASP.NET, WCF services, and Angular. Used by multiple airlines for complex resource allocation."
+technologies: ["ASP.NET", "Angular", "WCF", "Web API", "C#", "SQL Server"]
+category: "Enterprise Applications"
+featured: true
+published: true
+startDate: "2019-05-01"
+endDate: "2019-10-31"
+client: "Aviation industry (Singapore)"
+role: "Software Design & Development Engineer"
+teamSize: 5
+duration: "6 months"
+challenges:
+  - "High-volume transactional throughput for scheduling and resource allocation"
+  - "Integration with legacy airline systems exposed over WCF"
+  - "Coordinating requirements across distributed teams and time zones"
+solutions:
+  - "Designed idempotent WCF service endpoints with structured retry handling"
+  - "Moved UI to an Angular SPA talking to a focused Web API layer"
+  - "Adopted agile rituals across PH/SG teams with async handoffs"
+results:
+  - "Platform adopted by multiple airlines for day-to-day operations"
+  - "Reduced scheduling errors through stricter server-side validation"
+  - "Cleaner separation between legacy WCF services and the new Angular frontend"
+---
+
+# Aviation Logistics Platform
+
+## Context
+
+A Singapore-based aviation software house needed to move an internal logistics and scheduling suite off a tightly-coupled WCF + WebForms stack toward something their airline customers could actually use from modern browsers, on spotty networks, with high transaction volumes during peak hours.
+
+## Problem
+
+Scheduling resources across airlines — crews, ground equipment, cargo — is inherently transactional: every change ripples. The existing system had two main pain points:
+
+- The WebForms UI was slow to iterate on, and front-line ops teams disliked the workflow.
+- Integrations with airline back-offices went through WCF services that were not idempotent, so retries during network blips caused double-bookings.
+
+## Approach
+
+- **Frontend**: Rebuilt the primary scheduling screens as an Angular SPA backed by a focused Web API. Kept round-trips small and optimistic updates explicit.
+- **Services**: Introduced idempotency keys and structured retry semantics around WCF endpoints so the API layer could safely handle flaky downstream calls.
+- **Collaboration**: Standup, backlog grooming, and sprint review across Cebu and Singapore — written handoffs in Confluence to keep the async pipeline healthy.
+
+## Outcome
+
+The platform was adopted across multiple airline customers. The scheduling surface got faster to use and harder to misuse, and the integration layer got predictable enough that support tickets around "phantom bookings" dropped off the board.
+
+## Stack notes
+
+- **Angular** (forms, reactive streams for live schedule updates)
+- **ASP.NET Web API** as a thin integration layer
+- **WCF** for legacy service contracts
+- **SQL Server** for the system of record
