@@ -1,0 +1,52 @@
+---
+title: "AnswerIt AI"
+description: "Chrome extension that lets you snip any part of a webpage — a question, paragraph, or diagram — and get an instant AI-powered answer in seconds."
+technologies: ["Chrome Extension MV3", "Svelte", "Supabase", "Lemon Squeezy", "n8n", "TypeScript"]
+category: "AI / LLM Tools"
+featured: true
+published: true
+startDate: "2025-06-01"
+role: "Solo builder"
+duration: "ongoing"
+demoUrl: "https://answerit.pro"
+challenges:
+  - "Designing a capture UX that works on any webpage — text, images, mixed layouts"
+  - "Keeping LLM response latency low enough to feel instant"
+  - "Shipping paid billing + subscription flow as a solo developer"
+solutions:
+  - "Manifest V3 content scripts with a lightweight Svelte overlay for the snipping UI"
+  - "Supabase for auth + usage tracking; n8n pipelines for the AI inference path"
+  - "Lemon Squeezy for global, compliant checkout so I didn't have to build billing myself"
+results:
+  - "Public launch at answerit.pro with a working free tier and paid plan"
+  - "Architecture doubled as a reusable MV3 + Svelte shell for a companion extension (Youtubely)"
+---
+
+# AnswerIt AI
+
+## Context
+
+A solo side project that grew into a real product. AnswerIt AI lives in the browser and closes the gap between "I have a question about this page" and "I have an answer" — no copy-paste, no tab switching, no prompt engineering.
+
+## Problem
+
+LLMs are great at answering questions, but the friction to get a good answer from a web page is real: copy the text, open ChatGPT, paste it, re-add the context, wait. For quick look-ups that flow breaks focus entirely. Diagrams and screenshots make it worse — they're awkward to paste into text-only tools, and the model needs the surrounding context to be useful.
+
+## Approach
+
+- **Capture UX:** a snipping tool built as an MV3 content script with a Svelte overlay. Select any region — text, image, or a mix — and send it through to the answer pipeline.
+- **AI pipeline:** routed through [n8n](https://n8n.io) so I can swap models and iterate on the prompt chain without redeploying the extension.
+- **Backend:** Supabase handles auth, usage metering, and per-user history.
+- **Monetization:** Lemon Squeezy for subscription checkout — paid tier launched without wiring up Stripe + VAT compliance from scratch.
+
+## Outcome
+
+Shipped at [answerit.pro](https://answerit.pro) with a working free tier and a paid plan. The MV3 + Svelte shell I built for it became the reusable base for a smaller companion extension ([Youtubely](/projects/youtubely)).
+
+## Stack notes
+
+- **Manifest V3 + Svelte** for a tiny, reactive content script surface
+- **Supabase** for auth, DB, and usage tracking
+- **n8n** as the orchestration layer for the AI pipeline
+- **Lemon Squeezy** for checkout and tax compliance
+- **TypeScript** everywhere the extension talks to itself
