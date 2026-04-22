@@ -19,18 +19,20 @@ export default function AboutContent() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
         <article className="space-y-6 text-sm leading-relaxed text-muted-foreground sm:text-base">
           <p>
-            I&apos;ve been building enterprise web apps for <span className="text-foreground">{totalYears}+ years</span> — mostly on the{' '}
-            <span className="text-foreground">.NET</span> backend with <span className="text-foreground">Angular</span> on the front. I gravitate
-            toward problems where the business rules are tangled, the data is messy, and the existing system is a decade old: ERP, aviation logistics,
-            manufacturing process apps.
+            I&apos;ve spent <span className="text-foreground">{totalYears}+ years</span> building production software — most of that on enterprise{' '}
+            <span className="text-foreground">.NET</span> and <span className="text-foreground">Angular</span> platforms (ERP, aviation logistics,
+            manufacturing process apps), and the last year on <span className="text-foreground">AI-integrated Chrome extensions</span> and{' '}
+            <span className="text-foreground">SaaS products</span> at Liftoff Company Inc. Two eras, same habits: ship it, keep it maintainable, make
+            the impact measurable.
           </p>
           <p>
             I started at{' '}
             <span className="text-foreground">Lear Corporation</span> as an intern, building internal apps for automotive manufacturing. Since then I&apos;ve shipped software for airlines via{' '}
             <span className="text-foreground">Sense Software Solutions</span> in Singapore, modernized legacy systems at{' '}
             <span className="text-foreground">OSL International</span>, delivered to deadline at{' '}
-            <span className="text-foreground">Yondu</span>, and most recently led full-stack work at{' '}
-            <span className="text-foreground">Nowcom Global Services</span>.
+            <span className="text-foreground">Yondu</span>, led full-stack work at{' '}
+            <span className="text-foreground">Nowcom Global Services</span>, and now build AI-powered Chrome extensions and SaaS tools at{' '}
+            <span className="text-foreground">Liftoff Company Inc.</span>
           </p>
           <p>
             Remote has been the default for me for a while — I&apos;ve collaborated across PH/SG/US time zones, done code reviews with teams I&apos;ve
@@ -44,8 +46,8 @@ export default function AboutContent() {
             <li className="flex gap-3">
               <span className="shrink-0 select-none font-mono text-accent">›</span>
               <span>
-                <span className="text-foreground">boring technology.</span> Shipped trumps clever. I lean on .NET and SQL Server because they&apos;re
-                calm under load and unsurprising to operate.
+                <span className="text-foreground">boring technology.</span> Shipped trumps clever. Whether it&apos;s .NET and SQL Server or
+                React and Supabase, I pick the stack that&apos;s calm under load and unsurprising to operate.
               </span>
             </li>
             <li className="flex gap-3">

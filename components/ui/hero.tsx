@@ -15,7 +15,9 @@ const LINES = [
   { type: 'cmd', text: 'cat role.txt' },
   { type: 'out', text: personalInfo.title },
   { type: 'cmd', text: 'cat stack.txt' },
-  { type: 'out', text: 'asp.net-core · angular · c# · typescript · sql-server · azure' },
+  { type: 'out', text: 'typescript · react · next.js · chrome-extensions · supabase · xano' },
+  { type: 'cmd', text: 'cat prior-stack.txt' },
+  { type: 'out', text: 'asp.net-core · angular · c# · sql-server · azure' },
   { type: 'cmd', text: 'cat workflow.txt' },
   { type: 'out', text: 'cursor · claude-code · openai · claude · gemini · chrome-extensions' },
 ];
@@ -76,8 +78,8 @@ export default function Hero() {
         <div className="mt-8 space-y-5 reveal" style={{ animationDelay: '80ms' }}>
           <h1 className="max-w-3xl text-balance font-mono text-2xl font-medium leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">
             i build{' '}
-            <span className="text-accent">enterprise web apps</span>{' '}
-            with asp.net core and angular—modernizing legacy systems and shipping maintainable full-stack solutions.
+            <span className="text-accent">full-stack products</span>{' '}
+            — from enterprise asp.net and angular platforms to ai-powered chrome extensions and saas tools.
           </h1>
 
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">

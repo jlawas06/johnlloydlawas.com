@@ -133,9 +133,10 @@ export default function ContactContent() {
           <div className="rounded border border-border bg-card p-4 font-mono text-xs">
             <div className="mb-2 text-muted-foreground">best for</div>
             <ul className="space-y-1 text-foreground">
+              <li>› ai / llm integrations</li>
+              <li>› chrome extensions + saas</li>
               <li>› enterprise web apps</li>
               <li>› legacy .net modernization</li>
-              <li>› angular frontends</li>
               <li>› api + integration work</li>
             </ul>
           </div>

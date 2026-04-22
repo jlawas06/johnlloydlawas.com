@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Experience',
-  description: `Professional experience of ${personalInfo.name}. ${getTotalExperience()}+ years of full-stack development across enterprise applications and multiple industries.`,
+  description: `Professional experience of ${personalInfo.name}. ${getTotalExperience()}+ years of full-stack development — from enterprise ASP.NET/Angular platforms to AI-integrated Chrome extensions and SaaS products.`,
 };
 
 export default function ExperiencePage() {
@@ -19,10 +19,10 @@ export default function ExperiencePage() {
   return (
     <Section
       label="experience"
-      title={`${totalYears}+ years building enterprise web apps`}
+      title={`${totalYears}+ years of full-stack engineering`}
       description={`${experiences.length} roles across ${new Set(
         experiences.map((e) => e.company)
-      ).size} companies — from aviation logistics to legacy ERP modernization.`}
+      ).size} companies — from aviation logistics and legacy ERP modernization to AI-integrated Chrome extensions and SaaS.`}
       action={
         <Link
           href="/resume/john-lloyd-lawas-resume.pdf"
