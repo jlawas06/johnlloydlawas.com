@@ -297,3 +297,63 @@ body {
   border-color: var(--border);
   padding: 0.5rem 0.75rem;
 }
+
+/* n8n chat widget — bind to project theme so it follows light/dark */
+:root {
+  --chat--color-primary: var(--accent);
+  --chat--color-primary-shade-50: color-mix(in oklab, var(--accent) 90%, black);
+  --chat--color-primary-shade-100: color-mix(in oklab, var(--accent) 80%, black);
+  --chat--color-secondary: var(--accent);
+  --chat--color-secondary-shade-50: color-mix(in oklab, var(--accent) 90%, black);
+  --chat--color-white: var(--card);
+  --chat--color-light: var(--muted);
+  --chat--color-light-shade-50: var(--border);
+  --chat--color-light-shade-100: var(--border-strong);
+  --chat--color-medium: var(--border-strong);
+  --chat--color-dark: var(--foreground);
+  --chat--color-disabled: var(--subtle);
+  --chat--color-typing: var(--muted-foreground);
+
+  --chat--toggle--background: var(--accent);
+  --chat--toggle--hover--background: color-mix(in oklab, var(--accent) 85%, black);
+  --chat--toggle--active--background: color-mix(in oklab, var(--accent) 75%, black);
+  --chat--toggle--color: var(--accent-foreground);
+
+  --chat--header--background: var(--accent);
+  --chat--header--color: var(--accent-foreground);
+  --chat--header-border-bottom: 1px solid color-mix(in oklab, var(--accent) 70%, black);
+  --chat--heading--font-size: 1rem;
+  --chat--subtitle--font-size: 0.8125rem;
+
+  --chat--body--background: var(--card);
+
+  --chat--message--font-size: 0.875rem;
+  --chat--message--padding: 0.75rem 1rem;
+  --chat--message--border-radius: 12px;
+  --chat--message-line-height: 1.5;
+  --chat--message--bot--background: var(--muted);
+  --chat--message--bot--color: var(--foreground);
+  --chat--message--bot--border: 1px solid var(--border);
+  --chat--message--user--background: var(--accent);
+  --chat--message--user--color: var(--accent-foreground);
+  --chat--message--user--border: 1px solid var(--accent);
+
+  --chat--textarea--height: 50px;
+  --chat--input--background: var(--card);
+  --chat--input--text-color: var(--foreground);
+  --chat--input--border: 1px solid var(--border);
+  --chat--input--border-active: 1px solid var(--accent);
+  --chat--input--send--button--background: transparent;
+  --chat--input--send--button--color: var(--accent);
+  --chat--input--send--button--background-hover: var(--muted);
+  --chat--input--send--button--color-hover: var(--accent);
+}
+
+.dark {
+  --chat--color-primary-shade-50: color-mix(in oklab, var(--accent) 85%, white);
+  --chat--color-primary-shade-100: color-mix(in oklab, var(--accent) 70%, white);
+  --chat--color-secondary-shade-50: color-mix(in oklab, var(--accent) 85%, white);
+  --chat--toggle--hover--background: color-mix(in oklab, var(--accent) 85%, white);
+  --chat--toggle--active--background: color-mix(in oklab, var(--accent) 70%, white);
+  --chat--header-border-bottom: 1px solid color-mix(in oklab, var(--accent) 60%, black);
+}
