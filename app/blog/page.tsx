@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Blog',
-  description: `Technical articles and insights by ${personalInfo.name}. Read about ASP.NET Core, Angular, enterprise development, and software engineering best practices for global development teams.`,
+  description: `Writing by ${personalInfo.name} on ASP.NET Core, Angular, Cursor, Claude Code, and shipping production software with LLM tooling.`,
 };
 
 export default async function BlogPage() {

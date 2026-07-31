@@ -5,8 +5,10 @@ export interface PersonalInfo {
   phone: string;
   email: string;
   linkedin: string;
-  github?: string;
+  github: string;
   summary: string;
+  /** Short (~150 chars) version of summary for SERP meta descriptions. */
+  metaDescription: string;
   bio: string;
   avatar?: string;
 }
@@ -18,6 +20,9 @@ export const personalInfo: PersonalInfo = {
   phone: "+639626905612",
   email: "johnlloydlawas06@gmail.com",
   linkedin: "https://www.linkedin.com/in/john-lloyd-lawas/",
+  github: "https://github.com/jlawas06",
+  metaDescription:
+    "Full Stack Developer, 7+ yrs. ASP.NET Core, Angular, TypeScript, React. Building AI-powered Chrome extensions and SaaS. Remote from Cebu City, PH.",
   summary: "Full Stack Developer with 7+ years building production software — from enterprise ASP.NET Core/Angular platforms to AI-integrated Chrome extensions and SaaS products. Currently at Liftoff Company Inc., shipping LLM-backed features with Cursor and Claude Code in the daily loop.",
   bio: "Full-stack engineer who moved from enterprise .NET modernization into AI-integrated product work. I've shipped ERP, aviation logistics, and manufacturing platforms on ASP.NET and Angular, and now build Chrome extensions and SaaS tools wired into the OpenAI, Claude, and Gemini APIs. I care about shipped code, measurable impact, and tools that respect a maintainer's time.",
 };

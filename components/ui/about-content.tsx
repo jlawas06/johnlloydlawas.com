@@ -36,7 +36,9 @@ export default function AboutContent() {
           </p>
           <p>
             Remote has been the default for me for a while — I&apos;ve collaborated across PH/SG/US time zones, done code reviews with teams I&apos;ve
-            never met in person, and learned to rely on written handoffs. If you work async, I&apos;ll fit right in.
+            never met in person, and learned to rely on written handoffs. If you work async, I&apos;ll fit right in. I&apos;m in{' '}
+            <span className="text-foreground">Cebu City, Philippines (UTC+8)</span> — my mornings overlap AU/NZ business hours and US West Coast
+            evenings, and my late evenings reach US morning standups.
           </p>
 
           <h3 className="mt-8 font-mono text-sm text-foreground">

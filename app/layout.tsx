@@ -4,6 +4,7 @@ import N8nChat from "@/components/ui/n8n-chat";
 import Navigation from "@/components/ui/navigation";
 import { ThemeProvider, themeScript } from "@/components/ui/theme-provider";
 import { personalInfo } from "@/data/personal";
+import { SITE_URL } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -28,30 +29,25 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://johnlloydlawas.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${personalInfo.name} — ${personalInfo.title}`,
     template: `%s — ${personalInfo.name}`,
   },
-  description: personalInfo.summary,
-  keywords: [
-    "Full Stack Developer",
-    "ASP.NET Core",
-    "Angular",
-    "C# Developer",
-    "TypeScript",
-    "Remote Developer",
-    "Software Engineer",
-    "Enterprise Web Applications",
-    "Philippines Developer",
-  ],
+  description: personalInfo.metaDescription,
+  alternates: {
+    canonical: "./",
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: "Blog RSS feed" }],
+    },
+  },
   authors: [{ name: personalInfo.name, url: personalInfo.linkedin }],
   creator: personalInfo.name,
   publisher: personalInfo.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://johnlloydlawas.com",
+    url: SITE_URL,
     siteName: personalInfo.name,
     title: `${personalInfo.name} — ${personalInfo.title}`,
     description: personalInfo.summary,
@@ -92,20 +88,31 @@ export default function RootLayout({
     name: personalInfo.name,
     jobTitle: personalInfo.title,
     description: personalInfo.summary,
-    url: "https://johnlloydlawas.com",
-    sameAs: [personalInfo.linkedin, `mailto:${personalInfo.email}`],
+    url: SITE_URL,
+    image: `${SITE_URL}/opengraph-image`,
+    email: `mailto:${personalInfo.email}`,
+    sameAs: [personalInfo.linkedin, personalInfo.github],
+    worksFor: {
+      "@type": "Organization",
+      name: "Liftoff Company Inc.",
+    },
     address: {
       "@type": "PostalAddress",
       addressLocality: "Cebu City",
-      addressCountry: "Philippines",
+      addressCountry: "PH",
     },
     knowsAbout: [
+      "TypeScript",
+      "React",
+      "Next.js",
       "ASP.NET Core",
       "Angular",
       "C#",
-      "TypeScript",
-      "Full Stack Development",
-      "Enterprise Applications",
+      "SQL Server",
+      "Azure",
+      "Chrome Extensions",
+      "Supabase",
+      "LLM Integration",
     ],
   };
 

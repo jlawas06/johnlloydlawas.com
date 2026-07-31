@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Skills',
-  description: `Technical skills and expertise of ${personalInfo.name}. Overview of full-stack development capabilities including ASP.NET Core, Angular, C#, TypeScript, and SQL Server.`,
+  description: `${personalInfo.name}'s full-stack toolkit: ASP.NET Core, Angular, C#, TypeScript, React, Next.js, SQL Server, Azure, and LLM integration.`,
 };
 
 function levelClass(level: Skill['level']) {

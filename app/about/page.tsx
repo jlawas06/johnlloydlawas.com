@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: `Learn more about ${personalInfo.name}, a Full Stack Developer with ${getTotalExperience()}+ years of experience in enterprise application development. Available for remote work and international collaborations.`,
+  description: `About ${personalInfo.name} — Full Stack Developer, ${getTotalExperience()}+ yrs across enterprise .NET/Angular and AI products. Remote from Cebu City, PH (UTC+8).`,
 };
 
 export default function AboutPage() {

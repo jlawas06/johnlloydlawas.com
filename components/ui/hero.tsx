@@ -2,7 +2,7 @@
 
 import { personalInfo } from '@/data/personal';
 import { cn, getTotalExperience } from '@/lib/utils';
-import { ArrowUpRight, Copy, Check, Download, Linkedin, Mail } from 'lucide-react';
+import { ArrowUpRight, Copy, Check, Download, Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { openCommandPalette } from './command-palette';
@@ -113,6 +113,15 @@ export default function Hero() {
               <Download size={14} />
               résumé.pdf
             </Link>
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 rounded border border-border bg-card px-3.5 py-2 font-mono text-xs text-foreground transition-colors hover:border-border-strong"
+            >
+              <Github size={14} />
+              github
+            </a>
             <a
               href={personalInfo.linkedin}
               target="_blank"

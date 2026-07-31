@@ -1,9 +1,10 @@
 import { getAllPosts } from '@/lib/posts';
 import { getAllProjects } from '@/lib/projects';
+import { SITE_URL } from '@/lib/site';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://johnlloydlawas.com';
+  const baseUrl = SITE_URL;
   
   // Get dynamic routes
   const posts = await getAllPosts();

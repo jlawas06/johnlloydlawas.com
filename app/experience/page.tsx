@@ -1,14 +1,13 @@
 import ExperienceCard from '@/components/ui/experience-card';
 import Section from '@/components/ui/section';
 import { experiences } from '@/data/experience';
-import { personalInfo } from '@/data/personal';
 import { formatDuration, getTotalExperience } from '@/lib/utils';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Experience',
-  description: `Professional experience of ${personalInfo.name}. ${getTotalExperience()}+ years of full-stack development — from enterprise ASP.NET/Angular platforms to AI-integrated Chrome extensions and SaaS products.`,
+  description: `${getTotalExperience()}+ years of full-stack work — enterprise ASP.NET/Angular platforms to AI-integrated Chrome extensions and SaaS at Liftoff Company Inc.`,
 };
 
 export default function ExperiencePage() {

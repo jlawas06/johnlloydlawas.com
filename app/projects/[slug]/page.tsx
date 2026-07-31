@@ -4,6 +4,7 @@ import Tag from '@/components/ui/tag';
 import TerminalWindow from '@/components/ui/terminal-window';
 import { formatMonth } from '@/lib/utils';
 import { getAllProjects, getProjectBySlug } from '@/lib/projects';
+import { SITE_URL } from '@/lib/site';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       title: project.title,
       description: project.description,
       type: 'article',
+      url: `/projects/${project.slug}`,
     },
   };
 }
@@ -52,8 +54,27 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     },
   ].filter(Boolean) as Array<{ label: string; value: string }>;
 
+  const creativeWorkSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: project.description,
+    url: `${SITE_URL}/projects/${project.slug}`,
+    keywords: project.technologies.join(', '),
+    ...(project.startDate ? { dateCreated: project.startDate } : {}),
+    author: {
+      '@type': 'Person',
+      name: 'John Lloyd Lawas',
+      url: SITE_URL,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+      />
       <ReadingProgress />
 
       <header className="border-b border-border">
