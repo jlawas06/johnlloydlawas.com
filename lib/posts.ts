@@ -1,7 +1,7 @@
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
-import { calculateReadingTime, generateExcerpt } from './utils';
+import { calculateReadingTime, generateExcerpt, stripLeadingH1 } from './utils';
 
 export interface BlogPost {
   slug: string;
@@ -45,7 +45,8 @@ export async function getAllPosts(): Promise<BlogPostMeta[]> {
       .map(fileName => {
         const fullPath = path.join(postsDirectory, fileName);
         const fileContents = fs.readFileSync(fullPath, 'utf8');
-        const { data, content } = matter(fileContents);
+        const { data, content: raw } = matter(fileContents);
+        const content = stripLeadingH1(raw);
 
         const slug = fileName.replace(/\.(mdx|md)$/, '');
         const readingTime = calculateReadingTime(content);
@@ -89,7 +90,8 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       fileContents = fs.readFileSync(mdPath, 'utf8');
     }
 
-    const { data, content } = matter(fileContents);
+    const { data, content: raw } = matter(fileContents);
+    const content = stripLeadingH1(raw);
 
     const readingTime = calculateReadingTime(content);
     const excerpt = data.excerpt || generateExcerpt(content);

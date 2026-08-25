@@ -1,12 +1,14 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
+import { Button, Chip, Container, Eyebrow, Rail } from '@/components/ui/primitives';
+import { DeltaRule, ScopeRule } from '@/components/ui/primitives/delta-rule';
 import ReadingProgress from '@/components/ui/reading-progress';
-import Tag from '@/components/ui/tag';
-import TerminalWindow from '@/components/ui/terminal-window';
-import { formatMonth } from '@/lib/utils';
+import { getOutcome } from '@/data/outcomes';
 import { getAllProjects, getProjectBySlug } from '@/lib/projects';
 import { SITE_URL } from '@/lib/site';
+import { cn, formatRange } from '@/lib/utils';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -22,11 +24,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  if (!project) return { title: 'Project Not Found' };
+  if (!project) return { title: 'Case study not found' };
 
   return {
     title: project.title,
     description: project.description,
+    alternates: { canonical: `/projects/${project.slug}` },
     openGraph: {
       title: project.title,
       description: project.description,
@@ -41,18 +44,50 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const meta: Array<{ label: string; value: string }> = [
-    project.client && { label: 'client', value: project.client },
-    project.role && { label: 'role', value: project.role },
-    project.teamSize && { label: 'team', value: `${project.teamSize} people` },
-    project.duration && { label: 'duration', value: project.duration },
+  const outcome = getOutcome(project.slug);
+
+  const railItems = [
+    project.client && { label: 'Client', value: project.client },
+    project.role && { label: 'Role', value: project.role },
+    project.teamSize && { label: 'Team', value: `${project.teamSize} people` },
+    project.duration && { label: 'Duration', value: project.duration },
     project.startDate && {
-      label: 'timeline',
-      value: `${formatMonth(project.startDate)}${
-        project.endDate ? ` → ${formatMonth(project.endDate)}` : ''
-      }`,
+      label: 'Timeline',
+      value: formatRange(project.startDate, project.endDate),
     },
-  ].filter(Boolean) as Array<{ label: string; value: string }>;
+    { label: 'Category', value: project.category },
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  /* No measured delta for this project — show scope facts rather than
+     inventing a figure. */
+  const scopeItems = [
+    project.role && { label: 'Role', value: project.role },
+    project.duration && { label: 'Duration', value: project.duration },
+    {
+      label: 'Stack',
+      value: project.technologies.slice(0, 3).join(', '),
+    },
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  /* Only the populated sections become cells — an absent `challenges` array
+     must not leave a blank column in the grid. */
+  const summaryCells = [
+    project.challenges?.length && {
+      label: 'Problem',
+      items: project.challenges,
+      measured: false,
+    },
+    project.solutions?.length && {
+      label: 'Approach',
+      items: project.solutions,
+      measured: false,
+    },
+    project.results?.length && {
+      label: 'Outcome',
+      items: project.results,
+      measured: true,
+    },
+  ].filter(Boolean) as { label: string; items: string[]; measured: boolean }[];
 
   const creativeWorkSchema = {
     '@context': 'https://schema.org',
@@ -62,11 +97,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     url: `${SITE_URL}/projects/${project.slug}`,
     keywords: project.technologies.join(', '),
     ...(project.startDate ? { dateCreated: project.startDate } : {}),
-    author: {
-      '@type': 'Person',
-      name: 'John Lloyd Lawas',
-      url: SITE_URL,
-    },
+    author: { '@type': 'Person', name: 'John Lloyd Lawas', url: SITE_URL },
   };
 
   return (
@@ -77,120 +108,186 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       />
       <ReadingProgress />
 
-      <header className="border-b border-border">
-        <div className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-          <Link
-            href="/projects"
-            className="group mb-6 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft size={12} className="transition-transform group-hover:-translate-x-0.5" />
-            cd ../projects
-          </Link>
+      <header className="border-b border-rule">
+        <Container>
+          <div className="py-14 sm:py-16">
+            <Link
+              href="/projects"
+              className="group mb-10 inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate transition-colors hover:text-ink"
+            >
+              <ArrowLeft
+                size={12}
+                strokeWidth={2}
+                className="transition-transform group-hover:-translate-x-0.5"
+              />
+              All case studies
+            </Link>
 
-          <div className="mb-4 font-mono text-[11px] text-muted-foreground">
-            <span className="text-accent">$</span> cat ./{project.slug}.md
-          </div>
+            <div className="grid gap-12 lg:grid-cols-[1fr_16rem] lg:gap-16">
+              <div>
+                <Eyebrow className="mb-4">{project.category}</Eyebrow>
+                <h1 className="max-w-[20ch] font-display text-title font-semibold text-ink">
+                  {project.title}
+                </h1>
+                <p className="mt-6 max-w-[58ch] text-lg leading-relaxed text-graphite">
+                  {project.description}
+                </p>
 
-          <h1 className="mb-3 font-mono text-2xl font-medium leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-            {project.title}
-          </h1>
+                {(project.demoUrl || project.githubUrl) && (
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    {project.demoUrl && (
+                      <Button href={project.demoUrl} external variant="primary" size="sm">
+                        <ExternalLink size={13} strokeWidth={1.75} />
+                        View it live
+                      </Button>
+                    )}
+                    {project.githubUrl && (
+                      <Button href={project.githubUrl} external variant="ghost" size="sm">
+                        <Github size={13} strokeWidth={1.75} />
+                        Source
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
 
-          <p className="mb-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            {project.description}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {project.technologies.map((t) => (
-              <Tag key={t}>{t.toLowerCase()}</Tag>
-            ))}
-          </div>
-
-          {(project.demoUrl || project.githubUrl) && (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.demoUrl && (
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded border border-border bg-card px-3 py-1.5 font-mono text-xs text-foreground hover:border-border-strong"
-                >
-                  <ExternalLink size={12} />
-                  live demo
-                </a>
-              )}
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded border border-border bg-card px-3 py-1.5 font-mono text-xs text-foreground hover:border-border-strong"
-                >
-                  <Github size={12} />
-                  source
-                </a>
-              )}
+              <Rail items={railItems} className="lg:border-l lg:border-rule lg:pl-8" />
             </div>
-          )}
-        </div>
+          </div>
+        </Container>
       </header>
 
-      <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        {meta.length > 0 && (
-          <TerminalWindow title="project.yml" className="mb-10" bodyClassName="p-0">
-            <dl className="divide-y divide-border">
-              {meta.map((m) => (
-                <div
-                  key={m.label}
-                  className="grid grid-cols-[120px_1fr] gap-4 px-5 py-2 font-mono text-sm"
-                >
-                  <dt className="text-muted-foreground">{m.label}:</dt>
-                  <dd className="text-foreground">{m.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </TerminalWindow>
-        )}
-
-        {(project.challenges?.length || project.solutions?.length || project.results?.length) && (
-          <div className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {project.challenges && project.challenges.length > 0 && (
-              <ProjectPanel title="problem" items={project.challenges} />
-            )}
-            {project.solutions && project.solutions.length > 0 && (
-              <ProjectPanel title="approach" items={project.solutions} />
-            )}
-            {project.results && project.results.length > 0 && (
-              <ProjectPanel title="impact" items={project.results} />
+      {/* The measured result, or the scope of the engagement. Never both,
+          and never a fabricated figure. */}
+      <section className="border-b border-rule bg-surface">
+        <Container>
+          <div className="py-10 sm:py-12">
+            {outcome ? (
+              <div className="max-w-xl">
+                <DeltaRule delta={outcome} />
+              </div>
+            ) : (
+              <>
+                <Eyebrow className="mb-5">Scope</Eyebrow>
+                <ScopeRule items={scopeItems} />
+              </>
             )}
           </div>
-        )}
+        </Container>
+      </section>
 
-        <BlogPostMDX content={project.content} />
+      {project.images && project.images.length > 0 && (
+        <section className="border-b border-rule">
+          <Container>
+            <div className="space-y-4 py-12 sm:space-y-6 sm:py-14">
+              {project.images.map((src, i) => (
+                <figure key={src} className="border border-rule bg-surface-sunk">
+                  <Image
+                    src={src}
+                    alt={`${project.title} — screen ${i + 1}`}
+                    width={1600}
+                    height={1000}
+                    sizes="(min-width: 1024px) 72rem, 100vw"
+                    priority={i === 0}
+                    className="h-auto w-full"
+                  />
+                </figure>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
-        <div className="mt-16 border-t border-border pt-8 font-mono text-xs">
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft size={12} className="transition-transform group-hover:-translate-x-0.5" />
-            more case studies
-          </Link>
+      {summaryCells.length > 0 && (
+        /* A scannable precis. The narrative below carries the detail, so these
+           use mono labels rather than headings that would collide with the
+           MDX body's own sections. */
+        <section className="border-b border-rule">
+          <Container>
+            <div className="py-12 sm:py-14">
+              <Eyebrow className="mb-5">At a glance</Eyebrow>
+              <div
+                className={cn(
+                  'grid grid-cols-1 gap-px border border-rule bg-rule',
+                  summaryCells.length === 3 && 'md:grid-cols-3',
+                  summaryCells.length === 2 && 'md:grid-cols-2'
+                )}
+              >
+                {summaryCells.map((cell) => (
+                  <SummaryCell key={cell.label} {...cell} />
+                ))}
+              </div>
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <Container>
+        <div className="grid gap-12 py-14 sm:py-16 lg:grid-cols-[1fr_16rem] lg:gap-16">
+          <div className="min-w-0">
+            <BlogPostMDX content={project.content} />
+          </div>
+
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <Eyebrow className="mb-4">Stack</Eyebrow>
+            <div className="flex flex-wrap gap-1.5">
+              {project.technologies.map((t) => (
+                <Chip key={t}>{t}</Chip>
+              ))}
+            </div>
+          </aside>
         </div>
-      </div>
+      </Container>
+
+      <section className="border-t border-rule bg-surface">
+        <Container>
+          <div className="flex flex-wrap items-center justify-between gap-6 py-12">
+            <p className="font-display text-lg font-semibold text-ink">
+              Working on something similar?
+            </p>
+            <div className="flex gap-3">
+              <Button href="/contact" variant="primary" size="sm">
+                Get in touch
+              </Button>
+              <Button href="/projects" variant="ghost" size="sm">
+                More case studies
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }
 
-function ProjectPanel({ title, items }: { title: string; items: string[] }) {
+function SummaryCell({
+  label,
+  items,
+  measured = false,
+}: {
+  label: string;
+  items: string[];
+  measured?: boolean;
+}) {
   return (
-    <div className="rounded border border-border bg-card p-4">
-      <div className="mb-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-        <span className="text-accent">{'//'}</span> {title}
-      </div>
-      <ul className="space-y-1.5 text-sm text-foreground">
-        {items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span className="select-none text-accent">›</span>
+    <div className="bg-surface p-6">
+      <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+        {label}
+      </p>
+      <ul className="mt-4 space-y-3">
+        {items.map((item) => (
+          <li
+            key={item}
+            className="grid grid-cols-[0.875rem_1fr] gap-2 text-[0.9375rem] leading-relaxed text-ink"
+          >
+            <span
+              aria-hidden="true"
+              className={
+                measured
+                  ? 'mt-[0.62em] h-px w-2 bg-measure'
+                  : 'mt-[0.62em] h-px w-2 bg-rule-strong'
+              }
+            />
             <span>{item}</span>
           </li>
         ))}

@@ -1,6 +1,11 @@
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+/* Code is machine output, so it stays dark in both themes — a deliberate
+   inversion against the paper ground rather than a terminal costume. */
+const CODE_BG = '#12171D';
+const CODE_RULE = '#252C34';
+
 interface CodeBlockProps {
   children?: React.ReactNode;
   className?: string;
@@ -19,14 +24,15 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
   }
 
   return (
-    <div className="code-block my-6 overflow-hidden rounded-md border border-[#27272a] bg-[#0a0a0a]">
-      <div className="flex items-center justify-between border-b border-[#27272a] px-4 py-1.5">
-        <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
-          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
-          <span className="h-2 w-2 rounded-full bg-[#3f3f46]" />
-        </div>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[#a1a1aa]">
+    <div
+      className="code-block my-7 overflow-hidden"
+      style={{ background: CODE_BG, border: `1px solid ${CODE_RULE}` }}
+    >
+      <div
+        className="flex items-center justify-between px-4 py-2"
+        style={{ borderBottom: `1px solid ${CODE_RULE}` }}
+      >
+        <span className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#6B7681]">
           {language}
         </span>
       </div>
@@ -36,15 +42,15 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         PreTag="pre"
         customStyle={{
           margin: 0,
-          padding: '1rem',
+          padding: '1.1rem 1.25rem',
           background: 'transparent',
           fontSize: '0.8125rem',
-          lineHeight: '1.6',
+          lineHeight: '1.65',
         }}
         codeTagProps={{
           style: {
             fontFamily:
-              'var(--font-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
+              'var(--font-jetbrains), ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace',
           },
         }}
       >
@@ -56,19 +62,19 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
 
 function Table({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-6 overflow-x-auto rounded border border-border">
+    <div className="my-7 overflow-x-auto border border-rule">
       <table className="w-full border-collapse">{children}</table>
     </div>
   );
 }
 
 function TableHead({ children }: { children: React.ReactNode }) {
-  return <thead className="border-b border-border bg-muted">{children}</thead>;
+  return <thead className="border-b border-rule bg-surface-sunk">{children}</thead>;
 }
 
 function TableHeader({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-2 text-left font-mono text-xs uppercase tracking-widest text-muted-foreground">
+    <th className="px-4 py-2.5 text-left font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
       {children}
     </th>
   );
@@ -79,16 +85,16 @@ function TableBody({ children }: { children: React.ReactNode }) {
 }
 
 function TableRow({ children }: { children: React.ReactNode }) {
-  return <tr className="border-b border-border last:border-b-0">{children}</tr>;
+  return <tr className="border-b border-rule last:border-b-0">{children}</tr>;
 }
 
 function TableCell({ children }: { children: React.ReactNode }) {
-  return <td className="px-4 py-2 text-sm">{children}</td>;
+  return <td className="px-4 py-2.5 font-mono text-[0.8125rem]">{children}</td>;
 }
 
 function Blockquote({ children }: { children: React.ReactNode }) {
   return (
-    <blockquote className="my-6 border-l-2 border-accent bg-muted/40 px-4 py-2 text-muted-foreground">
+    <blockquote className="my-7 border-l-2 border-rule-strong pl-5 italic text-graphite">
       {children}
     </blockquote>
   );
@@ -101,21 +107,22 @@ function Alert({
   children: React.ReactNode;
   type?: 'info' | 'warning' | 'success' | 'error';
 }) {
-  const marker = {
-    info: 'i',
-    warning: '!',
-    success: '✓',
-    error: '×',
+  const label = {
+    info: 'Note',
+    warning: 'Caution',
+    success: 'Worth knowing',
+    error: 'Gotcha',
   }[type];
 
   return (
-    <div className="my-6 rounded border border-border bg-muted p-4">
-      <div className="mb-1 font-mono text-[11px] uppercase tracking-widest text-accent">
-        <span className="mr-2">[{marker}]</span>
-        {type}
+    <aside className="my-7 border-l-2 border-ink bg-surface-sunk px-5 py-4">
+      <p className="mb-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+        {label}
+      </p>
+      <div className="text-[1rem] leading-relaxed text-ink [&>p:last-child]:mb-0">
+        {children}
       </div>
-      <div className="text-sm text-foreground">{children}</div>
-    </div>
+    </aside>
   );
 }
 

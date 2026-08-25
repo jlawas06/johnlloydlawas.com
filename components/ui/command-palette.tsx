@@ -19,6 +19,7 @@ import {
   Rocket,
   Sun,
   User,
+  Search,
   Wrench,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -127,9 +128,9 @@ export default function CommandPalette() {
         { id: 'nav-home', label: 'Home', icon: Home, shortcut: ['g', 'h'], run: () => navigate('/') },
         { id: 'nav-about', label: 'About', icon: User, shortcut: ['g', 'a'], run: () => navigate('/about') },
         { id: 'nav-experience', label: 'Experience', icon: Briefcase, shortcut: ['g', 'e'], run: () => navigate('/experience') },
-        { id: 'nav-skills', label: 'Skills', icon: Code, shortcut: ['g', 's'], run: () => navigate('/skills') },
-        { id: 'nav-projects', label: 'Projects', icon: Rocket, shortcut: ['g', 'p'], run: () => navigate('/projects') },
-        { id: 'nav-blog', label: 'Blog', icon: PenLine, shortcut: ['g', 'b'], run: () => navigate('/blog') },
+        { id: 'nav-skills', label: 'Stack', icon: Code, shortcut: ['g', 's'], run: () => navigate('/skills') },
+        { id: 'nav-projects', label: 'Work', icon: Rocket, shortcut: ['g', 'p'], run: () => navigate('/projects') },
+        { id: 'nav-blog', label: 'Writing', icon: PenLine, shortcut: ['g', 'b'], run: () => navigate('/blog') },
         { id: 'nav-contact', label: 'Contact', icon: Mail, shortcut: ['g', 'c'], run: () => navigate('/contact') },
         { id: 'nav-now', label: 'Now', icon: ArrowRight, shortcut: ['g', 'n'], run: () => navigate('/now') },
         { id: 'nav-uses', label: 'Uses', icon: Wrench, shortcut: ['g', 'u'], run: () => navigate('/uses') },
@@ -204,25 +205,25 @@ export default function CommandPalette() {
         type="button"
         aria-label="Close command palette"
         onClick={() => setOpen(false)}
-        className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/25 backdrop-blur-sm"
       />
       <Command
         label="Command palette"
-        className="relative w-full max-w-xl overflow-hidden rounded-md border border-border bg-card font-mono shadow-2xl"
+        className="relative w-full max-w-xl overflow-hidden border border-rule-strong bg-surface shadow-2xl"
         loop
       >
-        <div className="flex items-center gap-2 border-b border-border px-4">
-          <span className="select-none text-accent">{'>'}</span>
+        <div className="flex items-center gap-2 border-b border-rule px-4">
+          <Search size={15} strokeWidth={1.75} className="shrink-0 text-slate" />
           <Command.Input
             autoFocus
             placeholder="Type a command or search…"
-            className="h-12 w-full bg-transparent text-sm text-foreground outline-none focus:outline-none focus-visible:outline-none placeholder:text-muted-foreground"
+            className="h-12 w-full bg-transparent font-display text-sm text-ink outline-none focus:outline-none focus-visible:outline-none placeholder:text-slate"
           />
           <Kbd>esc</Kbd>
         </div>
         <Command.List className="max-h-[60vh] overflow-y-auto p-2">
-          <Command.Empty className="py-6 text-center text-xs text-muted-foreground">
-            No results.
+          <Command.Empty className="py-8 text-center font-display text-[0.8125rem] text-graphite">
+            Nothing matches that. Try a page name.
           </Command.Empty>
           {groups.map((group) => (
             <Command.Group
@@ -230,7 +231,7 @@ export default function CommandPalette() {
               heading={group.heading}
               className={cn(
                 '[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1',
-                '[&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted-foreground'
+                '[&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[0.625rem] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.14em] [&_[cmdk-group-heading]]:text-slate'
               )}
             >
               {group.items.map((item) => {
@@ -241,8 +242,8 @@ export default function CommandPalette() {
                     value={`${group.heading} ${item.label}`}
                     onSelect={() => item.run()}
                     className={cn(
-                      'flex cursor-pointer items-center gap-3 rounded px-2 py-2 text-sm text-muted-foreground',
-                      'data-[selected=true]:bg-muted data-[selected=true]:text-foreground'
+                      'flex cursor-pointer items-center gap-3 rounded-[3px] px-2.5 py-2 font-display text-[0.8125rem] text-graphite',
+                      'data-[selected=true]:bg-surface-sunk data-[selected=true]:text-ink'
                     )}
                   >
                     <Icon size={14} className="shrink-0" />
@@ -260,7 +261,7 @@ export default function CommandPalette() {
             </Command.Group>
           ))}
         </Command.List>
-        <div className="flex items-center justify-between gap-2 border-t border-border px-3 py-2 text-[10px] text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 border-t border-rule px-3 py-2 font-mono text-[0.625rem] text-slate">
           <span className="flex items-center gap-1">
             <Kbd>↵</Kbd> to select
             <span className="ml-2 flex items-center gap-1">
@@ -268,8 +269,8 @@ export default function CommandPalette() {
               <Kbd>↓</Kbd> to navigate
             </span>
           </span>
-          <span>
-            press <Kbd>g</Kbd> then a letter to jump
+          <span className="hidden sm:inline">
+            <Kbd>g</Kbd> then a letter jumps straight there
           </span>
         </div>
       </Command>

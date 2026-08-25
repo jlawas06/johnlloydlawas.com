@@ -18,7 +18,7 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    name: 'backend',
+    name: 'Backend',
     description: 'Server-side runtimes, frameworks, and APIs.',
     skills: [
       { name: 'C#', slug: 'csharp', years: 6, level: 'core' },
@@ -30,7 +30,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'frontend',
+    name: 'Frontend',
     description: 'Client-side frameworks, languages, and styling.',
     skills: [
       { name: 'Angular', slug: 'angular', years: 5, level: 'core' },
@@ -49,7 +49,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'ai & automation',
+    name: 'AI & automation',
     description: 'LLM integrations and agentic tooling.',
     skills: [
       { name: 'OpenAI API', slug: 'openai-api', years: 2, level: 'proficient' },
@@ -63,7 +63,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'ai-assisted dev',
+    name: 'AI-assisted development',
     description: 'Tools I pair with daily to ship faster.',
     skills: [
       { name: 'Cursor', slug: 'cursor', years: 2, level: 'core' },
@@ -74,7 +74,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'data & baas',
+    name: 'Data & BaaS',
     description: 'Databases and backend-as-a-service platforms.',
     skills: [
       { name: 'SQL Server', slug: 'sql-server', years: 6, level: 'core' },
@@ -85,7 +85,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'cloud & hosting',
+    name: 'Cloud & hosting',
     description: 'Platforms, deployment, and infrastructure.',
     skills: [
       { name: 'Azure', slug: 'azure', years: 2, level: 'proficient' },
@@ -98,7 +98,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'practices',
+    name: 'Practices',
     description: 'Methodology, quality, and collaboration.',
     skills: [
       { name: 'Agile / Scrum', slug: 'agile', years: 6, level: 'proficient' },

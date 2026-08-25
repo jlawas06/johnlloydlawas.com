@@ -22,7 +22,8 @@ export const personalInfo: PersonalInfo = {
   linkedin: "https://www.linkedin.com/in/john-lloyd-lawas/",
   github: "https://github.com/jlawas06",
   metaDescription:
-    "Full Stack Developer, 7+ yrs. ASP.NET Core, Angular, TypeScript, React. Building AI-powered Chrome extensions and SaaS. Remote from Cebu City, PH.",
-  summary: "Full Stack Developer with 7+ years building production software — from enterprise ASP.NET Core/Angular platforms to AI-integrated Chrome extensions and SaaS products. Currently at Liftoff Company Inc., shipping LLM-backed features with Cursor and Claude Code in the daily loop.",
-  bio: "Full-stack engineer who moved from enterprise .NET modernization into AI-integrated product work. I've shipped ERP, aviation logistics, and manufacturing platforms on ASP.NET and Angular, and now build Chrome extensions and SaaS tools wired into the OpenAI, Claude, and Gemini APIs. I care about shipped code, measurable impact, and tools that respect a maintainer's time.",
+    "Full-stack engineer. I modernise slow enterprise systems on ASP.NET Core and Angular, and ship AI-integrated products in React and Next.js. Remote from Cebu City, PH.",
+  summary:
+    "Full-stack engineer who makes aging software fast again and builds AI products that hold up in production. Enterprise ASP.NET Core and Angular platforms through to Chrome extensions and SaaS wired into the OpenAI, Claude and Gemini APIs. Remote from Cebu City, working across every timezone.",
+  bio: "I moved from enterprise .NET modernisation into AI-integrated product work. I've shipped ERP, aviation logistics and manufacturing platforms on ASP.NET and Angular, and now build Chrome extensions and SaaS tools wired into the OpenAI, Claude and Gemini APIs. I care about shipped code, measurable impact, and tools that respect a maintainer's time.",
 };
