@@ -1,52 +1,39 @@
-import Section from '@/components/ui/section';
-import Tag from '@/components/ui/tag';
-import { skillCategories, topSkills, type Skill } from '@/data/skills';
+import { Chip, Container, Eyebrow } from '@/components/ui/primitives';
 import { personalInfo } from '@/data/personal';
+import { skillCategories, topSkills, type Skill } from '@/data/skills';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Skills',
+  title: 'Stack',
   description: `${personalInfo.name}'s full-stack toolkit: ASP.NET Core, Angular, C#, TypeScript, React, Next.js, SQL Server, Azure, and LLM integration.`,
 };
 
-function levelClass(level: Skill['level']) {
-  switch (level) {
-    case 'core':
-      return 'border-accent/40 text-accent bg-accent-muted';
-    case 'proficient':
-      return 'border-border-strong text-foreground bg-card';
-    case 'familiar':
-    default:
-      return 'border-border text-muted-foreground bg-card';
-  }
-}
-
-function SkillLine({ skill }: { skill: Skill }) {
-  const slug = skill.slug ?? skill.name.toLowerCase().replace(/\s+/g, '-');
+/**
+ * This page is entirely data, so mono is the right face throughout — it is the
+ * one place the type rule permits a full monospace layout.
+ */
+function SkillRow({ skill }: { skill: Skill }) {
+  const name = skill.slug ?? skill.name;
   return (
-    <div className="flex items-baseline justify-between gap-3 border-b border-border py-2 last:border-b-0">
-      <div className="flex min-w-0 items-baseline gap-2">
-        <span className={cn('inline-flex h-1.5 w-1.5 shrink-0 rounded-full', {
-          'bg-accent': skill.level === 'core',
-          'bg-foreground': skill.level === 'proficient',
-          'bg-muted-foreground': skill.level === 'familiar',
-        })} />
-        <span className="truncate font-mono text-sm text-foreground">{slug}</span>
-      </div>
-      <div className="flex shrink-0 items-center gap-2 font-mono text-[11px] text-muted-foreground">
-        <span>
-          {skill.years}y
-        </span>
-        <span
-          className={cn(
-            'rounded border px-1.5 py-0.5 text-[10px] uppercase tracking-widest',
-            levelClass(skill.level)
-          )}
-        >
-          {skill.level}
-        </span>
-      </div>
+    <div className="flex items-baseline gap-3 border-b border-rule py-2 last:border-b-0">
+      <span
+        className={cn('h-1.5 w-1.5 shrink-0 translate-y-[-1px] rounded-full', {
+          'bg-ink': skill.level === 'core',
+          'bg-graphite': skill.level === 'proficient',
+          'bg-rule-strong': skill.level === 'familiar',
+        })}
+        aria-hidden="true"
+      />
+      <span className="min-w-0 flex-1 truncate font-mono text-[0.8125rem] text-ink">
+        {name}
+      </span>
+      <span className="shrink-0 font-mono text-[0.6875rem] tabular-nums text-slate">
+        {skill.years}y
+      </span>
+      <span className="w-20 shrink-0 text-right font-mono text-[0.625rem] uppercase tracking-[0.1em] text-slate">
+        {skill.level}
+      </span>
     </div>
   );
 }
@@ -56,59 +43,70 @@ export default function SkillsPage() {
   const core = all.filter((s) => s.level === 'core');
 
   return (
-    <Section
-      label="skills"
-      title="technical stack"
-      description="What I reach for daily, and what I keep sharp for when a project asks."
-    >
-      <div className="mb-10 rounded border border-border bg-card p-5">
-        <div className="mb-3 font-mono text-[11px] text-muted-foreground">
-          <span className="text-accent">$</span> cat{' '}
-          <span className="text-foreground">top-skills.txt</span>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {topSkills.map((s) => (
-            <Tag key={s} variant="accent" className="px-2 py-1 text-xs">
-              {s.toLowerCase()}
-            </Tag>
-          ))}
-        </div>
-        <div className="mt-4 flex flex-wrap items-center gap-3 font-mono text-[11px] text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> core — daily
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-foreground" /> proficient — regular
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" /> familiar — shipped
-          </span>
-          <span className="ml-auto">{all.length} technologies · {core.length} core</span>
-        </div>
-      </div>
+    <>
+      <header className="border-b border-rule">
+        <Container>
+          <div className="max-w-3xl py-16 sm:py-20">
+            <Eyebrow className="mb-4">Stack</Eyebrow>
+            <h1 className="font-display text-title font-semibold text-ink">
+              What I build with
+            </h1>
+            <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-graphite">
+              What I reach for daily, and what I keep sharp for when a project
+              asks. Years are time spent shipping with it, not time spent
+              reading about it.
+            </p>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {skillCategories.map((category) => (
-          <div
-            key={category.name}
-            className="rounded border border-border bg-card p-5"
-          >
-            <header className="mb-3 border-b border-border pb-3">
-              <h3 className="font-mono text-sm text-foreground">
-                <span className="text-accent">{'>'}</span> {category.name}
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {category.description}
-              </p>
-            </header>
-            <div>
-              {category.skills.map((skill) => (
-                <SkillLine key={skill.name} skill={skill} />
+            <div className="mt-9 flex flex-wrap gap-1.5">
+              {topSkills.map((s) => (
+                <Chip key={s} className="border-rule-strong text-ink">
+                  {s}
+                </Chip>
               ))}
             </div>
           </div>
-        ))}
-      </div>
-    </Section>
+        </Container>
+      </header>
+
+      <Container>
+        <div className="py-12 sm:py-14">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-rule pb-5 font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-slate">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-ink" />
+              Core — daily
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-graphite" />
+              Proficient — regular
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-rule-strong" />
+              Familiar — shipped with it
+            </span>
+            <span className="ml-auto normal-case tracking-normal">
+              {all.length} technologies · {core.length} core
+            </span>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
+            {skillCategories.map((category) => (
+              <section key={category.name}>
+                <h2 className="font-display text-[1.0625rem] font-semibold text-ink">
+                  {category.name}
+                </h2>
+                <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-graphite">
+                  {category.description}
+                </p>
+                <div className="mt-4 border-t border-rule">
+                  {category.skills.map((skill) => (
+                    <SkillRow key={skill.name} skill={skill} />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </>
   );
 }

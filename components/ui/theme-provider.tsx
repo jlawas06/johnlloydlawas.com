@@ -13,7 +13,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>('light');
 
   useEffect(() => {
     const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -48,17 +48,16 @@ export function useTheme() {
 }
 
 // Inline script that runs before hydration to avoid a flash of wrong theme.
-// Default is dark; respects saved preference first, then prefers-color-scheme.
+// Saved preference wins; otherwise follow the OS. Light is the default.
 export const themeScript = `
 (function() {
   try {
     var saved = localStorage.getItem('theme');
     var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'dark');
-    if (theme === 'dark') document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   } catch (e) {
-    document.documentElement.classList.add('dark');
+    /* leave the document in its light default */
   }
 })();
 `;

@@ -29,19 +29,28 @@ export function formatDateShort(date: string | Date): string {
 }
 
 /**
- * Format ISO month (`YYYY-MM`) to lowercase `mmm yyyy`.
+ * Format ISO month (`YYYY-MM`) to `Mmm YYYY`. Null/undefined reads as `Present`.
  */
 export function formatMonth(iso: string | null | undefined): string {
-  if (!iso) return 'present';
+  if (!iso) return 'Present';
   const [y, m] = iso.split('-').map(Number);
   const d = new Date(Date.UTC(y, (m ?? 1) - 1, 1));
-  return d
-    .toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      timeZone: 'UTC',
-    })
-    .toLowerCase();
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+  });
+}
+
+/**
+ * Compact date range for card metadata, e.g. `Nov 2019 – Jan 2022`.
+ */
+export function formatRange(
+  start?: string | null,
+  end?: string | null
+): string {
+  if (!start) return '';
+  return `${formatMonth(start)} – ${formatMonth(end)}`;
 }
 
 /**
@@ -94,4 +103,15 @@ export function getTotalExperience(): number {
   const currentDate = new Date();
   const diffTime = Math.abs(currentDate.getTime() - startDate.getTime());
   return Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+}
+
+/**
+ * Drop a leading `# Heading` from MDX body copy.
+ *
+ * Every case study and some posts open by repeating their frontmatter title as
+ * an H1. The page chrome already renders that title, so leaving it in produces
+ * a duplicated heading and two H1s on the same document.
+ */
+export function stripLeadingH1(content: string): string {
+  return content.replace(/^\s*#\s+.*(\r?\n)+/, '');
 }

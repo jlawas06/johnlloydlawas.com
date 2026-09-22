@@ -1,170 +1,178 @@
 'use client';
 
 import { personalInfo } from '@/data/personal';
-import { Check, Copy, Download, ExternalLink, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
-import Link from 'next/link';
+import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
-import Section from './section';
+import { Button, Container, Eyebrow } from './primitives';
+
+/** Written for someone deciding whether to send the email, not for a peer. */
+const goodFits = [
+  'A platform that has slowed to a crawl and needs profiling, not a rewrite.',
+  'A .NET or Angular codebase nobody wants to touch any more.',
+  'An AI feature you want in a real product, with real error handling.',
+  'A Chrome extension, from manifest through to Web Store review.',
+];
+
+const notFits = [
+  'Pure design work, or a marketing site with no application behind it.',
+  'Native iOS or Android — I would only slow you down.',
+  'Anything needing on-site presence outside the Philippines.',
+];
 
 export default function ContactContent() {
-  const [copied, setCopied] = useState<'email' | 'phone' | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const copy = async (value: string, kind: 'email' | 'phone') => {
+  const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(value);
-      setCopied(kind);
-      setTimeout(() => setCopied(null), 1800);
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback handled by anchor
+      window.location.href = `mailto:${personalInfo.email}`;
     }
   };
 
   return (
-    <Section
-      label="contact"
-      title="let's build something"
-      description="Open to remote full-stack roles, consulting, and interesting enterprise projects. The fastest way to reach me is email."
-    >
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div className="rounded border border-border bg-card p-6">
-          <div className="mb-4 font-mono text-[11px] text-muted-foreground">
-            <span className="text-accent">$</span> cat contact.yml
-          </div>
-
-          <dl className="divide-y divide-border font-mono text-sm">
-            <Row
-              label="email"
-              value={personalInfo.email}
-              icon={<Mail size={14} />}
-              action={
-                <>
-                  <button
-                    type="button"
-                    onClick={() => copy(personalInfo.email, 'email')}
-                    className="inline-flex items-center gap-1 rounded border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
-                  >
-                    {copied === 'email' ? <Check size={12} className="text-accent" /> : <Copy size={12} />}
-                    {copied === 'email' ? 'copied' : 'copy'}
-                  </button>
-                  <a
-                    href={`mailto:${personalInfo.email}`}
-                    className="inline-flex items-center gap-1 rounded border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
-                  >
-                    <ExternalLink size={12} />
-                    mail
-                  </a>
-                </>
-              }
-            />
-            <Row
-              label="phone"
-              value={personalInfo.phone}
-              icon={<Phone size={14} />}
-              action={
-                <>
-                  <button
-                    type="button"
-                    onClick={() => copy(personalInfo.phone, 'phone')}
-                    className="inline-flex items-center gap-1 rounded border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
-                  >
-                    {copied === 'phone' ? <Check size={12} className="text-accent" /> : <Copy size={12} />}
-                    {copied === 'phone' ? 'copied' : 'copy'}
-                  </button>
-                </>
-              }
-            />
-            <Row
-              label="linkedin"
-              value={personalInfo.linkedin.replace('https://www.', '')}
-              icon={<Linkedin size={14} />}
-              action={
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
-                >
-                  <ExternalLink size={12} />
-                  open
-                </a>
-              }
-            />
-            <Row
-              label="location"
-              value="Cebu City, Philippines · UTC+8"
-              icon={<MapPin size={14} />}
-            />
-            <Row
-              label="résumé"
-              value="john-lloyd-lawas-resume.pdf"
-              icon={<Download size={14} />}
-              action={
-                <Link
-                  href="/resume/john-lloyd-lawas-resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
-                >
-                  <Download size={12} />
-                  download
-                </Link>
-              }
-            />
-          </dl>
-        </div>
-
-        <aside className="space-y-4">
-          <div className="rounded border border-border bg-card p-4 font-mono text-xs">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-accent" />
-              <span className="text-foreground">available</span>
-            </div>
-            <p className="text-muted-foreground">
-              Open to remote roles, consulting, and freelance engagements — especially
-              modernization / greenfield .NET + Angular work.
+    <>
+      <header className="border-b border-rule">
+        <Container>
+          <div className="max-w-3xl py-16 sm:py-20">
+            <Eyebrow className="mb-4">Contact</Eyebrow>
+            <h1 className="font-display text-title font-semibold text-ink">
+              Tell me what is slow.
+            </h1>
+            <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-graphite">
+              Email is the fastest way to reach me. Include what is broken or
+              slow, roughly what it is costing you, and when it needs to be
+              fixed. That is enough for me to tell you whether I can help.
             </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Button href={`mailto:${personalInfo.email}`} external variant="primary">
+                Email me
+              </Button>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="group inline-flex h-10 items-center gap-2 border border-rule-strong px-3.5 font-mono text-[0.75rem] text-ink transition-colors hover:border-ink"
+              >
+                {copied ? (
+                  <Check size={13} strokeWidth={2} className="text-ink" />
+                ) : (
+                  <Copy size={13} strokeWidth={1.75} />
+                )}
+                {copied ? 'Copied to clipboard' : personalInfo.email}
+              </button>
+            </div>
+          </div>
+        </Container>
+      </header>
+
+      <Container>
+        <div className="py-14 sm:py-16">
+          <dl className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+            <div className="bg-surface p-6">
+              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+                Response time
+              </dt>
+              <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
+                Within one working day, every time. If I cannot take the work I
+                will say so in that reply rather than leave you waiting.
+              </dd>
+            </div>
+            <div className="bg-surface p-6">
+              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+                Working hours
+              </dt>
+              <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
+                UTC+8, Cebu City. Mornings overlap Australia and New Zealand;
+                evenings reach the US West Coast. Async by default.
+              </dd>
+            </div>
+            <div className="bg-surface p-6">
+              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+                Availability
+              </dt>
+              <dd className="mt-2 flex items-start gap-2 text-[0.9375rem] leading-relaxed text-ink">
+                <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-measure" />
+                <span>
+                  Taking on new projects and open to full-time remote roles.
+                </span>
+              </dd>
+            </div>
+          </dl>
+
+          <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-16">
+            <section>
+              <h2 className="font-display text-heading font-semibold text-ink">
+                Good fit
+              </h2>
+              <ul className="mt-5 space-y-3 border-t border-rule pt-5">
+                {goodFits.map((item) => (
+                  <li
+                    key={item}
+                    className="grid grid-cols-[1.25rem_1fr] gap-2 text-[1.0625rem] leading-relaxed text-ink"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.6em] h-px w-3 bg-ink"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="font-display text-heading font-semibold text-ink">
+                Not my strength
+              </h2>
+              <ul className="mt-5 space-y-3 border-t border-rule pt-5">
+                {notFits.map((item) => (
+                  <li
+                    key={item}
+                    className="grid grid-cols-[1.25rem_1fr] gap-2 text-[1.0625rem] leading-relaxed text-graphite"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.6em] h-px w-3 bg-rule-strong"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
 
-          <div className="rounded border border-border bg-card p-4 font-mono text-xs">
-            <div className="mb-1 text-muted-foreground">response time</div>
-            <div className="text-foreground">typically within 24 hours (UTC+8)</div>
+          <div className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-8 font-mono text-[0.75rem]">
+            <a
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            >
+              GitHub
+            </a>
+            <a
+              href="/resume/john-lloyd-lawas-resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+            >
+              Résumé (PDF)
+            </a>
+            <span className="text-slate">Cebu City, Philippines · UTC+8</span>
           </div>
-
-          <div className="rounded border border-border bg-card p-4 font-mono text-xs">
-            <div className="mb-2 text-muted-foreground">best for</div>
-            <ul className="space-y-1 text-foreground">
-              <li>› ai / llm integrations</li>
-              <li>› chrome extensions + saas</li>
-              <li>› enterprise web apps</li>
-              <li>› legacy .net modernization</li>
-              <li>› api + integration work</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </Section>
-  );
-}
-
-function Row({
-  label,
-  value,
-  icon,
-  action,
-}: {
-  label: string;
-  value: string;
-  icon?: React.ReactNode;
-  action?: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-wrap items-center gap-3 py-3">
-      <div className="flex w-24 items-center gap-2 text-muted-foreground">
-        {icon && <span className="text-subtle">{icon}</span>}
-        <span>{label}:</span>
-      </div>
-      <div className="min-w-0 flex-1 truncate text-foreground">{value}</div>
-      {action && <div className="flex shrink-0 items-center gap-1">{action}</div>}
-    </div>
+        </div>
+      </Container>
+    </>
   );
 }

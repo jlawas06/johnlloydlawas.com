@@ -3,84 +3,138 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================
+   INSTRUMENT — design tokens
+
+   One rule governs this palette: monospace and saturated colour
+   are reserved for measurement. Everything else is ink on paper.
+   `--measure` is the only saturated value in the system and must
+   only ever mark a figure that was actually measured.
+   ============================================================ */
+
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0a;
-  --muted: #f4f4f5;
-  --muted-foreground: #52525b;
-  --subtle: #71717a;
-  --border: #e4e4e7;
-  --border-strong: #d4d4d8;
-  --card: #ffffff;
-  --accent: #15803d;
-  --accent-foreground: #ffffff;
-  --accent-muted: #dcfce7;
-  --ring: #22c55e;
-  --selection: #bbf7d0;
+  /* Ground */
+  --paper: #ebedef;
+  --surface: #ffffff;
+  --surface-sunk: #e3e6ea;
+
+  /* Ink — a three-step value ramp. Every step clears WCAG AA on --paper,
+     because the tertiary step carries eyebrows, captions and rail labels. */
+  --ink: #14181d;      /* 15.2:1 */
+  --graphite: #434c56; /* 7.4:1  */
+  --slate: #616b76;    /* 4.6:1  */
+
+  /* The "before" state in a measurement. Deliberately not --slate: it must
+     stay light enough to separate from --measure by value, not hue alone. */
+  --baseline: #8a939e;
+
+  /* Rules */
+  --rule: #d3d8de;
+  --rule-strong: #b9c1ca;
+
+  /* The one colour */
+  --measure: #0b6e52;
+  --measure-soft: #d8eae3;
+  --measure-ink: #ffffff;
+
+  --selection: #cfe6dd;
+
+  /* Radius — near-square, this is drafting stock not a product UI */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+
+  /* Measure (line length) */
+  --measure-prose: 68ch;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --subtle: #71717a;
-  --border: #27272a;
-  --border-strong: #3f3f46;
-  --card: #0f0f10;
-  --accent: #7ee787;
-  --accent-foreground: #0a0a0a;
-  --accent-muted: #132e1a;
-  --ring: #7ee787;
-  --selection: #1f6b3a;
+  --paper: #101418;
+  --surface: #161b21;
+  --surface-sunk: #1d242b;
+
+  --ink: #e7eaed;      /* 15.3:1 */
+  --graphite: #98a2ae; /* 7.2:1  */
+  --slate: #7c8794;    /* 5.1:1  */
+
+  --baseline: #6b7681;
+
+  --rule: #262d35;
+  --rule-strong: #384049;
+
+  --measure: #4ec9a5;
+  --measure-soft: #12312a;
+  --measure-ink: #06120e;
+
+  --selection: #174036;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-subtle: var(--subtle);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-card: var(--card);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent-muted: var(--accent-muted);
-  --color-ring: var(--ring);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-ink: var(--ink);
+  --color-graphite: var(--graphite);
+  --color-slate: var(--slate);
+  --color-baseline: var(--baseline);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-measure: var(--measure);
+  --color-measure-soft: var(--measure-soft);
+  --color-measure-ink: var(--measure-ink);
 
-  --font-sans: var(--font-mono);
-  --font-mono: var(--font-mono);
-  --font-prose: var(--font-inter);
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale — the display sizes the old site never had */
+  --text-display: clamp(2.4rem, 1.15rem + 5vw, 4.65rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.035em;
+
+  --text-title: clamp(1.75rem, 1.1rem + 2.4vw, 3rem);
+  --text-title--line-height: 1.05;
+  --text-title--letter-spacing: -0.025em;
+
+  --text-heading: clamp(1.3rem, 1.05rem + 0.9vw, 1.75rem);
+  --text-heading--line-height: 1.15;
+  --text-heading--letter-spacing: -0.015em;
 }
 
 * {
-  border-color: var(--border);
+  border-color: var(--rule);
 }
 
 html {
-  color-scheme: dark;
-}
-
-html:not(.dark) {
   color-scheme: light;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-feature-settings: "ss02", "cv11";
+  background: var(--paper);
+  color: var(--ink);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
   background: var(--selection);
-  color: var(--foreground);
+  color: var(--ink);
 }
 
-/* Custom scrollbar — thin, monochrome */
+/* Display face: Archivo carries a width axis. Running it slightly
+   expanded is what gives headings their technical-journal cut. */
+.font-display {
+  font-variation-settings: "wdth" 112;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -88,172 +142,175 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 0;
+  background: var(--rule-strong);
+  border: 3px solid var(--paper);
+  border-radius: 999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-strong);
-}
-
-/* Focus ring — in base layer so Tailwind utility classes can override per-element */
 @layer base {
   *:focus-visible {
-    outline: 2px solid var(--ring);
+    outline: 2px solid var(--measure);
     outline-offset: 2px;
     border-radius: 2px;
   }
 }
 
-/* Grid background utility */
-.grid-bg {
-  background-image:
-    linear-gradient(to right, var(--border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at top, black 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at top, black 0%, transparent 70%);
+/* ============================================================
+   Signature: the delta rule
+   ============================================================ */
+
+@keyframes delta-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
-/* Subtle noise backdrop for terminal windows */
-.noise {
-  position: relative;
-}
-.noise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
-  background-size: 24px 24px;
-  opacity: 0.25;
-  mask-image: linear-gradient(to bottom, black, transparent 50%);
-  -webkit-mask-image: linear-gradient(to bottom, black, transparent 50%);
+/* Bar length is the inline width; the animation only draws it in. With
+   reduced motion the animation is dropped and the bar renders at full
+   length immediately. */
+.delta-track {
+  transform-origin: left center;
 }
 
-/* Caret animation (typing prompt) */
-@keyframes caret-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+/* The baseline is hatched, the measured result is solid.
+   Red-green deficiency collapses these two greens to the same value, so the
+   difference between "before" and "after" cannot rest on colour. Hatching is
+   a shape cue no colour vision deficiency defeats — and it borrows the
+   convention engineering drawings already use for a reference region. */
+.delta-track--baseline {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--baseline) 0 1.5px,
+    transparent 1.5px 5px
+  );
 }
 
-.caret {
-  display: inline-block;
-  width: 0.55em;
-  height: 1em;
-  background: var(--accent);
-  vertical-align: text-bottom;
-  margin-left: 0.15em;
-  animation: caret-blink 1s step-end infinite;
+.delta-track--measured {
+  background: var(--measure);
 }
 
-/* Motion utilities (respect prefers-reduced-motion) */
-@keyframes fade-rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.delta-track[data-animate="true"] {
+  animation: delta-draw 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.reveal {
-  animation: fade-rise 0.5s ease-out both;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .caret {
+  .rise,
+  .delta-track[data-animate="true"] {
     animation: none !important;
   }
-  * {
+  *,
+  *::before,
+  *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Hairline utility — always 1px regardless of DPI */
-.hairline {
-  border: 1px solid var(--border);
-}
+/* ============================================================
+   Prose — long-form body copy, set in the serif
+   ============================================================ */
 
-/* Prose (long-form blog) uses Inter, everything else mono */
 .prose {
-  font-family: var(--font-prose), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--foreground);
-  max-width: none;
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink);
+  max-width: var(--measure-prose);
 }
 
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4 {
-  font-family: var(--font-mono);
-  color: var(--foreground);
-  letter-spacing: -0.01em;
+  font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "wdth" 112;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
 }
 
 .prose h2 {
-  margin-top: 2.5rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-top: 2.75rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
 }
 
 .prose h3 {
+  font-size: 1.175rem;
   margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 .prose p {
-  color: var(--foreground);
+  color: var(--ink);
   margin-top: 0;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
 }
 
 .prose a {
-  color: var(--accent);
+  color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklab, var(--accent) 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+  transition: text-decoration-color 150ms;
 }
 
 .prose a:hover {
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--ink);
 }
 
 .prose strong {
-  color: var(--foreground);
   font-weight: 600;
+  color: var(--ink);
 }
 
 .prose code {
-  font-family: var(--font-mono);
-  background: var(--muted);
-  padding: 0.15rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.85em;
-  border: 1px solid var(--border);
-  color: var(--foreground);
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  background: var(--surface-sunk);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.82em;
+  color: var(--ink);
 }
 
 .prose pre {
-  background: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
   padding: 0;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .prose pre code {
   background: transparent;
   border: none;
   padding: 0;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   color: inherit;
 }
 
-/* Code blocks rendered by our MDX component are always dark (terminal style),
-   so neutralize prose backgrounds/borders/colors that would bleed in. */
 .prose .code-block,
 .prose .code-block * {
   color: inherit;
@@ -270,90 +327,111 @@ body {
 }
 
 .prose blockquote {
-  border-left: 2px solid var(--accent);
-  padding: 0.5rem 0 0.5rem 1.25rem;
-  margin: 1.5rem 0;
-  color: var(--muted-foreground);
-  font-style: normal;
+  border-left: 2px solid var(--rule-strong);
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  margin: 1.75rem 0;
+  color: var(--graphite);
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: 1.35rem;
+  padding-left: 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.4rem;
 }
 
 .prose ul > li::marker,
 .prose ol > li::marker {
-  color: var(--accent);
+  color: var(--slate);
 }
 
 .prose hr {
-  border-color: var(--border);
-  margin: 2.5rem 0;
+  border-color: var(--rule);
+  margin: 2.75rem 0;
 }
 
 .prose table {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-family: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.8125rem;
+  width: 100%;
 }
 
 .prose th,
 .prose td {
-  border-color: var(--border);
+  border-color: var(--rule);
   padding: 0.5rem 0.75rem;
+  text-align: left;
 }
 
-/* n8n chat widget — bind to project theme so it follows light/dark */
+.prose th {
+  font-weight: 500;
+  color: var(--graphite);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+}
+
+/* ============================================================
+   n8n chat widget — bound to the Instrument tokens
+   ============================================================ */
+
 :root {
-  --chat--color-primary: var(--accent);
-  --chat--color-primary-shade-50: color-mix(in oklab, var(--accent) 90%, black);
-  --chat--color-primary-shade-100: color-mix(in oklab, var(--accent) 80%, black);
-  --chat--color-secondary: var(--accent);
-  --chat--color-secondary-shade-50: color-mix(in oklab, var(--accent) 90%, black);
-  --chat--color-white: var(--card);
-  --chat--color-light: var(--muted);
-  --chat--color-light-shade-50: var(--border);
-  --chat--color-light-shade-100: var(--border-strong);
-  --chat--color-medium: var(--border-strong);
-  --chat--color-dark: var(--foreground);
-  --chat--color-disabled: var(--subtle);
-  --chat--color-typing: var(--muted-foreground);
+  --chat--color-primary: var(--ink);
+  --chat--color-primary-shade-50: color-mix(in oklab, var(--ink) 88%, white);
+  --chat--color-primary-shade-100: color-mix(in oklab, var(--ink) 76%, white);
+  --chat--color-secondary: var(--measure);
+  --chat--color-secondary-shade-50: color-mix(in oklab, var(--measure) 88%, black);
+  --chat--color-white: var(--surface);
+  --chat--color-light: var(--surface-sunk);
+  --chat--color-light-shade-50: var(--rule);
+  --chat--color-light-shade-100: var(--rule-strong);
+  --chat--color-medium: var(--rule-strong);
+  --chat--color-dark: var(--ink);
+  --chat--color-disabled: var(--slate);
+  --chat--color-typing: var(--graphite);
 
-  --chat--toggle--background: var(--accent);
-  --chat--toggle--hover--background: color-mix(in oklab, var(--accent) 85%, black);
-  --chat--toggle--active--background: color-mix(in oklab, var(--accent) 75%, black);
-  --chat--toggle--color: var(--accent-foreground);
+  --chat--toggle--background: var(--ink);
+  --chat--toggle--hover--background: color-mix(in oklab, var(--ink) 85%, white);
+  --chat--toggle--active--background: color-mix(in oklab, var(--ink) 75%, white);
+  --chat--toggle--color: var(--paper);
 
-  --chat--header--background: var(--accent);
-  --chat--header--color: var(--accent-foreground);
-  --chat--header-border-bottom: 1px solid color-mix(in oklab, var(--accent) 70%, black);
-  --chat--heading--font-size: 1rem;
+  --chat--header--background: var(--surface);
+  --chat--header--color: var(--ink);
+  --chat--header-border-bottom: 1px solid var(--rule);
+  --chat--heading--font-size: 0.9375rem;
   --chat--subtitle--font-size: 0.8125rem;
 
-  --chat--body--background: var(--card);
+  --chat--body--background: var(--paper);
 
   --chat--message--font-size: 0.875rem;
-  --chat--message--padding: 0.75rem 1rem;
-  --chat--message--border-radius: 12px;
-  --chat--message-line-height: 1.5;
-  --chat--message--bot--background: var(--muted);
-  --chat--message--bot--color: var(--foreground);
-  --chat--message--bot--border: 1px solid var(--border);
-  --chat--message--user--background: var(--accent);
-  --chat--message--user--color: var(--accent-foreground);
-  --chat--message--user--border: 1px solid var(--accent);
+  --chat--message--padding: 0.7rem 0.9rem;
+  --chat--message--border-radius: 6px;
+  --chat--message-line-height: 1.55;
+  --chat--message--bot--background: var(--surface);
+  --chat--message--bot--color: var(--ink);
+  --chat--message--bot--border: 1px solid var(--rule);
+  --chat--message--user--background: var(--ink);
+  --chat--message--user--color: var(--paper);
+  --chat--message--user--border: 1px solid var(--ink);
 
   --chat--textarea--height: 50px;
-  --chat--input--background: var(--card);
-  --chat--input--text-color: var(--foreground);
-  --chat--input--border: 1px solid var(--border);
-  --chat--input--border-active: 1px solid var(--accent);
+  --chat--input--background: var(--surface);
+  --chat--input--text-color: var(--ink);
+  --chat--input--border: 1px solid var(--rule);
+  --chat--input--border-active: 1px solid var(--ink);
   --chat--input--send--button--background: transparent;
-  --chat--input--send--button--color: var(--accent);
-  --chat--input--send--button--background-hover: var(--muted);
-  --chat--input--send--button--color-hover: var(--accent);
+  --chat--input--send--button--color: var(--ink);
+  --chat--input--send--button--background-hover: var(--surface-sunk);
+  --chat--input--send--button--color-hover: var(--ink);
 }
 
 .dark {
-  --chat--color-primary-shade-50: color-mix(in oklab, var(--accent) 85%, white);
-  --chat--color-primary-shade-100: color-mix(in oklab, var(--accent) 70%, white);
-  --chat--color-secondary-shade-50: color-mix(in oklab, var(--accent) 85%, white);
-  --chat--toggle--hover--background: color-mix(in oklab, var(--accent) 85%, white);
-  --chat--toggle--active--background: color-mix(in oklab, var(--accent) 70%, white);
-  --chat--header-border-bottom: 1px solid color-mix(in oklab, var(--accent) 60%, black);
+  --chat--color-primary-shade-50: color-mix(in oklab, var(--ink) 88%, black);
+  --chat--color-primary-shade-100: color-mix(in oklab, var(--ink) 76%, black);
+  --chat--toggle--hover--background: color-mix(in oklab, var(--ink) 85%, black);
+  --chat--toggle--active--background: color-mix(in oklab, var(--ink) 72%, black);
 }

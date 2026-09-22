@@ -10,7 +10,7 @@ Cebu City, Philippines
 
 ## Summary
 
-Full Stack Developer with 7+ years building production software — from enterprise ASP.NET Core and Angular platforms (ERP, aviation logistics, manufacturing) to AI-integrated Chrome extensions and SaaS products. Currently full-time at Liftoff Company Inc., shipping LLM-backed features with Cursor and Claude Code in the daily loop. Strong on legacy modernization, async collaboration across time zones, and turning tangled business logic into maintainable code.
+Full Stack Developer with 8+ years building production software — from enterprise ASP.NET Core and Angular platforms (ERP, aviation logistics, manufacturing) to AI-integrated Chrome extensions and SaaS products. Currently full-time at Liftoff Company Inc., shipping LLM-backed features with Cursor and Claude Code in the daily loop. Strong on legacy modernization, async collaboration across time zones, and turning tangled business logic into maintainable code.
 
 ---
 

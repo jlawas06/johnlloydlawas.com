@@ -1,80 +1,108 @@
 import { type Experience } from '@/data/experience';
+import { getOutcome } from '@/data/outcomes';
 import { cn, formatDuration, formatMonth } from '@/lib/utils';
-import Tag from './tag';
+import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { Chip } from './primitives';
 
-interface ExperienceCardProps {
+/**
+ * Maps a role to its case study. The full account of the work lives in the
+ * case study; this timeline carries only the employment record, so the two
+ * pages never repeat each other.
+ */
+const CASE_STUDY_BY_COMPANY: Record<string, string> = {
+  'Nowcom Global Services': 'nowcom-global-services',
+  'Yondu Inc.': 'yondu-inc',
+  'OSL International Inc.': 'osl-international',
+  'Sense Software Solutions': 'sense-software-solutions',
+  'Lear Corporation': 'lear-corporation',
+};
+
+interface TimelineRowProps {
   experience: Experience;
+  /** Compact rows drop the summary line — used on the home page. */
   compact?: boolean;
   className?: string;
 }
 
-export default function ExperienceCard({
+export default function TimelineRow({
   experience,
   compact = false,
   className,
-}: ExperienceCardProps) {
+}: TimelineRowProps) {
   const isCurrent = experience.endDate === null;
-  const id = experience.company
-    .toLowerCase()
-    .replace(/[^\w\s]/g, '')
-    .replace(/\s+/g, '-');
+  const slug = CASE_STUDY_BY_COMPANY[experience.company];
+  const outcome = slug ? getOutcome(slug) : undefined;
 
-  return (
-    <article
-      className={cn(
-        'group relative rounded border border-border bg-card p-5 transition-colors hover:border-border-strong',
-        className
-      )}
-    >
-      <header className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <div className="min-w-0">
-          <div className="font-mono text-[11px] text-muted-foreground">
-            <span className="text-accent">$</span>{' '}
-            <span className="text-foreground">cd</span>{' '}
-            <span>
-              ~/work/<span className="text-foreground">{id}</span>
-            </span>
-          </div>
-          <h3 className="mt-1 truncate font-mono text-base font-medium text-foreground">
-            {experience.position}{' '}
-            <span className="text-muted-foreground">@ {experience.company}</span>
-          </h3>
+  const body = (
+    <>
+      <div className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1.5">
+        <div>
+          {formatMonth(experience.startDate)} – {formatMonth(experience.endDate)}
         </div>
-        <div className="flex shrink-0 items-center gap-2 font-mono text-[11px] text-muted-foreground">
-          <span>
-            {formatMonth(experience.startDate)} → {formatMonth(experience.endDate)}
-          </span>
-          <span className="text-border-strong">·</span>
+        <div className="mt-1 flex items-center gap-1.5 normal-case tracking-normal">
           <span>{formatDuration(experience.startDate, experience.endDate)}</span>
           {isCurrent && (
-            <span className="inline-flex items-center gap-1 rounded-sm border border-accent/30 bg-accent-muted px-1.5 py-0.5 text-[10px] text-accent">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-              current
-            </span>
+            <>
+              <span aria-hidden="true">·</span>
+              <span className="inline-flex items-center gap-1.5 text-measure">
+                <span className="h-1.5 w-1.5 rounded-full bg-measure" />
+                Current
+              </span>
+            </>
           )}
         </div>
-      </header>
-
-      <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
-        {experience.description}
-      </p>
-
-      {!compact && experience.responsibilities.length > 0 && (
-        <ul className="mb-4 space-y-1.5 text-sm text-muted-foreground">
-          {experience.responsibilities.slice(0, 3).map((r, i) => (
-            <li key={i} className="flex gap-2">
-              <span className="mt-0.5 select-none text-accent">›</span>
-              <span>{r}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="flex flex-wrap gap-1">
-        {experience.technologies.map((tech) => (
-          <Tag key={tech}>{tech.toLowerCase()}</Tag>
-        ))}
       </div>
-    </article>
+
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <h3 className="font-display text-[1.0625rem] font-semibold leading-snug text-ink">
+            {experience.position}
+          </h3>
+          <span className="font-display text-[0.9375rem] text-graphite">
+            {experience.company}
+          </span>
+          {slug && (
+            <ArrowUpRight
+              size={14}
+              strokeWidth={1.75}
+              className="shrink-0 text-slate transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
+            />
+          )}
+        </div>
+
+        {!compact && (
+          <p className="mt-2 max-w-[62ch] text-[0.9375rem] leading-relaxed text-graphite">
+            {experience.description}
+          </p>
+        )}
+
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          {experience.technologies.slice(0, compact ? 5 : 8).map((tech) => (
+            <Chip key={tech}>{tech}</Chip>
+          ))}
+        </div>
+
+        {outcome && (
+          <p className="mt-3 font-mono text-[0.8125rem] text-measure tabular-nums">
+            {outcome.figure}{' '}
+            <span className="text-slate">{outcome.label.toLowerCase()}</span>
+          </p>
+        )}
+      </div>
+    </>
   );
+
+  const layout =
+    'grid grid-cols-1 gap-x-8 gap-y-3 border-b border-rule py-7 last:border-b-0 sm:grid-cols-[9rem_1fr]';
+
+  if (slug) {
+    return (
+      <Link href={`/projects/${slug}`} className={cn('group', layout, className)}>
+        {body}
+      </Link>
+    );
+  }
+
+  return <article className={cn(layout, className)}>{body}</article>;
 }

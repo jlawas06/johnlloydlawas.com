@@ -1,7 +1,7 @@
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
-import { calculateReadingTime, generateExcerpt } from './utils';
+import { calculateReadingTime, generateExcerpt, stripLeadingH1 } from './utils';
 
 export interface Project {
   slug: string;
@@ -64,7 +64,8 @@ export async function getAllProjects(): Promise<ProjectMeta[]> {
       .map(fileName => {
         const fullPath = path.join(projectsDirectory, fileName);
         const fileContents = fs.readFileSync(fullPath, 'utf8');
-        const { data, content } = matter(fileContents);
+        const { data, content: raw } = matter(fileContents);
+        const content = stripLeadingH1(raw);
 
         const slug = fileName.replace(/\.(mdx|md)$/, '');
         const readingTime = calculateReadingTime(content);
@@ -121,7 +122,8 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       fileContents = fs.readFileSync(mdPath, 'utf8');
     }
 
-    const { data, content } = matter(fileContents);
+    const { data, content: raw } = matter(fileContents);
+    const content = stripLeadingH1(raw);
 
     const readingTime = calculateReadingTime(content);
     const description = data.description || generateExcerpt(content);

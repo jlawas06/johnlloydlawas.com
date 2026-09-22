@@ -4,8 +4,8 @@ import { getAllPosts, getAllTags } from '@/lib/posts';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: `Writing by ${personalInfo.name} on ASP.NET Core, Angular, Cursor, Claude Code, and shipping production software with LLM tooling.`,
+  title: 'Writing',
+  description: `Writing by ${personalInfo.name} on modernising enterprise .NET and Angular systems, and on shipping production software with Cursor, Claude Code and the LLM APIs.`,
 };
 
 export default async function BlogPage() {

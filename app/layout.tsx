@@ -6,25 +6,35 @@ import { ThemeProvider, themeScript } from "@/components/ui/theme-provider";
 import { personalInfo } from "@/data/personal";
 import { SITE_URL } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+/* Display: expanded grotesque, used for headings and UI chrome. */
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-archivo",
+  axes: ["wdth"],
   display: "swap",
 });
 
+/* Body: editorial serif, used for prose and descriptions. */
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
+/* Data: reserved for figures, dates, labels and code. Never body copy. */
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#ebedef" },
+    { media: "(prefers-color-scheme: dark)", color: "#101418" },
   ],
 };
 
@@ -144,13 +154,13 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-mono antialiased bg-background text-foreground`}
+        className={`${archivo.variable} ${newsreader.variable} ${jetbrainsMono.variable} bg-paper font-body text-ink antialiased`}
       >
         <ThemeProvider>
           <CommandPalette />
           <div className="relative flex min-h-screen flex-col">
             <Navigation />
-            <main className="flex-1 pt-14">{children}</main>
+            <main className="flex-1 pt-16">{children}</main>
             <Footer />
           </div>
           <N8nChat />

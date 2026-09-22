@@ -1,24 +1,33 @@
 import { personalInfo } from '@/data/personal';
-import { Github, Linkedin, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { Container, Eyebrow } from './primitives';
 
 const columns = [
   {
-    label: 'site',
+    label: 'Work',
     links: [
-      { href: '/', label: 'home' },
-      { href: '/about', label: 'about' },
-      { href: '/experience', label: 'experience' },
-      { href: '/skills', label: 'skills' },
+      { href: '/projects', label: 'Case studies' },
+      { href: '/experience', label: 'Experience' },
+      { href: '/skills', label: 'Stack' },
+      { href: '/resume/john-lloyd-lawas-resume.pdf', label: 'Résumé (PDF)', external: true },
     ],
   },
   {
-    label: 'work',
+    label: 'More',
     links: [
-      { href: '/projects', label: 'projects' },
-      { href: '/blog', label: 'blog' },
-      { href: '/uses', label: 'uses' },
-      { href: '/now', label: 'now' },
+      { href: '/about', label: 'About' },
+      { href: '/blog', label: 'Writing' },
+      { href: '/now', label: 'Now' },
+      { href: '/uses', label: 'Uses' },
+    ],
+  },
+  {
+    label: 'Elsewhere',
+    links: [
+      { href: `mailto:${personalInfo.email}`, label: 'Email', external: true },
+      { href: personalInfo.linkedin, label: 'LinkedIn', external: true },
+      { href: personalInfo.github, label: 'GitHub', external: true },
+      { href: '/feed.xml', label: 'RSS', external: true },
     ],
   },
 ];
@@ -27,92 +36,57 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-border bg-background">
-      <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <div className="mb-3 font-mono text-sm text-foreground">
-              <span className="text-accent">~/</span>johnlloyd
+    <footer className="border-t border-rule">
+      <Container>
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="col-span-2 lg:col-span-1">
+            <div className="font-display text-[0.9375rem] font-semibold tracking-tight text-ink">
+              {personalInfo.name}
             </div>
-            <p className="max-w-xs text-xs text-muted-foreground">
-              Full-stack developer. ASP.NET Core + Angular. Based in Cebu City, working
-              remotely with teams worldwide.
+            <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-graphite">
+              Full-stack engineer. I modernise enterprise systems and ship
+              AI-integrated products.
+            </p>
+            <p className="mt-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
+              Cebu City, Philippines · UTC+8
             </p>
           </div>
 
           {columns.map((col) => (
             <div key={col.label}>
-              <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-                <span className="text-accent">{'//'}</span> {col.label}
-              </div>
-              <ul className="space-y-1.5 font-mono text-xs">
+              <Eyebrow className="mb-4">{col.label}</Eyebrow>
+              <ul className="space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      <span className="text-subtle">./</span>
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-display text-[0.8125rem] text-graphite transition-colors hover:text-ink"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="font-display text-[0.8125rem] text-graphite transition-colors hover:text-ink"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-
-          <div>
-            <div className="mb-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-              <span className="text-accent">{'//'}</span> elsewhere
-            </div>
-            <ul className="space-y-1.5 font-mono text-xs">
-              <li>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Mail size={12} />
-                  email
-                </a>
-              </li>
-              <li>
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Linkedin size={12} />
-                  linkedin
-                </a>
-              </li>
-              {personalInfo.github && (
-                <li>
-                  <a
-                    href={personalInfo.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <Github size={12} />
-                    github
-                  </a>
-                </li>
-              )}
-            </ul>
-          </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 font-mono text-[11px] text-muted-foreground sm:flex-row sm:items-center">
-          <span>
-            © {year} {personalInfo.name.toLowerCase()}.
-          </span>
-          <span className="flex items-center gap-2">
-            <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-            built with next.js · deployed on vercel
-          </span>
+        <div className="flex flex-col gap-3 border-t border-rule py-7 font-mono text-[0.6875rem] text-slate sm:flex-row sm:items-center sm:justify-between">
+          <span>© {year} {personalInfo.name}</span>
+          <span>Built with Next.js. Deployed on Vercel.</span>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

@@ -1,149 +1,170 @@
-import Section from '@/components/ui/section';
-import Tag from '@/components/ui/tag';
-import TerminalWindow from '@/components/ui/terminal-window';
+import { Button, Container, Eyebrow, Rail } from '@/components/ui/primitives';
 import { personalInfo } from '@/data/personal';
 import { topSkills } from '@/data/skills';
 import { getTotalExperience } from '@/lib/utils';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { Chip } from './primitives';
+
+const principles = [
+  {
+    title: 'Boring technology',
+    body: 'Shipped beats clever. Whether it is .NET and SQL Server or React and Supabase, I pick the stack that stays calm under load and is unsurprising to operate at 3am.',
+  },
+  {
+    title: 'Readable code',
+    body: 'Other people — including future me — have to maintain this. Honest naming, small functions and comments that explain why beat cleverness every time.',
+  },
+  {
+    title: 'Measurable impact',
+    body: 'I like making things faster, safer and more obvious. "This query is eight times faster now" is more satisfying to me than any new feature.',
+  },
+  {
+    title: 'Async collaboration',
+    body: 'Clear pull requests, short recordings, written decisions. I optimise for teams that can ship without everyone being online at the same hour.',
+  },
+];
 
 export default function AboutContent() {
   const totalYears = getTotalExperience();
 
   return (
-    <Section
-      label="about"
-      title="hello, i'm john lloyd."
-      description={personalInfo.bio}
-    >
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
-        <article className="space-y-6 text-sm leading-relaxed text-muted-foreground sm:text-base">
-          <p>
-            I&apos;ve spent <span className="text-foreground">{totalYears}+ years</span> building production software — most of that on enterprise{' '}
-            <span className="text-foreground">.NET</span> and <span className="text-foreground">Angular</span> platforms (ERP, aviation logistics,
-            manufacturing process apps), and the last year on <span className="text-foreground">AI-integrated Chrome extensions</span> and{' '}
-            <span className="text-foreground">SaaS products</span> at Liftoff Company Inc. Two eras, same habits: ship it, keep it maintainable, make
-            the impact measurable.
-          </p>
-          <p>
-            I started at{' '}
-            <span className="text-foreground">Lear Corporation</span> as an intern, building internal apps for automotive manufacturing. Since then I&apos;ve shipped software for airlines via{' '}
-            <span className="text-foreground">Sense Software Solutions</span> in Singapore, modernized legacy systems at{' '}
-            <span className="text-foreground">OSL International</span>, delivered to deadline at{' '}
-            <span className="text-foreground">Yondu</span>, led full-stack work at{' '}
-            <span className="text-foreground">Nowcom Global Services</span>, and now build AI-powered Chrome extensions and SaaS tools at{' '}
-            <span className="text-foreground">Liftoff Company Inc.</span>
-          </p>
-          <p>
-            Remote has been the default for me for a while — I&apos;ve collaborated across PH/SG/US time zones, done code reviews with teams I&apos;ve
-            never met in person, and learned to rely on written handoffs. If you work async, I&apos;ll fit right in. I&apos;m in{' '}
-            <span className="text-foreground">Cebu City, Philippines (UTC+8)</span> — my mornings overlap AU/NZ business hours and US West Coast
-            evenings, and my late evenings reach US morning standups.
-          </p>
+    <>
+      <header className="border-b border-rule">
+        <Container>
+          <div className="grid gap-12 py-16 sm:py-20 lg:grid-cols-[1fr_16rem] lg:gap-16">
+            <div>
+              <Eyebrow className="mb-4">About</Eyebrow>
+              <h1 className="max-w-[16ch] font-display text-title font-semibold text-ink">
+                Hello — I&apos;m John Lloyd.
+              </h1>
+              <p className="mt-6 max-w-[58ch] text-lg leading-relaxed text-graphite">
+                {personalInfo.bio}
+              </p>
+            </div>
 
-          <h3 className="mt-8 font-mono text-sm text-foreground">
-            <span className="text-accent">{'>'}</span> what i care about
-          </h3>
-          <ul className="space-y-3">
-            <li className="flex gap-3">
-              <span className="shrink-0 select-none font-mono text-accent">›</span>
-              <span>
-                <span className="text-foreground">boring technology.</span> Shipped trumps clever. Whether it&apos;s .NET and SQL Server or
-                React and Supabase, I pick the stack that&apos;s calm under load and unsurprising to operate.
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 select-none font-mono text-accent">›</span>
-              <span>
-                <span className="text-foreground">readable code.</span> Other humans (including future me) have to maintain this. Naming, small
-                functions, and honest comments beat cleverness every time.
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 select-none font-mono text-accent">›</span>
-              <span>
-                <span className="text-foreground">measurable impact.</span> I like making things faster, safer, and more obvious. &quot;This query is
-                8× faster now&quot; is more satisfying than any new feature.
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <span className="shrink-0 select-none font-mono text-accent">›</span>
-              <span>
-                <span className="text-foreground">collaborative async.</span> Clear PRs, short Looms, well-written docs. I optimize for teams that
-                can ship without everyone being online at the same time.
-              </span>
-            </li>
-          </ul>
-
-          <h3 className="mt-8 font-mono text-sm text-foreground">
-            <span className="text-accent">{'>'}</span> outside of code
-          </h3>
-          <p>
-            Based in Cebu City, Philippines. Coffee, reading, and keeping{' '}
-            <Link href="/now" className="text-accent underline-offset-4 hover:underline">
-              ./now
-            </Link>{' '}
-            up to date with whatever I&apos;m currently building or breaking.
-          </p>
-
-          <div className="flex flex-wrap gap-2 pt-4">
-            <Link
-              href="/experience"
-              className="inline-flex items-center gap-1 rounded border border-border bg-card px-3 py-1.5 font-mono text-xs text-foreground hover:border-border-strong"
-            >
-              full experience
-              <ArrowUpRight size={12} />
-            </Link>
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-1 rounded border border-border bg-card px-3 py-1.5 font-mono text-xs text-foreground hover:border-border-strong"
-            >
-              projects
-              <ArrowUpRight size={12} />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-1 rounded border border-accent bg-accent px-3 py-1.5 font-mono text-xs text-accent-foreground hover:bg-accent-muted hover:text-accent"
-            >
-              get in touch
-              <ArrowUpRight size={12} />
-            </Link>
+            <Rail
+              className="lg:border-l lg:border-rule lg:pl-8"
+              items={[
+                { label: 'Role', value: personalInfo.title },
+                { label: 'Based in', value: 'Cebu City, Philippines' },
+                { label: 'Timezone', value: 'UTC+8' },
+                { label: 'Experience', value: `${totalYears} years` },
+                {
+                  label: 'Status',
+                  value: (
+                    <span className="inline-flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-measure" />
+                      Available
+                    </span>
+                  ),
+                },
+              ]}
+            />
           </div>
-        </article>
+        </Container>
+      </header>
 
-        <aside className="space-y-4">
-          <TerminalWindow title="whoami" bodyClassName="p-4 font-mono text-xs">
-            <div className="space-y-1">
-              <Row k="name" v={personalInfo.name} />
-              <Row k="role" v={personalInfo.title} />
-              <Row k="where" v="cebu city, ph" />
-              <Row k="tz" v="utc+8" />
-              <Row k="years" v={`${totalYears}+`} />
-              <Row k="status" v="available" accent />
+      <Container>
+        <div className="grid gap-12 py-14 sm:py-16 lg:grid-cols-[1fr_16rem] lg:gap-16">
+          <div className="min-w-0 max-w-[62ch]">
+            <div className="space-y-6 text-[1.0625rem] leading-relaxed text-ink">
+              <p>
+                I&apos;ve spent {totalYears} years building production software.
+                Most of that was on enterprise .NET and Angular platforms — ERP,
+                aviation logistics, manufacturing process apps — and the last
+                stretch has been AI-integrated Chrome extensions and SaaS
+                products at Liftoff Company Inc. Two very different eras, same
+                habits: ship it, keep it maintainable, make the impact
+                measurable.
+              </p>
+              <p>
+                I started at Lear Corporation as an intern building internal
+                apps for automotive manufacturing. Since then I&apos;ve shipped
+                software for airlines through Sense Software Solutions in
+                Singapore, modernised legacy systems at OSL International,
+                delivered to hard deadlines at Yondu, led full-stack work at
+                Nowcom Global Services, and now build AI-powered extensions and
+                SaaS tools at Liftoff.
+              </p>
+              <p>
+                Remote has been my default for years. I&apos;ve worked across
+                Philippine, Singaporean and US timezones, reviewed code with
+                people I have never met in person, and learned to lean on
+                written handoffs. My mornings overlap Australian and New Zealand
+                business hours and US West Coast evenings; my late evenings
+                reach US morning standups.
+              </p>
             </div>
-          </TerminalWindow>
 
-          <div className="rounded border border-border bg-card p-4">
-            <div className="mb-2 font-mono text-[11px] text-muted-foreground">
-              <span className="text-accent">{'//'}</span> top stack
+            <section className="mt-14">
+              <h2 className="font-display text-heading font-semibold text-ink">
+                What I care about
+              </h2>
+              <dl className="mt-6 divide-y divide-rule border-y border-rule">
+                {principles.map((item) => (
+                  <div key={item.title} className="grid gap-2 py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                    <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1">
+                      {item.title}
+                    </dt>
+                    <dd className="text-[1.0625rem] leading-relaxed text-ink">
+                      {item.body}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+
+            <section className="mt-14">
+              <h2 className="font-display text-heading font-semibold text-ink">
+                Outside of code
+              </h2>
+              <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink">
+                Coffee, reading, and keeping{' '}
+                <Link
+                  href="/now"
+                  className="underline decoration-rule-strong underline-offset-4 hover:decoration-ink"
+                >
+                  the now page
+                </Link>{' '}
+                current with whatever I am building or breaking this month.
+              </p>
+            </section>
+
+            <div className="mt-12 flex flex-wrap gap-3">
+              <Button href="/contact" variant="primary">
+                Start a project
+                <ArrowRight
+                  size={14}
+                  strokeWidth={2}
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
+              </Button>
+              <Button href="/projects" variant="ghost">
+                See the work
+              </Button>
+              <Button href="/experience" variant="ghost">
+                Full experience
+              </Button>
             </div>
-            <div className="flex flex-wrap gap-1">
+          </div>
+
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <Eyebrow className="mb-4">Reach for daily</Eyebrow>
+            <div className="flex flex-wrap gap-1.5">
               {topSkills.map((s) => (
-                <Tag key={s}>{s.toLowerCase()}</Tag>
+                <Chip key={s}>{s}</Chip>
               ))}
             </div>
-          </div>
-        </aside>
-      </div>
-    </Section>
-  );
-}
-
-function Row({ k, v, accent = false }: { k: string; v: string; accent?: boolean }) {
-  return (
-    <div className="grid grid-cols-[70px_1fr] gap-2">
-      <span className="text-muted-foreground">{k}:</span>
-      <span className={accent ? 'text-accent' : 'text-foreground'}>{v}</span>
-    </div>
+            <Link
+              href="/skills"
+              className="mt-5 inline-block font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
+            >
+              Full stack breakdown
+            </Link>
+          </aside>
+        </div>
+      </Container>
+    </>
   );
 }
