@@ -134,4 +134,3 @@ All optional.
 |---|---|
 | `NEXT_PUBLIC_GA_ID` | Google Analytics |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Search Console |
-| `NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL` | Overrides the default chat webhook |

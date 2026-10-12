@@ -1,6 +1,5 @@
 import CommandPalette from "@/components/ui/command-palette";
 import Footer from "@/components/ui/footer";
-import N8nChat from "@/components/ui/n8n-chat";
 import Navigation from "@/components/ui/navigation";
 import { ThemeProvider, themeScript } from "@/components/ui/theme-provider";
 import { personalInfo } from "@/data/personal";
@@ -163,7 +162,6 @@ export default function RootLayout({
             <main className="flex-1 pt-16">{children}</main>
             <Footer />
           </div>
-          <N8nChat />
         </ThemeProvider>
       </body>
     </html>
