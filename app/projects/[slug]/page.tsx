@@ -1,6 +1,6 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
 import { Button, Chip, Container, Eyebrow, Rail, labelClass } from '@/components/ui/primitives';
-import { DeltaRule, ScopeRule } from '@/components/ui/primitives/delta-rule';
+import { OutcomeFigure, ScopeRule } from '@/components/ui/primitives/outcome';
 import ReadingProgress from '@/components/ui/reading-progress';
 import { getOutcome } from '@/data/outcomes';
 import { getAllProjects, getProjectBySlug } from '@/lib/projects';
@@ -164,7 +164,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="py-10 sm:py-12">
             {outcome ? (
               <div className="max-w-xl">
-                <DeltaRule delta={outcome} />
+                <OutcomeFigure outcome={outcome} />
               </div>
             ) : (
               <>

@@ -6,7 +6,7 @@ import { getTotalExperience } from '@/lib/utils';
 import { ArrowRight, Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { Button, Container, Eyebrow } from './primitives';
-import { DeltaRule } from './primitives/delta-rule';
+import { OutcomeFigure } from './primitives/outcome';
 
 export default function Hero() {
   const years = getTotalExperience();
@@ -120,18 +120,18 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* The delta band. Every figure here was measured on shipped work. */}
-        <div className="border-t border-rule py-12 sm:py-14">
-          <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        {/* Every figure here was measured on shipped work. */}
+        <div data-outcomes className="border-t border-rule py-12 sm:py-14">
+          <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 sm:mb-8">
             <Eyebrow>Measured outcomes</Eyebrow>
             <p className="font-body text-[0.875rem] text-slate">
               Every figure below was measured on shipped work.
             </p>
           </div>
 
-          <div className="grid gap-10 sm:gap-8 lg:grid-cols-3 lg:gap-12">
-            {headlineOutcomes.map((delta, i) => (
-              <DeltaRule key={delta.label} delta={delta} index={i} />
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-3 lg:gap-12">
+            {headlineOutcomes.map((outcome) => (
+              <OutcomeFigure key={outcome.label} outcome={outcome} />
             ))}
           </div>
         </div>
