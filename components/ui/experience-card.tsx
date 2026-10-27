@@ -6,17 +6,10 @@ import Link from 'next/link';
 import { Chip } from './primitives';
 
 /**
- * Maps a role to its case study. The full account of the work lives in the
- * case study; this timeline carries only the employment record, so the two
- * pages never repeat each other.
+ * Employment stays on the timeline. Case studies are side projects, so a
+ * role links out only when a write-up exists for that company.
  */
-const CASE_STUDY_BY_COMPANY: Record<string, string> = {
-  'Nowcom Global Services': 'nowcom-global-services',
-  'Yondu Inc.': 'yondu-inc',
-  'OSL International Inc.': 'osl-international',
-  'Sense Software Solutions': 'sense-software-solutions',
-  'Lear Corporation': 'lear-corporation',
-};
+const CASE_STUDY_BY_COMPANY: Record<string, string> = {};
 
 interface TimelineRowProps {
   experience: Experience;
