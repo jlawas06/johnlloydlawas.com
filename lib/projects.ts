@@ -3,6 +3,11 @@ import matter from 'gray-matter';
 import path from 'path';
 import { calculateReadingTime, generateExcerpt, stripLeadingH1 } from './utils';
 
+export interface ProjectImage {
+  src: string;
+  alt: string;
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -19,6 +24,9 @@ export interface Project {
   demoUrl?: string;
   githubUrl?: string;
   images?: string[];
+  /** Card image. Only set when the file exists in /public, so a missing
+      screenshot renders the empty plate instead of a broken image. */
+  cover?: ProjectImage;
   client?: string;
   role?: string;
   teamSize?: number;
@@ -44,6 +52,9 @@ export interface ProjectMeta {
   demoUrl?: string;
   githubUrl?: string;
   images?: string[];
+  /** Card image. Only set when the file exists in /public, so a missing
+      screenshot renders the empty plate instead of a broken image. */
+  cover?: ProjectImage;
   client?: string;
   role?: string;
   teamSize?: number;
@@ -52,6 +63,26 @@ export interface ProjectMeta {
 }
 
 const projectsDirectory = path.join(process.cwd(), 'content/projects');
+const publicDirectory = path.join(process.cwd(), 'public');
+
+/**
+ * The card image: frontmatter `image` (`/work/<slug>.webp`), else the first
+ * gallery screenshot. Checked against the filesystem at build time, never on
+ * the client.
+ */
+function resolveCover(
+  data: matter.GrayMatterFile<string>['data'],
+  title: string
+): ProjectImage | undefined {
+  const candidates: ProjectImage[] = [];
+  if (typeof data.image?.src === 'string') {
+    candidates.push({ src: data.image.src, alt: data.image.alt || `${title} interface` });
+  }
+  if (typeof data.images?.[0] === 'string') {
+    candidates.push({ src: data.images[0], alt: `${title} interface` });
+  }
+  return candidates.find((img) => fs.existsSync(path.join(publicDirectory, img.src)));
+}
 
 /**
  * Get all projects metadata
@@ -89,6 +120,7 @@ export async function getAllProjects(): Promise<ProjectMeta[]> {
           demoUrl: data.demoUrl,
           githubUrl: data.githubUrl,
           images: data.images || [],
+          cover: resolveCover(data, data.title || 'Untitled Project'),
           client: data.client,
           role: data.role,
           teamSize: data.teamSize,
@@ -150,6 +182,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       demoUrl: data.demoUrl,
       githubUrl: data.githubUrl,
       images: data.images || [],
+      cover: resolveCover(data, data.title || 'Untitled Project'),
       client: data.client,
       role: data.role,
       teamSize: data.teamSize,

@@ -103,7 +103,7 @@ instead — never a fabricated delta.
 A leading `# Heading` in any MDX body is stripped on load (`stripLeadingH1` in
 [`lib/utils.ts`](lib/utils.ts)) — the page chrome already renders the title.
 
-Screenshots go in `public/work/<slug>/`. See
+Card images go in `public/work/<slug>.webp`. See
 [`public/work/README.md`](public/work/README.md) for specs.
 
 ## Development

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Chip } from './primitives';
 
 interface ProjectCardProps {
-  project: ProjectMeta & { images?: string[] };
+  project: ProjectMeta;
   className?: string;
   /** The first card on a page carries the LCP image. */
   priority?: boolean;
@@ -19,7 +19,7 @@ export default function ProjectCard({
   priority = false,
 }: ProjectCardProps) {
   const outcome = getOutcome(project.slug);
-  const image = project.images?.[0];
+  const cover = project.cover;
 
   return (
     <Link
@@ -29,25 +29,29 @@ export default function ProjectCard({
         className
       )}
     >
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-rule bg-surface-sunk">
-        {image ? (
+      {cover ? (
+        <div
+          data-card-media
+          className="relative aspect-[16/10] overflow-hidden border-b border-rule bg-surface-sunk"
+        >
           <Image
-            src={image}
-            alt={`${project.title} interface`}
+            src={cover.src}
+            alt={cover.alt}
             fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
             priority={priority}
             className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
           />
-        ) : (
-          /* No screenshot yet — a quiet typographic plate, never a placeholder icon. */
-          <div className="flex h-full items-end p-5">
-            <span className="font-display text-[2.75rem] font-semibold leading-none tracking-tight text-rule-strong">
-              {project.title.split(/[\s—]+/)[0]}
-            </span>
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        /* No screenshot yet: a plain plate that holds the 16:10 slot. The
+           title below names the project, so the plate carries no text. */
+        <div
+          data-card-media
+          aria-hidden="true"
+          className="aspect-[16/10] border-b border-rule bg-surface-sunk"
+        />
+      )}
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-baseline justify-between gap-3 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-slate">
