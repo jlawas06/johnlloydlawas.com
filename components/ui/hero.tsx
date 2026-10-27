@@ -26,15 +26,16 @@ export default function Hero() {
     <section className="border-b border-rule">
       <Container>
         <div className="pt-14 pb-14 sm:pt-20 sm:pb-16">
-          <div className="rise flex items-center gap-2.5">
-            <span className="relative flex h-1.5 w-1.5">
+          <p
+            data-status-line
+            className="rise flex items-center gap-2.5 font-body text-[0.875rem] leading-snug text-graphite"
+          >
+            <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-measure opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-measure" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-measure" />
             </span>
-            <Eyebrow>
-              Available for new projects · Cebu City, UTC+8 · {years} years
-            </Eyebrow>
-          </div>
+            <span>Available for new projects — Cebu City (UTC+8)</span>
+          </p>
 
           <h1
             className="rise mt-8 max-w-[21ch] font-display text-display font-semibold text-ink"
@@ -64,7 +65,8 @@ export default function Hero() {
           >
             Cut application load time by{' '}
             <span className="font-medium text-measure tabular-nums">50%</span>{' '}
-            across 5+ ASP.NET applications (2019–2022).
+            across 5+ ASP.NET applications{' '}
+            <span className="whitespace-nowrap">(2019–2022).</span>
           </p>
 
           <div
