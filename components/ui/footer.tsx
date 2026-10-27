@@ -86,7 +86,12 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-rule py-7 font-mono text-[0.75rem] text-slate sm:flex-row sm:items-center sm:justify-between">
+        <div
+          className={cn(
+            'flex flex-col gap-3 border-t border-rule py-7 sm:flex-row sm:items-center sm:justify-between',
+            labelClass
+          )}
+        >
           <span>© {year} {personalInfo.name}</span>
           <span>Built with Next.js. Deployed on Vercel.</span>
         </div>

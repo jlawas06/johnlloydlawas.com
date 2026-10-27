@@ -1,5 +1,13 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
-import { Button, Chip, Container, Eyebrow, Rail, labelClass } from '@/components/ui/primitives';
+import {
+  Button,
+  Chip,
+  Container,
+  Eyebrow,
+  Rail,
+  labelClass,
+  type RailItem,
+} from '@/components/ui/primitives';
 import { OutcomeFigure, ScopeRule } from '@/components/ui/primitives/outcome';
 import ReadingProgress from '@/components/ui/reading-progress';
 import { getOutcome } from '@/data/outcomes';
@@ -54,9 +62,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     project.startDate && {
       label: 'Timeline',
       value: formatRange(project.startDate, project.endDate),
+      mono: true,
     },
     { label: 'Category', value: project.category },
-  ].filter(Boolean) as { label: string; value: string }[];
+  ].filter(Boolean) as RailItem[];
 
   /* No measured delta for this project — show scope facts rather than
      inventing a figure. */
@@ -66,8 +75,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     {
       label: 'Stack',
       value: project.technologies.slice(0, 3).join(', '),
+      mono: true,
     },
-  ].filter(Boolean) as { label: string; value: string }[];
+  ].filter(Boolean) as { label: string; value: string; mono?: boolean }[];
 
   /* Only the populated sections become cells — an absent `challenges` array
      must not leave a blank column in the grid. */

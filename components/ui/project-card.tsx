@@ -82,7 +82,7 @@ export default function ProjectCard({
           {outcome ? (
             <span className="font-mono text-[0.8125rem] text-measure tabular-nums">
               {outcome.figure}{' '}
-              <span className="text-slate">{outcome.label.toLowerCase()}</span>
+              <span className="font-body text-slate">{outcome.label.toLowerCase()}</span>
             </span>
           ) : (
             <span className={labelClass}>Read case study</span>

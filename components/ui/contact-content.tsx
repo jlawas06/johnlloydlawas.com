@@ -147,7 +147,7 @@ export default function ContactContent() {
             </section>
           </div>
 
-          <div className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-8 font-mono text-[0.75rem]">
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-rule pt-8 font-display text-[0.875rem]">
             <a
               href={personalInfo.linkedin}
               target="_blank"
@@ -172,7 +172,7 @@ export default function ContactContent() {
             >
               Résumé (PDF)
             </a>
-            <span className="text-slate">Cebu City, Philippines · UTC+8</span>
+            <span className={labelClass}>Cebu City, Philippines · UTC+8</span>
           </div>
         </div>
       </Container>

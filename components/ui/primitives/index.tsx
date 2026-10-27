@@ -225,14 +225,21 @@ export function Card({
 }
 
 /* ------------------------------------------------------------------
-   Rail — the narrow metadata column. Mono lives here.
+   Rail — the narrow metadata column. Values are body copy; set `mono`
+   on an item whose value is data (a date range, a figure, tags).
    ------------------------------------------------------------------ */
+
+export interface RailItem {
+  label: string;
+  value: React.ReactNode;
+  mono?: boolean;
+}
 
 export function Rail({
   items,
   className,
 }: {
-  items: { label: string; value: React.ReactNode }[];
+  items: RailItem[];
   className?: string;
 }) {
   if (items.length === 0) return null;
@@ -242,7 +249,12 @@ export function Rail({
       {items.map((item) => (
         <div key={item.label}>
           <dt className={labelClass}>{item.label}</dt>
-          <dd className="mt-1.5 font-mono text-[0.8125rem] leading-relaxed text-ink">
+          <dd
+            className={cn(
+              'mt-1 leading-relaxed text-ink',
+              item.mono ? 'font-mono text-[0.8125rem]' : 'font-body text-[0.9375rem]'
+            )}
+          >
             {item.value}
           </dd>
         </div>

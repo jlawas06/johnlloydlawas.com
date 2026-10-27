@@ -55,7 +55,7 @@ export function ScopeRule({
   items,
   className,
 }: {
-  items: { label: string; value: string }[];
+  items: { label: string; value: string; mono?: boolean }[];
   className?: string;
 }) {
   return (
@@ -63,7 +63,14 @@ export function ScopeRule({
       {items.map((item) => (
         <div key={item.label} className="bg-surface px-4 py-3.5">
           <div className={labelClass}>{item.label}</div>
-          <div className="mt-1 font-mono text-[0.8125rem] text-ink">{item.value}</div>
+          <div
+            className={cn(
+              'mt-1 text-ink',
+              item.mono ? 'font-mono text-[0.8125rem]' : 'font-body text-[0.9375rem]'
+            )}
+          >
+            {item.value}
+          </div>
         </div>
       ))}
     </div>

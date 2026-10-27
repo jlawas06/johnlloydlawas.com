@@ -49,7 +49,7 @@ export default function AboutContent() {
                 { label: 'Role', value: personalInfo.title },
                 { label: 'Based in', value: 'Cebu City, Philippines' },
                 { label: 'Timezone', value: 'UTC+8' },
-                { label: 'Experience', value: `${totalYears} years` },
+                { label: 'Experience', value: `${totalYears} years`, mono: true },
                 {
                   label: 'Status',
                   value: (

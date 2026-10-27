@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * This page is entirely data, so mono is the right face throughout — it is the
- * one place the type rule permits a full monospace layout.
+ * Skill names and years are data, so they are mono. The level is a label, so
+ * it is set in the body face like every other label.
  */
 function SkillRow({ skill }: { skill: Skill }) {
   const name = skill.slug ?? skill.name;

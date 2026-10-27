@@ -23,7 +23,9 @@ Nothing else earns it. Success checkmarks, affirmative list bullets and
 skill-level dots all deliberately use ink or a value ramp instead — they read
 the same and they keep the colour meaningful.
 
-Monospace carries figures, dates, labels and code; it never sets body copy.
+Monospace carries the email address, dates, tags, figures and code. It never
+sets labels or body copy. Labels are sentence case in the body face, never
+tracked capitals.
 
 ### Two constraints that are easy to break
 
@@ -71,8 +73,11 @@ Defined once in [`app/globals.css`](app/globals.css) and bridged to Tailwind via
 | Role | Face | Use |
 |---|---|---|
 | Display | Archivo (variable, `wdth` 112) | Headings, UI chrome |
-| Body | Newsreader | Prose, descriptions |
-| Data | JetBrains Mono | Figures, dates, labels, code |
+| Body | Newsreader | Prose, descriptions, labels (13–14px, `--slate`) |
+| Data | JetBrains Mono | Email address, dates, tags, figures, code |
+
+Nothing is set below 12px. Tag chips are 13px. On phones and coarse pointers
+the `touch:` variant gives every control a 44px hit area.
 
 The OG image in [`app/opengraph-image.tsx`](app/opengraph-image.tsx) duplicates
 the light palette as literal hex — Satori cannot read CSS variables. **Change

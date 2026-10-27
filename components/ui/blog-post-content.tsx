@@ -56,10 +56,10 @@ export default function BlogPostContent({ post, children }: BlogPostContentProps
               <Rail
                 className="lg:border-l lg:border-rule lg:pl-8"
                 items={[
-                  { label: 'Reading time', value: `${post.readingTime} min` },
+                  { label: 'Reading time', value: `${post.readingTime} min`, mono: true },
                   { label: 'Written by', value: post.author },
                   ...(post.tags.length > 0
-                    ? [{ label: 'Topics', value: post.tags.join(', ') }]
+                    ? [{ label: 'Topics', value: post.tags.join(', '), mono: true }]
                     : []),
                 ]}
               />
