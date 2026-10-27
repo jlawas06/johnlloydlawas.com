@@ -32,7 +32,7 @@ const principles = [
 export default async function Home() {
   const [projects, posts] = await Promise.all([getAllProjects(), getRecentPosts(3)]);
   const featured = projects.filter((p) => p.featured);
-  const selected = (featured.length > 0 ? featured : projects).slice(0, 3);
+  const selected = featured.length > 0 ? featured : projects;
   const recentRoles = experiences.slice(0, 4);
 
   return (
@@ -44,7 +44,7 @@ export default async function Home() {
           id="work"
           eyebrow="Selected work"
           title="Case studies"
-          description="Enterprise platforms and shipped products — the problem, the constraints, and what changed."
+          description="Side projects — the problem, the constraints, and what changed."
           action={
             <Button href="/projects" variant="link">
               All case studies

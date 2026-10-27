@@ -11,6 +11,8 @@ export interface Project {
   technologies: string[];
   category: string;
   featured?: boolean;
+  /** Lower numbers appear first. Undated projects without one fall back to start date. */
+  order?: number;
   published?: boolean;
   startDate?: string;
   endDate?: string;
@@ -34,6 +36,8 @@ export interface ProjectMeta {
   technologies: string[];
   category: string;
   featured?: boolean;
+  /** Lower numbers appear first. Undated projects without one fall back to start date. */
+  order?: number;
   published?: boolean;
   startDate?: string;
   endDate?: string;
@@ -78,6 +82,7 @@ export async function getAllProjects(): Promise<ProjectMeta[]> {
           technologies: data.technologies || [],
           category: data.category || 'Web Development',
           featured: data.featured || false,
+          order: typeof data.order === 'number' ? data.order : undefined,
           published: data.published !== false,
           startDate: data.startDate,
           endDate: data.endDate,
@@ -93,7 +98,9 @@ export async function getAllProjects(): Promise<ProjectMeta[]> {
       })
       .filter(project => project.published)
       .sort((a, b) => {
-        // Sort by start date (most recent first)
+        const orderA = a.order ?? Number.POSITIVE_INFINITY;
+        const orderB = b.order ?? Number.POSITIVE_INFINITY;
+        if (orderA !== orderB) return orderA - orderB;
         const dateA = a.startDate ? new Date(a.startDate) : new Date(0);
         const dateB = b.startDate ? new Date(b.startDate) : new Date(0);
         return dateB.getTime() - dateA.getTime();
@@ -136,6 +143,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       technologies: data.technologies || [],
       category: data.category || 'Web Development',
       featured: data.featured || false,
+      order: typeof data.order === 'number' ? data.order : undefined,
       published: data.published !== false,
       startDate: data.startDate,
       endDate: data.endDate,

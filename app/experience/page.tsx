@@ -28,7 +28,7 @@ export default function ExperiencePage() {
               <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-graphite">
                 {experiences.length} roles across {companies} companies — aviation
                 logistics, ERP modernisation, manufacturing platforms, and now
-                AI-integrated products. Each role links to its case study.
+                AI-integrated products.
               </p>
             </div>
             <Button

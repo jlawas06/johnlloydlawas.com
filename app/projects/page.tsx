@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Work',
-  description: `Case studies by ${personalInfo.name} — enterprise platform modernisation on ASP.NET Core and Angular, and AI-integrated products in React and Next.js.`,
+  description: `Side projects by ${personalInfo.name} — the problem, the constraints, and what changed.`,
 };
 
 export default async function ProjectsPage() {
@@ -23,9 +23,8 @@ export default async function ProjectsPage() {
               Case studies
             </h1>
             <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-graphite">
-              Enterprise platforms and shipped products. Each one covers the
-              problem, the constraints I worked under, what I actually changed,
-              and — where it was measured — by how much.
+              Side projects. Each one covers the problem, the constraints I
+              worked under, and what I actually changed.
             </p>
             {categories.length > 1 && (
               <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
