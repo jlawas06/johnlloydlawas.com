@@ -1,5 +1,6 @@
 import ProjectCard from '@/components/ui/project-card';
-import { Container, Eyebrow } from '@/components/ui/primitives';
+import { Container, Eyebrow, labelClass } from '@/components/ui/primitives';
+import { cn } from '@/lib/utils';
 import { personalInfo } from '@/data/personal';
 import { getAllProjects } from '@/lib/projects';
 import type { Metadata } from 'next';
@@ -27,7 +28,7 @@ export default async function ProjectsPage() {
               worked under, and what I actually changed.
             </p>
             {categories.length > 1 && (
-              <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
+              <p className={cn('mt-8', labelClass)}>
                 {projects.length} case studies · {categories.join(' · ')}
               </p>
             )}

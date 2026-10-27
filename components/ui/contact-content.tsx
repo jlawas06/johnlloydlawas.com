@@ -3,7 +3,7 @@
 import { personalInfo } from '@/data/personal';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
-import { Button, Container, Eyebrow } from './primitives';
+import { Button, Container, Eyebrow, labelClass } from './primitives';
 
 /** Written for someone deciding whether to send the email, not for a peer. */
 const goodFits = [
@@ -72,7 +72,7 @@ export default function ContactContent() {
         <div className="py-14 sm:py-16">
           <dl className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Response time
               </dt>
               <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
@@ -81,7 +81,7 @@ export default function ContactContent() {
               </dd>
             </div>
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Working hours
               </dt>
               <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
@@ -90,7 +90,7 @@ export default function ContactContent() {
               </dd>
             </div>
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Availability
               </dt>
               <dd className="mt-2 flex items-start gap-2 text-[0.9375rem] leading-relaxed text-ink">

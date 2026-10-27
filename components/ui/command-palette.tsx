@@ -231,7 +231,7 @@ export default function CommandPalette() {
               heading={group.heading}
               className={cn(
                 '[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1',
-                '[&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[0.625rem] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.14em] [&_[cmdk-group-heading]]:text-slate'
+                '[&_[cmdk-group-heading]]:font-body [&_[cmdk-group-heading]]:text-[0.8125rem] [&_[cmdk-group-heading]]:text-slate'
               )}
             >
               {group.items.map((item) => {
@@ -261,7 +261,7 @@ export default function CommandPalette() {
             </Command.Group>
           ))}
         </Command.List>
-        <div className="flex items-center justify-between gap-2 border-t border-rule px-3 py-2 font-mono text-[0.625rem] text-slate">
+        <div className="flex items-center justify-between gap-2 border-t border-rule px-3 py-2 font-body text-[0.75rem] text-slate">
           <span className="flex items-center gap-1">
             <Kbd>↵</Kbd> to select
             <span className="ml-2 flex items-center gap-1">

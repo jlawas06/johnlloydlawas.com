@@ -1,6 +1,7 @@
 import { personalInfo } from '@/data/personal';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { Container, Eyebrow } from './primitives';
+import { Container, Eyebrow, labelClass } from './primitives';
 
 const columns = [
   {
@@ -47,9 +48,7 @@ export default function Footer() {
               Full-stack engineer. I modernise enterprise systems and ship
               AI-integrated products.
             </p>
-            <p className="mt-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
-              Cebu City, Philippines · UTC+8
-            </p>
+            <p className={cn('mt-4', labelClass)}>Cebu City, Philippines · UTC+8</p>
           </div>
 
           {columns.map((col) => (
@@ -82,7 +81,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-rule py-7 font-mono text-[0.6875rem] text-slate sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-rule py-7 font-mono text-[0.75rem] text-slate sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} {personalInfo.name}</span>
           <span>Built with Next.js. Deployed on Vercel.</span>
         </div>

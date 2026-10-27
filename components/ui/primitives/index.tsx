@@ -30,10 +30,14 @@ export function Container({
 }
 
 /* ------------------------------------------------------------------
-   Eyebrow — mono, uppercase. A label, nothing more.
-   Mono is permitted here because an eyebrow is metadata.
+   Labels — sentence case in the body face, never tracked caps. Mono is
+   reserved for data (email, dates, tags, figures), and a label is not data.
    ------------------------------------------------------------------ */
 
+/** Small label: definition terms, captions, card metadata. */
+export const labelClass = 'font-body text-[0.8125rem] leading-snug text-slate';
+
+/** Eyebrow — the label above a heading. */
 export function Eyebrow({
   children,
   className,
@@ -46,7 +50,7 @@ export function Eyebrow({
   return (
     <Tag
       className={cn(
-        'font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-slate',
+        'font-body text-[0.875rem] leading-snug text-slate',
         className
       )}
     >
@@ -235,9 +239,7 @@ export function Rail({
     <dl className={cn('space-y-5', className)}>
       {items.map((item) => (
         <div key={item.label}>
-          <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-            {item.label}
-          </dt>
+          <dt className={labelClass}>{item.label}</dt>
           <dd className="mt-1.5 font-mono text-[0.8125rem] leading-relaxed text-ink">
             {item.value}
           </dd>
@@ -261,7 +263,7 @@ export function Chip({
   return (
     <span
       className={cn(
-        'inline-flex items-center border border-rule bg-surface px-2 py-0.5 font-mono text-[0.6875rem] text-graphite',
+        'inline-flex items-center border border-rule bg-surface px-2 py-0.5 font-mono text-[0.8125rem] text-graphite',
         className
       )}
     >

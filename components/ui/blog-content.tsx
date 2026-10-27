@@ -23,7 +23,7 @@ export default function BlogContent({ posts, tags }: BlogContentProps) {
               LLM APIs without the hype.
             </p>
             {tags.length > 0 && (
-              <p className="mt-8 max-w-[60ch] font-mono text-[0.6875rem] uppercase leading-relaxed tracking-[0.12em] text-slate">
+              <p className="mt-8 max-w-[60ch] font-mono text-[0.8125rem] leading-relaxed text-slate">
                 {tags.slice(0, 12).join(' · ')}
               </p>
             )}

@@ -29,11 +29,11 @@ export default function TimelineRow({
 
   const body = (
     <>
-      <div className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1.5">
+      <div className="font-mono text-[0.75rem] text-slate sm:pt-1.5">
         <div>
           {formatMonth(experience.startDate)} – {formatMonth(experience.endDate)}
         </div>
-        <div className="mt-1 flex items-center gap-1.5 normal-case tracking-normal">
+        <div className="mt-1 flex items-center gap-1.5">
           <span>{formatDuration(experience.startDate, experience.endDate)}</span>
           {isCurrent && (
             <>

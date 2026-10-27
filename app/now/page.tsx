@@ -1,5 +1,6 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
-import { Container, Eyebrow } from '@/components/ui/primitives';
+import { Container, Eyebrow, labelClass } from '@/components/ui/primitives';
+import { cn } from '@/lib/utils';
 import { getMdxPage } from '@/lib/mdx-page';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -25,7 +26,7 @@ export default function NowPage() {
         <h1 className="font-display text-title font-semibold text-ink">
           What I&apos;m focused on
         </h1>
-        <p className="mt-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
+        <p className={cn('mt-4', labelClass)}>
           Last updated {page.updated ?? 'recently'}
         </p>
         <div className="mt-12 border-t border-rule pt-10">

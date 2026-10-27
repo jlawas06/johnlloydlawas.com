@@ -89,7 +89,7 @@ export default function Hero() {
         <div className="border-t border-rule py-12 sm:py-14">
           <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
             <Eyebrow>Measured outcomes</Eyebrow>
-            <p className="font-mono text-[0.6875rem] text-slate">
+            <p className="font-body text-[0.875rem] text-slate">
               Every figure below was measured on shipped work.
             </p>
           </div>

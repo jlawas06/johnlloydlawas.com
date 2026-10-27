@@ -1,5 +1,5 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
-import { Button, Chip, Container, Eyebrow, Rail } from '@/components/ui/primitives';
+import { Button, Chip, Container, Eyebrow, Rail, labelClass } from '@/components/ui/primitives';
 import { DeltaRule, ScopeRule } from '@/components/ui/primitives/delta-rule';
 import ReadingProgress from '@/components/ui/reading-progress';
 import { getOutcome } from '@/data/outcomes';
@@ -113,7 +113,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="py-14 sm:py-16">
             <Link
               href="/projects"
-              className="group mb-10 inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate transition-colors hover:text-ink"
+              className="group mb-10 inline-flex items-center gap-1.5 font-body text-[0.875rem] text-slate transition-colors hover:text-ink"
             >
               <ArrowLeft
                 size={12}
@@ -271,9 +271,7 @@ function SummaryCell({
 }) {
   return (
     <div className="bg-surface p-6">
-      <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-        {label}
-      </p>
+      <p className={labelClass}>{label}</p>
       <ul className="mt-4 space-y-3">
         {items.map((item) => (
           <li

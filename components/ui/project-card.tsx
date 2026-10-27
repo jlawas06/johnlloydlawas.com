@@ -4,7 +4,7 @@ import { cn, formatRange } from '@/lib/utils';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Chip } from './primitives';
+import { Chip, labelClass } from './primitives';
 
 interface ProjectCardProps {
   project: ProjectMeta;
@@ -54,9 +54,9 @@ export default function ProjectCard({
       )}
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-baseline justify-between gap-3 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-slate">
+        <div className={cn('flex items-baseline justify-between gap-3', labelClass)}>
           <span>{project.category}</span>
-          <span className="shrink-0 normal-case tracking-normal">
+          <span className="shrink-0 font-mono text-[0.75rem]">
             {formatRange(project.startDate, project.endDate)}
           </span>
         </div>
@@ -85,9 +85,7 @@ export default function ProjectCard({
               <span className="text-slate">{outcome.label.toLowerCase()}</span>
             </span>
           ) : (
-            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
-              Read case study
-            </span>
+            <span className={labelClass}>Read case study</span>
           )}
           <ArrowUpRight
             size={15}

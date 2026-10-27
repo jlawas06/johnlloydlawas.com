@@ -1,4 +1,4 @@
-import { Button, Container, Eyebrow, Rail } from '@/components/ui/primitives';
+import { Button, Container, Rail } from '@/components/ui/primitives';
 import ReadingProgress from '@/components/ui/reading-progress';
 import { formatDate } from '@/lib/utils';
 import { ArrowLeft } from 'lucide-react';
@@ -30,7 +30,7 @@ export default function BlogPostContent({ post, children }: BlogPostContentProps
           <div className="py-14 sm:py-16">
             <Link
               href="/blog"
-              className="group mb-10 inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate transition-colors hover:text-ink"
+              className="group mb-10 inline-flex items-center gap-1.5 font-body text-[0.875rem] text-slate transition-colors hover:text-ink"
             >
               <ArrowLeft
                 size={12}
@@ -42,9 +42,9 @@ export default function BlogPostContent({ post, children }: BlogPostContentProps
 
             <div className="grid gap-12 lg:grid-cols-[1fr_14rem] lg:gap-16">
               <div>
-                <Eyebrow className="mb-4">
+                <p className="mb-4 font-mono text-[0.8125rem] text-slate">
                   <time dateTime={post.date}>{formatDate(post.date)}</time>
-                </Eyebrow>
+                </p>
                 <h1 className="max-w-[22ch] font-display text-title font-semibold text-ink">
                   {post.title}
                 </h1>

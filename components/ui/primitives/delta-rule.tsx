@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
+import { labelClass } from '.';
 
 export interface Delta {
   /** What was measured, e.g. "Application load time". */
@@ -68,7 +69,7 @@ export function DeltaRule({
   return (
     <div ref={ref} className={cn('group', className)}>
       <div className="flex items-end justify-between gap-4 border-b border-rule pb-3">
-        <span className="max-w-[14ch] font-mono text-[0.6875rem] uppercase leading-relaxed tracking-[0.14em] text-graphite">
+        <span className="max-w-[16ch] font-body text-[0.875rem] leading-snug text-graphite">
           {delta.label}
         </span>
         <span className="font-mono text-3xl font-medium leading-none text-measure tabular-nums sm:text-[2.125rem]">
@@ -94,7 +95,7 @@ export function DeltaRule({
       </div>
 
       {delta.source && (
-        <p className="mt-4 max-w-[42ch] font-mono text-[0.625rem] leading-relaxed text-slate">
+        <p className="mt-4 max-w-[42ch] font-body text-[0.8125rem] leading-relaxed text-slate">
           {delta.source}
         </p>
       )}
@@ -119,7 +120,7 @@ function Track({
     <div className="flex items-center gap-3">
       <span
         className={cn(
-          'w-[6.5rem] shrink-0 font-mono text-[0.6875rem] uppercase tracking-[0.08em]',
+          'w-[6.5rem] shrink-0 font-body text-[0.8125rem] leading-snug',
           tone === 'measured' ? 'text-ink' : 'text-slate'
         )}
       >
@@ -158,9 +159,7 @@ export function ScopeRule({
     <div className={cn('grid gap-px border border-rule bg-rule sm:grid-cols-3', className)}>
       {items.map((item) => (
         <div key={item.label} className="bg-surface px-4 py-3.5">
-          <div className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-            {item.label}
-          </div>
+          <div className={labelClass}>{item.label}</div>
           <div className="mt-1 font-mono text-[0.8125rem] text-ink">{item.value}</div>
         </div>
       ))}

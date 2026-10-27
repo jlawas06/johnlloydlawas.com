@@ -10,7 +10,7 @@ export default function Kbd({
   return (
     <kbd
       className={cn(
-        'inline-flex h-[1.125rem] min-w-[1.125rem] items-center justify-center rounded-[2px] border border-rule bg-surface-sunk px-1 font-mono text-[0.625rem] leading-none text-graphite',
+        'inline-flex h-5 min-w-5 items-center justify-center rounded-[2px] border border-rule bg-surface-sunk px-1 font-mono text-[0.75rem] leading-none text-graphite',
         className
       )}
     >

@@ -1,5 +1,5 @@
 import TimelineRow from '@/components/ui/experience-card';
-import { Button, Container, Eyebrow } from '@/components/ui/primitives';
+import { Button, Container, Eyebrow, labelClass } from '@/components/ui/primitives';
 import { experiences } from '@/data/experience';
 import { formatDuration, formatMonth, getTotalExperience } from '@/lib/utils';
 import { Download } from 'lucide-react';
@@ -54,9 +54,7 @@ export default function ExperiencePage() {
               { label: 'Current', value: experiences[0].company },
             ].map((stat) => (
               <div key={stat.label} className="bg-surface px-4 py-4">
-                <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-                  {stat.label}
-                </dt>
+                <dt className={labelClass}>{stat.label}</dt>
                 <dd className="mt-1.5 font-mono text-[0.8125rem] text-ink">
                   {stat.value}
                 </dd>
