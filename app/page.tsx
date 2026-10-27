@@ -142,7 +142,7 @@ export default async function Home() {
               </Button>
               <Link
                 href={`mailto:${personalInfo.email}`}
-                className="font-mono text-[0.75rem] text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+                className="font-mono text-[0.75rem] text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink touch:inline-flex touch:min-h-11 touch:items-center"
               >
                 {personalInfo.email}
               </Link>

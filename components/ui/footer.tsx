@@ -33,6 +33,10 @@ const columns = [
   },
 ];
 
+/* On touch each link is a full 44px row; the list gap folds into the row. */
+const linkClass =
+  'font-display text-[0.8125rem] text-graphite transition-colors hover:text-ink touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center';
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -54,7 +58,7 @@ export default function Footer() {
           {columns.map((col) => (
             <div key={col.label}>
               <Eyebrow className="mb-4">{col.label}</Eyebrow>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 touch:space-y-0">
                 {col.links.map((link) => (
                   <li key={link.href}>
                     {link.external ? (
@@ -62,14 +66,14 @@ export default function Footer() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-display text-[0.8125rem] text-graphite transition-colors hover:text-ink"
+                        className={linkClass}
                       >
                         {link.label}
                       </a>
                     ) : (
                       <Link
                         href={link.href}
-                        className="font-display text-[0.8125rem] text-graphite transition-colors hover:text-ink"
+                        className={linkClass}
                       >
                         {link.label}
                       </Link>

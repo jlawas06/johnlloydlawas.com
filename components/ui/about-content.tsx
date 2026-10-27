@@ -158,7 +158,7 @@ export default function AboutContent() {
             </div>
             <Link
               href="/skills"
-              className="mt-5 inline-block font-body text-[0.875rem] text-slate underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
+              className="mt-5 inline-block font-body text-[0.875rem] text-slate touch:inline-flex touch:min-h-11 touch:items-center underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
             >
               Full stack breakdown
             </Link>

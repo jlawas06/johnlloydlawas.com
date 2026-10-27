@@ -19,6 +19,9 @@ const notFits = [
   'Anything needing on-site presence outside the Philippines.',
 ];
 
+const linkClass =
+  'text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center';
+
 export default function ContactContent() {
   const [copied, setCopied] = useState(false);
 
@@ -54,7 +57,7 @@ export default function ContactContent() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="group inline-flex h-10 items-center gap-2 border border-rule-strong px-3.5 font-mono text-[0.75rem] text-ink transition-colors hover:border-ink"
+                className="group inline-flex h-10 items-center gap-2 border border-rule-strong px-3.5 font-mono text-[0.75rem] text-ink transition-colors hover:border-ink touch:h-11"
               >
                 {copied ? (
                   <Check size={13} strokeWidth={2} className="text-ink" />
@@ -149,7 +152,7 @@ export default function ContactContent() {
               href={personalInfo.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               LinkedIn
             </a>
@@ -157,7 +160,7 @@ export default function ContactContent() {
               href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               GitHub
             </a>
@@ -165,7 +168,7 @@ export default function ContactContent() {
               href="/resume/john-lloyd-lawas-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               Résumé (PDF)
             </a>

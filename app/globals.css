@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Phones and coarse pointers get 44px hit areas (WCAG 2.5.5). A desktop
+   with a mouse keeps the compact 32px chrome. */
+@custom-variant touch {
+  @media (max-width: 640px), (pointer: coarse) {
+    @slot;
+  }
+}
+
 /* ============================================================
    INSTRUMENT — design tokens
 

@@ -113,7 +113,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="py-14 sm:py-16">
             <Link
               href="/projects"
-              className="group mb-10 inline-flex items-center gap-1.5 font-body text-[0.875rem] text-slate transition-colors hover:text-ink"
+              className="group mb-10 inline-flex items-center gap-1.5 font-body text-[0.875rem] text-slate transition-colors hover:text-ink touch:min-h-11"
             >
               <ArrowLeft
                 size={12}

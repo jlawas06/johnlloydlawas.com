@@ -242,7 +242,7 @@ export default function CommandPalette() {
                     value={`${group.heading} ${item.label}`}
                     onSelect={() => item.run()}
                     className={cn(
-                      'flex cursor-pointer items-center gap-3 rounded-[3px] px-2.5 py-2 font-display text-[0.8125rem] text-graphite',
+                      'flex cursor-pointer items-center gap-3 rounded-[3px] px-2.5 py-2 font-display text-[0.8125rem] text-graphite touch:min-h-11',
                       'data-[selected=true]:bg-surface-sunk data-[selected=true]:text-ink'
                     )}
                   >

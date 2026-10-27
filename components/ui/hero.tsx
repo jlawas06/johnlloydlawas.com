@@ -73,7 +73,7 @@ export default function Hero() {
             <button
               type="button"
               onClick={copyEmail}
-              className="group inline-flex h-10 items-center gap-2 px-1 font-mono text-[0.75rem] text-graphite transition-colors hover:text-ink"
+              className="group inline-flex h-10 items-center gap-2 px-1 font-mono text-[0.75rem] text-graphite transition-colors hover:text-ink touch:h-11"
             >
               {copied ? (
                 <Check size={13} strokeWidth={2} className="text-ink" />

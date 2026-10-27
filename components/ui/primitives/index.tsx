@@ -132,12 +132,12 @@ const buttonVariants: Record<ButtonVariant, string> = {
     'rounded-[3px] bg-ink text-paper hover:bg-graphite border border-ink hover:border-graphite',
   ghost:
     'rounded-[3px] border border-rule-strong bg-transparent text-ink hover:bg-surface hover:border-ink',
-  link: 'text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-ink',
+  link: 'text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-ink touch:min-h-11',
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3',
-  md: 'h-10 px-4',
+  sm: 'h-8 px-3 touch:h-11',
+  md: 'h-10 px-4 touch:h-11',
 };
 
 export function buttonClass(
@@ -262,6 +262,7 @@ export function Chip({
 }) {
   return (
     <span
+      data-chip
       className={cn(
         'inline-flex items-center border border-rule bg-surface px-2 py-0.5 font-mono text-[0.8125rem] text-graphite',
         className
