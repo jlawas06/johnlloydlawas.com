@@ -72,6 +72,29 @@ for (const vp of viewports) {
   }
 }
 
+/* Keyboard focus on the hero's primary button, to check the focus ring. */
+{
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  await page.goto(base + '/', { waitUntil: 'networkidle' });
+  for (let i = 0; i < 20; i++) {
+    await page.keyboard.press('Tab');
+    const text = await page.evaluate(() => document.activeElement?.textContent?.trim());
+    if (text?.startsWith('See the work')) break;
+  }
+  const box = await page.evaluate(() => {
+    const r = document.activeElement.getBoundingClientRect();
+    return { x: r.x, y: r.y, width: r.width, height: r.height };
+  });
+  const file = path.join(outDir, 'focus-ring-1440.png');
+  await page.screenshot({
+    path: file,
+    clip: { x: box.x - 24, y: box.y - 24, width: box.width + 360, height: box.height + 48 },
+  });
+  console.log(file);
+  await context.close();
+}
+
 await browser.close();
 fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify(summary, null, 2));
