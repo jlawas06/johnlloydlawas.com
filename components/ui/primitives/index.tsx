@@ -69,6 +69,7 @@ export function Section({
   title,
   description,
   action,
+  actionClassName,
   children,
   className,
   width,
@@ -79,13 +80,14 @@ export function Section({
   title?: string;
   description?: string;
   action?: React.ReactNode;
+  actionClassName?: string;
   children: React.ReactNode;
   className?: string;
   width?: 'default' | 'wide' | 'narrow';
   bleed?: boolean;
 }) {
   const header = (eyebrow || title || description || action) && (
-    <div className="mb-10 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-8 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
       <div className="max-w-2xl">
         {eyebrow && <Eyebrow className="mb-3">{eyebrow}</Eyebrow>}
         {title && (
@@ -99,7 +101,7 @@ export function Section({
           </p>
         )}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div className={cn('shrink-0', actionClassName)}>{action}</div>}
     </div>
   );
 
@@ -111,7 +113,7 @@ export function Section({
   );
 
   return (
-    <section id={id} className={cn('py-16 sm:py-24', className)}>
+    <section id={id} className={cn('py-12 sm:py-24', className)}>
       {bleed ? body : <Container width={width}>{body}</Container>}
     </section>
   );

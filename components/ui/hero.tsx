@@ -121,7 +121,7 @@ export default function Hero() {
         </div>
 
         {/* Every figure here was measured on shipped work. */}
-        <div data-outcomes className="border-t border-rule py-12 sm:py-14">
+        <div data-outcomes className="border-t border-rule py-10 sm:py-14">
           <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 sm:mb-8">
             <Eyebrow>Measured outcomes</Eyebrow>
             <p className="font-body text-[0.875rem] text-slate">

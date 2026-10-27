@@ -29,6 +29,18 @@ const principles = [
   },
 ];
 
+/* Phones get a shorter home page: the first sentence of each principle,
+   and fewer cards, roles and posts. Trimmed items are display:none below `sm`, so
+   they leave the tab order as well. Desktop is unchanged. */
+const MOBILE_CARDS = 2;
+const MOBILE_ROLES = 2;
+const MOBILE_POSTS = 2;
+
+const principleLines = principles.map(({ title, body }) => {
+  const [lead, ...rest] = body.split(/(?<=\.)\s+/);
+  return { title, lead, rest: rest.join(' ') };
+});
+
 export default async function Home() {
   const [projects, posts] = await Promise.all([getAllProjects(), getRecentPosts(3)]);
   const featured = projects.filter((p) => p.featured);
@@ -51,12 +63,23 @@ export default async function Home() {
               <ArrowUpRight size={13} strokeWidth={1.75} />
             </Button>
           }
+          actionClassName="max-sm:hidden"
         >
+          {/* Phones get the first two cards, then the link to the rest. */}
           <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
             {selected.map((project, i) => (
-              <ProjectCard key={project.slug} project={project} priority={i === 0} />
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                priority={i === 0}
+                className={i >= MOBILE_CARDS ? 'max-sm:hidden' : undefined}
+              />
             ))}
           </div>
+          <Button href="/projects" variant="link" className="mt-8 sm:hidden">
+            All case studies
+            <ArrowRight size={13} strokeWidth={1.75} />
+          </Button>
         </Section>
       )}
 
@@ -66,13 +89,14 @@ export default async function Home() {
         className="border-y border-rule bg-surface"
       >
         <div className="grid gap-px border border-rule bg-rule md:grid-cols-3">
-          {principles.map((item) => (
-            <div key={item.title} className="bg-surface p-7 sm:p-8">
+          {principleLines.map((item) => (
+            <div key={item.title} className="bg-surface p-5 sm:p-8">
               <h3 className="font-display text-[1.0625rem] font-semibold leading-snug text-ink">
                 {item.title}
               </h3>
               <p className="mt-3 text-[0.9375rem] leading-relaxed text-graphite">
-                {item.body}
+                {item.lead}
+                <span className="max-sm:hidden"> {item.rest}</span>
               </p>
             </div>
           ))}
@@ -91,8 +115,13 @@ export default async function Home() {
         }
       >
         <div className="border-t border-rule">
-          {recentRoles.map((exp) => (
-            <TimelineRow key={exp.id} experience={exp} compact />
+          {recentRoles.map((exp, i) => (
+            <TimelineRow
+              key={exp.id}
+              experience={exp}
+              compact
+              className={i >= MOBILE_ROLES ? 'max-sm:hidden' : undefined}
+            />
           ))}
         </div>
       </Section>
@@ -111,8 +140,12 @@ export default async function Home() {
           }
         >
           <div className="border-t border-rule">
-            {posts.map((post) => (
-              <PostCard key={post.slug} post={post} />
+            {posts.map((post, i) => (
+              <PostCard
+                key={post.slug}
+                post={post}
+                className={i >= MOBILE_POSTS ? 'max-sm:hidden' : undefined}
+              />
             ))}
           </div>
         </Section>
@@ -120,7 +153,7 @@ export default async function Home() {
 
       <section className="border-t border-rule bg-surface">
         <Container>
-          <div className="flex flex-col gap-8 py-20 sm:py-24 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-8 py-14 sm:py-24 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <Eyebrow className="mb-4">Next step</Eyebrow>
               <h2 className="font-display text-title font-semibold text-ink">

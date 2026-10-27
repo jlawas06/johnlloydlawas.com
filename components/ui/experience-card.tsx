@@ -13,7 +13,8 @@ const CASE_STUDY_BY_COMPANY: Record<string, string> = {};
 
 interface TimelineRowProps {
   experience: Experience;
-  /** Compact rows drop the summary line — used on the home page. */
+  /** Compact rows drop the summary line, and the stack on phones — used on
+      the home page. */
   compact?: boolean;
   className?: string;
 }
@@ -70,7 +71,12 @@ export default function TimelineRow({
           </p>
         )}
 
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <div
+          className={cn(
+            'mt-3 flex flex-wrap items-center gap-1.5',
+            compact && 'max-sm:hidden'
+          )}
+        >
           {experience.technologies.slice(0, compact ? 5 : 8).map((tech) => (
             <Chip key={tech}>{tech}</Chip>
           ))}

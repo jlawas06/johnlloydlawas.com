@@ -224,12 +224,14 @@ test.describe('mobile 390', () => {
     console.log(`home scrollHeight @390: ${height} (before ${HOME_HEIGHT_BEFORE_390})`);
     expect(height).toBeLessThanOrEqual(HOME_HEIGHT_BEFORE_390 * 0.7);
 
-    const shown = (sel: string) =>
-      page.locator(sel).evaluateAll((els) =>
-        els.map((el) => getComputedStyle(el).display !== 'none')
-      );
-    expect(await shown('#work [data-card-media]')).toEqual([true, true, false, false]);
-    expect((await shown('#writing a[href^="/blog/"]')).filter(Boolean)).toHaveLength(2);
+    /* First two shown, the rest display:none (so not focusable either). */
+    const displays = (sel: string) =>
+      page.locator(sel).evaluateAll((els) => els.map((el) => getComputedStyle(el).display));
+    for (const sel of ['#work a[href^="/projects/"]', '#writing a[href^="/blog/"]']) {
+      const shown = (await displays(sel)).map((d) => d !== 'none');
+      expect(shown.slice(0, 2)).toEqual([true, true]);
+      expect(shown.slice(2).every((s) => !s)).toBe(true);
+    }
     await expect(page.locator('#work a[href="/projects"]:visible')).toHaveCount(1);
   });
 
@@ -317,7 +319,7 @@ for (const [label, device] of [
         await open(page, path);
         const media = await page.locator('[data-card-media]').evaluateAll((els) =>
           els
-            .filter((el) => getComputedStyle(el).display !== 'none')
+            .filter((el) => el.checkVisibility())
             .map((el) => {
               const r = el.getBoundingClientRect();
               const img = el.querySelector('img');

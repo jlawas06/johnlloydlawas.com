@@ -43,8 +43,9 @@ export default function Footer() {
   return (
     <footer className="border-t border-rule">
       <Container>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          <div className="col-span-2 lg:col-span-1">
+        {/* Phones fit the three link columns on one row. */}
+        <div className="grid grid-cols-3 gap-x-4 gap-y-10 py-14 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 sm:py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="col-span-3 sm:col-span-2 lg:col-span-1">
             <div className="font-display text-[0.9375rem] font-semibold tracking-tight text-ink">
               {personalInfo.name}
             </div>
