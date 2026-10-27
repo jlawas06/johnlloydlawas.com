@@ -45,6 +45,7 @@ export default function Hero() {
           </h1>
 
           <p
+            data-hero-subcopy
             className="rise mt-8 max-w-[58ch] text-lg leading-relaxed text-graphite"
             style={{ animationDelay: '120ms' }}
           >
@@ -55,7 +56,19 @@ export default function Hero() {
             every timezone.
           </p>
 
+          {/* One sourced figure as proof. It is the -50% in data/outcomes.ts. */}
+          <p
+            data-hero-proof
+            className="rise mt-4 max-w-[58ch] text-[1.0625rem] leading-relaxed text-graphite"
+            style={{ animationDelay: '150ms' }}
+          >
+            Cut application load time by{' '}
+            <span className="font-medium text-measure tabular-nums">50%</span>{' '}
+            across 5+ ASP.NET applications (2019–2022).
+          </p>
+
           <div
+            data-hero-ctas
             className="rise mt-10 flex flex-wrap items-center gap-3"
             style={{ animationDelay: '180ms' }}
           >
@@ -70,18 +83,38 @@ export default function Hero() {
             <Button href="/contact" variant="ghost">
               Start a project
             </Button>
+          </div>
+
+          <div
+            data-hero-email
+            className="rise mt-3 flex flex-wrap items-center gap-x-1"
+            style={{ animationDelay: '210ms' }}
+          >
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="font-mono text-[0.8125rem] text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink touch:inline-flex touch:min-h-11 touch:items-center"
+            >
+              {personalInfo.email}
+            </a>
             <button
               type="button"
               onClick={copyEmail}
-              className="group inline-flex h-10 items-center gap-2 px-1 font-mono text-[0.75rem] text-graphite transition-colors hover:text-ink touch:h-11"
+              aria-label="Copy email address"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-[3px] text-graphite transition-colors hover:text-ink"
             >
               {copied ? (
-                <Check size={13} strokeWidth={2} className="text-ink" />
+                <Check size={14} strokeWidth={2} className="text-ink" />
               ) : (
-                <Copy size={13} strokeWidth={1.75} />
+                <Copy size={14} strokeWidth={1.75} />
               )}
-              {copied ? 'Copied' : personalInfo.email}
             </button>
+            <span
+              role="status"
+              aria-live="polite"
+              className="font-body text-[0.8125rem] text-graphite"
+            >
+              {copied ? 'Copied' : ''}
+            </span>
           </div>
         </div>
 
