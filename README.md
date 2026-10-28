@@ -15,7 +15,7 @@ Nav, headings, buttons and body copy are all ink — no colour. `--measure` is t
 only saturated value in the palette, and it is permitted in exactly two places:
 
 1. **A measured outcome** — a figure that was actually measured on shipped work,
-   and the marks that belong to it (delta tracks, outcome ticks).
+   and the marks that belong to it (outcome ticks).
 2. **A live status** — availability, a currently-held role. Facts that are true
    right now rather than claims.
 
@@ -23,22 +23,24 @@ Nothing else earns it. Success checkmarks, affirmative list bullets and
 skill-level dots all deliberately use ink or a value ramp instead — they read
 the same and they keep the colour meaningful.
 
-Monospace carries figures, dates, labels and code; it never sets body copy.
+Monospace carries the email address, dates, tags, figures and code. It never
+sets labels or body copy. Labels are sentence case in the body face, never
+tracked capitals.
 
 ### Two constraints that are easy to break
 
-**Every step of the ink ramp clears WCAG AA on `--paper`** (15.2:1 / 7.4:1 /
-4.6:1). `--slate` carries eyebrows, rail labels and captions at 10–11px, so it
-is text, not decoration — if you lighten it, that text stops being readable.
-`--baseline` exists precisely so the delta rule's "before" bar can stay light
-without dragging label text along with it.
+**Every text step clears WCAG AA (4.5:1) on paper, surface and sunk, in both
+themes.** `--slate` and `--baseline` carry labels and captions, so they are
+text, not decoration. If you lighten them, that text stops being readable.
+`python3 scripts/contrast-table.py` prints the current ratios, and
+`tests/ui.spec.ts` checks every page in both themes.
 
-**The delta rule never encodes before/after with colour alone.** Simulated
-protanopia collapses `--measure` and `--baseline` to a 1.02:1 value ratio —
-indistinguishable. The baseline bar is therefore *hatched* and the measured bar
-*solid*, so the comparison survives with no colour perception at all. Bar
-length and the printed figure are the third and fourth redundant encodings.
-Do not "clean up" the hatch into a flat fill.
+**No figure is drawn more precisely than it was measured.** Outcomes are a
+printed figure, a label and a source line. There are no bars, because the
+data holds a percentage rather than before/after values. A bar comes back only
+with real measurements (see the TODO in `data/outcomes.ts`). When it does,
+encode before/after with shape as well as colour: simulated protanopia
+collapses `--measure` against the muted ramp.
 
 Keeping that rule is what stops the design drifting into decoration. If a new
 element wants colour or mono, it has to justify itself as data.
@@ -55,8 +57,8 @@ Defined once in [`app/globals.css`](app/globals.css) and bridged to Tailwind via
 | `--surface-sunk` | `#E3E6EA` | `#1D242B` | Inset tracks, code |
 | `--ink` | `#14181D` | `#E7EAED` | Primary text |
 | `--graphite` | `#434C56` | `#98A2AE` | Secondary text |
-| `--slate` | `#616B76` | `#7C8794` | Labels, captions, tertiary |
-| `--baseline` | `#8A939E` | `#6B7681` | The "before" bar in a delta — **not** a text colour |
+| `--slate` | `#4F5964` | `#8D97A3` | Labels, captions, tertiary |
+| `--baseline` | `#5A6470` | `#848E9A` | Quietest text step (clears 4.5:1 everywhere) |
 | `--rule` / `--rule-strong` | `#D3D8DE` / `#B9C1CA` | `#262D35` / `#384049` | Hairlines |
 | `--measure` | `#0B6E52` | `#4EC9A5` | **Measured results only** |
 
@@ -71,22 +73,25 @@ Defined once in [`app/globals.css`](app/globals.css) and bridged to Tailwind via
 | Role | Face | Use |
 |---|---|---|
 | Display | Archivo (variable, `wdth` 112) | Headings, UI chrome |
-| Body | Newsreader | Prose, descriptions |
-| Data | JetBrains Mono | Figures, dates, labels, code |
+| Body | Newsreader | Prose, descriptions, labels (13–14px, `--slate`) |
+| Data | JetBrains Mono | Email address, dates, tags, figures, code |
+
+Nothing is set below 12px. Tag chips are 13px. On phones and coarse pointers
+the `touch:` variant gives every control a 44px hit area.
 
 The OG image in [`app/opengraph-image.tsx`](app/opengraph-image.tsx) duplicates
 the light palette as literal hex — Satori cannot read CSS variables. **Change
 both together.**
 
-### The delta rule
+### Measured outcomes
 
-The signature element: a two-track measurement instrument drawn from real
-numbers, in [`components/ui/primitives/delta-rule.tsx`](components/ui/primitives/delta-rule.tsx).
+A large figure in `--measure`, what it measures, and where the measurement came
+from, in [`components/ui/primitives/outcome.tsx`](components/ui/primitives/outcome.tsx).
 
 All figures come from [`data/outcomes.ts`](data/outcomes.ts), keyed by project
 slug, so the home page and case studies can never disagree. **Only add an entry
 when the number was actually measured.** Projects without one render `ScopeRule`
-instead — never a fabricated delta.
+instead, never a fabricated figure.
 
 ## Content
 
@@ -98,12 +103,12 @@ instead — never a fabricated delta.
 | `data/personal.ts` | Name, contact, bio, meta description |
 | `data/experience.ts` | Employment record |
 | `data/skills.ts` | Stack breakdown |
-| `data/outcomes.ts` | Measured deltas |
+| `data/outcomes.ts` | Measured outcomes |
 
 A leading `# Heading` in any MDX body is stripped on load (`stripLeadingH1` in
 [`lib/utils.ts`](lib/utils.ts)) — the page chrome already renders the title.
 
-Screenshots go in `public/work/<slug>/`. See
+Card images go in `public/work/<slug>.webp`. See
 [`public/work/README.md`](public/work/README.md) for specs.
 
 ## Development

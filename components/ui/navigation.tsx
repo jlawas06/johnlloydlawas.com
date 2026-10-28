@@ -50,7 +50,7 @@ export default function Navigation() {
           <Link
             href="/"
             aria-label="Home"
-            className="font-display text-[0.9375rem] font-semibold leading-none tracking-tight text-ink"
+            className="font-display text-[0.9375rem] font-semibold leading-none tracking-tight text-ink touch:inline-flex touch:min-h-11 touch:items-center"
           >
             <span className="hidden sm:inline">John Lloyd Lawas</span>
             <span className="sm:hidden">J. L. Lawas</span>
@@ -64,6 +64,8 @@ export default function Navigation() {
                 aria-current={isActive(item.href) ? 'page' : undefined}
                 className={cn(
                   'relative py-1 font-display text-[0.8125rem] transition-colors',
+                  /* Tablets: widen the hit area without moving the underline. */
+                  "touch:before:absolute touch:before:-inset-x-2 touch:before:-inset-y-3 touch:before:content-['']",
                   isActive(item.href)
                     ? 'font-medium text-ink'
                     : 'text-graphite hover:text-ink'
@@ -82,7 +84,7 @@ export default function Navigation() {
               type="button"
               onClick={() => openCommandPalette()}
               aria-label="Search"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink touch:h-11 touch:w-11"
             >
               <Search size={15} strokeWidth={1.75} />
             </button>
@@ -94,7 +96,7 @@ export default function Navigation() {
               onClick={() => setIsOpen((v) => !v)}
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink md:hidden"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink md:hidden touch:h-11 touch:w-11"
             >
               {isOpen ? <X size={17} strokeWidth={1.75} /> : <Menu size={17} strokeWidth={1.75} />}
             </button>
@@ -111,7 +113,7 @@ export default function Navigation() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'border-b border-rule py-3 font-display text-[0.9375rem] last:border-b-0',
+                    'flex min-h-11 items-center border-b border-rule py-3 font-display text-[0.9375rem] last:border-b-0',
                     isActive(item.href) ? 'font-medium text-ink' : 'text-graphite'
                   )}
                 >

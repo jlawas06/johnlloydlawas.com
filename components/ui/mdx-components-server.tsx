@@ -5,6 +5,8 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
    inversion against the paper ground rather than a terminal costume. */
 const CODE_BG = '#12171D';
 const CODE_RULE = '#252C34';
+/* Matches dark --slate, so the label clears 4.5:1 on CODE_BG in both themes. */
+const CODE_LABEL = '#8D97A3';
 
 interface CodeBlockProps {
   children?: React.ReactNode;
@@ -32,7 +34,7 @@ function CodeBlock({ children, className, ...props }: CodeBlockProps) {
         className="flex items-center justify-between px-4 py-2"
         style={{ borderBottom: `1px solid ${CODE_RULE}` }}
       >
-        <span className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#6B7681]">
+        <span className="font-mono text-[0.75rem]" style={{ color: CODE_LABEL }}>
           {language}
         </span>
       </div>
@@ -74,7 +76,7 @@ function TableHead({ children }: { children: React.ReactNode }) {
 
 function TableHeader({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-2.5 text-left font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+    <th className="px-4 py-2.5 text-left font-body text-[0.8125rem] font-medium text-slate">
       {children}
     </th>
   );
@@ -116,7 +118,7 @@ function Alert({
 
   return (
     <aside className="my-7 border-l-2 border-ink bg-surface-sunk px-5 py-4">
-      <p className="mb-1.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+      <p className="mb-1.5 font-body text-[0.8125rem] text-slate">
         {label}
       </p>
       <div className="text-[1rem] leading-relaxed text-ink [&>p:last-child]:mb-0">

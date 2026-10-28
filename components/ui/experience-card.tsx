@@ -13,7 +13,8 @@ const CASE_STUDY_BY_COMPANY: Record<string, string> = {};
 
 interface TimelineRowProps {
   experience: Experience;
-  /** Compact rows drop the summary line — used on the home page. */
+  /** Compact rows drop the summary line, and the stack on phones — used on
+      the home page. */
   compact?: boolean;
   className?: string;
 }
@@ -29,11 +30,11 @@ export default function TimelineRow({
 
   const body = (
     <>
-      <div className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1.5">
+      <div className="font-mono text-[0.75rem] text-slate sm:pt-1.5">
         <div>
           {formatMonth(experience.startDate)} – {formatMonth(experience.endDate)}
         </div>
-        <div className="mt-1 flex items-center gap-1.5 normal-case tracking-normal">
+        <div className="mt-1 flex items-center gap-1.5">
           <span>{formatDuration(experience.startDate, experience.endDate)}</span>
           {isCurrent && (
             <>
@@ -70,7 +71,12 @@ export default function TimelineRow({
           </p>
         )}
 
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <div
+          className={cn(
+            'mt-3 flex flex-wrap items-center gap-1.5',
+            compact && 'max-sm:hidden'
+          )}
+        >
           {experience.technologies.slice(0, compact ? 5 : 8).map((tech) => (
             <Chip key={tech}>{tech}</Chip>
           ))}
@@ -79,7 +85,7 @@ export default function TimelineRow({
         {outcome && (
           <p className="mt-3 font-mono text-[0.8125rem] text-measure tabular-nums">
             {outcome.figure}{' '}
-            <span className="text-slate">{outcome.label.toLowerCase()}</span>
+            <span className="font-body text-slate">{outcome.label.toLowerCase()}</span>
           </p>
         )}
       </div>

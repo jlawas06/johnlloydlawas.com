@@ -6,7 +6,7 @@ import { getTotalExperience } from '@/lib/utils';
 import { ArrowRight, Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { Button, Container, Eyebrow } from './primitives';
-import { DeltaRule } from './primitives/delta-rule';
+import { OutcomeFigure } from './primitives/outcome';
 
 export default function Hero() {
   const years = getTotalExperience();
@@ -26,15 +26,16 @@ export default function Hero() {
     <section className="border-b border-rule">
       <Container>
         <div className="pt-14 pb-14 sm:pt-20 sm:pb-16">
-          <div className="rise flex items-center gap-2.5">
-            <span className="relative flex h-1.5 w-1.5">
+          <p
+            data-status-line
+            className="rise flex items-center gap-2.5 font-body text-[0.875rem] leading-snug text-graphite"
+          >
+            <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-measure opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-measure" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-measure" />
             </span>
-            <Eyebrow>
-              Available for new projects · Cebu City, UTC+8 · {years} years
-            </Eyebrow>
-          </div>
+            <span>Available for new projects — Cebu City (UTC+8)</span>
+          </p>
 
           <h1
             className="rise mt-8 max-w-[21ch] font-display text-display font-semibold text-ink"
@@ -45,6 +46,7 @@ export default function Hero() {
           </h1>
 
           <p
+            data-hero-subcopy
             className="rise mt-8 max-w-[58ch] text-lg leading-relaxed text-graphite"
             style={{ animationDelay: '120ms' }}
           >
@@ -55,7 +57,20 @@ export default function Hero() {
             every timezone.
           </p>
 
+          {/* One sourced figure as proof. It is the -50% in data/outcomes.ts. */}
+          <p
+            data-hero-proof
+            className="rise mt-4 max-w-[58ch] text-[1.0625rem] leading-relaxed text-graphite"
+            style={{ animationDelay: '150ms' }}
+          >
+            Cut application load time by{' '}
+            <span className="font-medium text-measure tabular-nums">50%</span>{' '}
+            across 5+ ASP.NET applications{' '}
+            <span className="whitespace-nowrap">(2019–2022).</span>
+          </p>
+
           <div
+            data-hero-ctas
             className="rise mt-10 flex flex-wrap items-center gap-3"
             style={{ animationDelay: '180ms' }}
           >
@@ -70,33 +85,53 @@ export default function Hero() {
             <Button href="/contact" variant="ghost">
               Start a project
             </Button>
+          </div>
+
+          <div
+            data-hero-email
+            className="rise mt-3 flex flex-wrap items-center gap-x-1"
+            style={{ animationDelay: '210ms' }}
+          >
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="font-mono text-[0.8125rem] text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink touch:inline-flex touch:min-h-11 touch:items-center"
+            >
+              {personalInfo.email}
+            </a>
             <button
               type="button"
               onClick={copyEmail}
-              className="group inline-flex h-10 items-center gap-2 px-1 font-mono text-[0.75rem] text-graphite transition-colors hover:text-ink"
+              aria-label="Copy email address"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-[3px] text-graphite transition-colors hover:text-ink"
             >
               {copied ? (
-                <Check size={13} strokeWidth={2} className="text-ink" />
+                <Check size={14} strokeWidth={2} className="text-ink" />
               ) : (
-                <Copy size={13} strokeWidth={1.75} />
+                <Copy size={14} strokeWidth={1.75} />
               )}
-              {copied ? 'Copied' : personalInfo.email}
             </button>
+            <span
+              role="status"
+              aria-live="polite"
+              className="font-body text-[0.8125rem] text-graphite"
+            >
+              {copied ? 'Copied' : ''}
+            </span>
           </div>
         </div>
 
-        {/* The delta band. Every figure here was measured on shipped work. */}
-        <div className="border-t border-rule py-12 sm:py-14">
-          <div className="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        {/* Every figure here was measured on shipped work. */}
+        <div data-outcomes className="border-t border-rule py-10 sm:py-14">
+          <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 sm:mb-8">
             <Eyebrow>Measured outcomes</Eyebrow>
-            <p className="font-mono text-[0.6875rem] text-slate">
+            <p className="font-body text-[0.875rem] text-slate">
               Every figure below was measured on shipped work.
             </p>
           </div>
 
-          <div className="grid gap-10 sm:gap-8 lg:grid-cols-3 lg:gap-12">
-            {headlineOutcomes.map((delta, i) => (
-              <DeltaRule key={delta.label} delta={delta} index={i} />
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-3 lg:gap-12">
+            {headlineOutcomes.map((outcome) => (
+              <OutcomeFigure key={outcome.label} outcome={outcome} />
             ))}
           </div>
         </div>

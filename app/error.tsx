@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Container, Eyebrow } from '@/components/ui/primitives';
+import { Button, Container, Eyebrow, labelClass } from '@/components/ui/primitives';
+import { cn } from '@/lib/utils';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -26,8 +27,8 @@ export default function Error({
           email me and tell me which page you were on.
         </p>
         {error.digest && (
-          <p className="mt-5 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate">
-            Reference {error.digest}
+          <p className={cn('mt-5', labelClass)}>
+            Reference <span className="font-mono text-[0.75rem]">{error.digest}</span>
           </p>
         )}
         <div className="mt-9 flex flex-wrap gap-3">

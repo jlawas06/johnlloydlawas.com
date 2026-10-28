@@ -1,6 +1,14 @@
 import BlogPostMDX from '@/components/ui/blog-post-mdx';
-import { Button, Chip, Container, Eyebrow, Rail } from '@/components/ui/primitives';
-import { DeltaRule, ScopeRule } from '@/components/ui/primitives/delta-rule';
+import {
+  Button,
+  Chip,
+  Container,
+  Eyebrow,
+  Rail,
+  labelClass,
+  type RailItem,
+} from '@/components/ui/primitives';
+import { OutcomeFigure, ScopeRule } from '@/components/ui/primitives/outcome';
 import ReadingProgress from '@/components/ui/reading-progress';
 import { getOutcome } from '@/data/outcomes';
 import { getAllProjects, getProjectBySlug } from '@/lib/projects';
@@ -54,9 +62,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     project.startDate && {
       label: 'Timeline',
       value: formatRange(project.startDate, project.endDate),
+      mono: true,
     },
     { label: 'Category', value: project.category },
-  ].filter(Boolean) as { label: string; value: string }[];
+  ].filter(Boolean) as RailItem[];
 
   /* No measured delta for this project — show scope facts rather than
      inventing a figure. */
@@ -66,8 +75,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     {
       label: 'Stack',
       value: project.technologies.slice(0, 3).join(', '),
+      mono: true,
     },
-  ].filter(Boolean) as { label: string; value: string }[];
+  ].filter(Boolean) as { label: string; value: string; mono?: boolean }[];
 
   /* Only the populated sections become cells — an absent `challenges` array
      must not leave a blank column in the grid. */
@@ -113,7 +123,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="py-14 sm:py-16">
             <Link
               href="/projects"
-              className="group mb-10 inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate transition-colors hover:text-ink"
+              className="group mb-10 inline-flex items-center gap-1.5 font-body text-[0.875rem] text-slate transition-colors hover:text-ink touch:min-h-11"
             >
               <ArrowLeft
                 size={12}
@@ -164,7 +174,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="py-10 sm:py-12">
             {outcome ? (
               <div className="max-w-xl">
-                <DeltaRule delta={outcome} />
+                <OutcomeFigure outcome={outcome} />
               </div>
             ) : (
               <>
@@ -271,9 +281,7 @@ function SummaryCell({
 }) {
   return (
     <div className="bg-surface p-6">
-      <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-        {label}
-      </p>
+      <p className={labelClass}>{label}</p>
       <ul className="mt-4 space-y-3">
         {items.map((item) => (
           <li

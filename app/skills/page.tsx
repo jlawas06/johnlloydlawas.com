@@ -1,4 +1,4 @@
-import { Chip, Container, Eyebrow } from '@/components/ui/primitives';
+import { Chip, Container, Eyebrow, labelClass } from '@/components/ui/primitives';
 import { personalInfo } from '@/data/personal';
 import { skillCategories, topSkills, type Skill } from '@/data/skills';
 import { cn } from '@/lib/utils';
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * This page is entirely data, so mono is the right face throughout — it is the
- * one place the type rule permits a full monospace layout.
+ * Skill names and years are data, so they are mono. The level is a label, so
+ * it is set in the body face like every other label.
  */
 function SkillRow({ skill }: { skill: Skill }) {
   const name = skill.slug ?? skill.name;
@@ -28,10 +28,10 @@ function SkillRow({ skill }: { skill: Skill }) {
       <span className="min-w-0 flex-1 truncate font-mono text-[0.8125rem] text-ink">
         {name}
       </span>
-      <span className="shrink-0 font-mono text-[0.6875rem] tabular-nums text-slate">
+      <span className="shrink-0 font-mono text-[0.75rem] tabular-nums text-slate">
         {skill.years}y
       </span>
-      <span className="w-20 shrink-0 text-right font-mono text-[0.625rem] uppercase tracking-[0.1em] text-slate">
+      <span className={cn('w-20 shrink-0 text-right capitalize', labelClass)}>
         {skill.level}
       </span>
     </div>
@@ -70,7 +70,12 @@ export default function SkillsPage() {
 
       <Container>
         <div className="py-12 sm:py-14">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-rule pb-5 font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-slate">
+          <div
+            className={cn(
+              'flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-rule pb-5',
+              labelClass
+            )}
+          >
             <span className="inline-flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-ink" />
               Core — daily
@@ -83,7 +88,7 @@ export default function SkillsPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-rule-strong" />
               Familiar — shipped with it
             </span>
-            <span className="ml-auto normal-case tracking-normal">
+            <span className="ml-auto">
               {all.length} technologies · {core.length} core
             </span>
           </div>

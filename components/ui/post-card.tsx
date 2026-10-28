@@ -16,9 +16,9 @@ export default function PostCard({ post, className }: PostCardProps) {
         className
       )}
     >
-      <div className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1.5">
+      <div className="font-mono text-[0.75rem] text-slate sm:pt-1.5">
         <time dateTime={post.date}>{formatDateShort(post.date)}</time>
-        <span className="mx-2 text-rule-strong sm:hidden">·</span>
+        <span aria-hidden="true" className="mx-2 sm:hidden">·</span>
         <span className="sm:mt-1 sm:block">{post.readingTime} min read</span>
       </div>
 
@@ -30,7 +30,7 @@ export default function PostCard({ post, className }: PostCardProps) {
           {post.excerpt}
         </p>
         {post.tags.length > 0 && (
-          <div className="mt-3 font-mono text-[0.6875rem] text-slate">
+          <div className="mt-3 font-mono text-[0.8125rem] text-slate">
             {post.tags.slice(0, 3).join(' · ')}
           </div>
         )}

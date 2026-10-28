@@ -23,7 +23,8 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
-/* Data: reserved for figures, dates, labels and code. Never body copy. */
+/* Data: reserved for the email address, dates, tags, figures and code.
+   Never labels or body copy. */
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",

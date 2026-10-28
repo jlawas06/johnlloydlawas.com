@@ -3,7 +3,7 @@
 import { personalInfo } from '@/data/personal';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
-import { Button, Container, Eyebrow } from './primitives';
+import { Button, Container, Eyebrow, labelClass } from './primitives';
 
 /** Written for someone deciding whether to send the email, not for a peer. */
 const goodFits = [
@@ -18,6 +18,9 @@ const notFits = [
   'Native iOS or Android — I would only slow you down.',
   'Anything needing on-site presence outside the Philippines.',
 ];
+
+const linkClass =
+  'text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink touch:inline-flex touch:min-h-11 touch:min-w-11 touch:items-center';
 
 export default function ContactContent() {
   const [copied, setCopied] = useState(false);
@@ -54,7 +57,7 @@ export default function ContactContent() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="group inline-flex h-10 items-center gap-2 border border-rule-strong px-3.5 font-mono text-[0.75rem] text-ink transition-colors hover:border-ink"
+                className="group inline-flex h-10 items-center gap-2 border border-rule-strong px-3.5 font-mono text-[0.75rem] text-ink transition-colors hover:border-ink touch:h-11"
               >
                 {copied ? (
                   <Check size={13} strokeWidth={2} className="text-ink" />
@@ -72,7 +75,7 @@ export default function ContactContent() {
         <div className="py-14 sm:py-16">
           <dl className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Response time
               </dt>
               <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
@@ -81,7 +84,7 @@ export default function ContactContent() {
               </dd>
             </div>
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Working hours
               </dt>
               <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink">
@@ -90,7 +93,7 @@ export default function ContactContent() {
               </dd>
             </div>
             <div className="bg-surface p-6">
-              <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
+              <dt className={labelClass}>
                 Availability
               </dt>
               <dd className="mt-2 flex items-start gap-2 text-[0.9375rem] leading-relaxed text-ink">
@@ -144,12 +147,12 @@ export default function ContactContent() {
             </section>
           </div>
 
-          <div className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-8 font-mono text-[0.75rem]">
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-rule pt-8 font-display text-[0.875rem]">
             <a
               href={personalInfo.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               LinkedIn
             </a>
@@ -157,7 +160,7 @@ export default function ContactContent() {
               href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               GitHub
             </a>
@@ -165,11 +168,11 @@ export default function ContactContent() {
               href="/resume/john-lloyd-lawas-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-graphite underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+              className={linkClass}
             >
               Résumé (PDF)
             </a>
-            <span className="text-slate">Cebu City, Philippines · UTC+8</span>
+            <span className={labelClass}>Cebu City, Philippines · UTC+8</span>
           </div>
         </div>
       </Container>

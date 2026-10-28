@@ -30,10 +30,14 @@ export function Container({
 }
 
 /* ------------------------------------------------------------------
-   Eyebrow — mono, uppercase. A label, nothing more.
-   Mono is permitted here because an eyebrow is metadata.
+   Labels — sentence case in the body face, never tracked caps. Mono is
+   reserved for data (email, dates, tags, figures), and a label is not data.
    ------------------------------------------------------------------ */
 
+/** Small label: definition terms, captions, card metadata. */
+export const labelClass = 'font-body text-[0.8125rem] leading-snug text-slate';
+
+/** Eyebrow — the label above a heading. */
 export function Eyebrow({
   children,
   className,
@@ -46,7 +50,7 @@ export function Eyebrow({
   return (
     <Tag
       className={cn(
-        'font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-slate',
+        'font-body text-[0.875rem] leading-snug text-slate',
         className
       )}
     >
@@ -65,6 +69,7 @@ export function Section({
   title,
   description,
   action,
+  actionClassName,
   children,
   className,
   width,
@@ -75,13 +80,14 @@ export function Section({
   title?: string;
   description?: string;
   action?: React.ReactNode;
+  actionClassName?: string;
   children: React.ReactNode;
   className?: string;
   width?: 'default' | 'wide' | 'narrow';
   bleed?: boolean;
 }) {
   const header = (eyebrow || title || description || action) && (
-    <div className="mb-10 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-8 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
       <div className="max-w-2xl">
         {eyebrow && <Eyebrow className="mb-3">{eyebrow}</Eyebrow>}
         {title && (
@@ -95,7 +101,7 @@ export function Section({
           </p>
         )}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div className={cn('shrink-0', actionClassName)}>{action}</div>}
     </div>
   );
 
@@ -107,7 +113,7 @@ export function Section({
   );
 
   return (
-    <section id={id} className={cn('py-16 sm:py-24', className)}>
+    <section id={id} className={cn('py-12 sm:py-24', className)}>
       {bleed ? body : <Container width={width}>{body}</Container>}
     </section>
   );
@@ -128,12 +134,12 @@ const buttonVariants: Record<ButtonVariant, string> = {
     'rounded-[3px] bg-ink text-paper hover:bg-graphite border border-ink hover:border-graphite',
   ghost:
     'rounded-[3px] border border-rule-strong bg-transparent text-ink hover:bg-surface hover:border-ink',
-  link: 'text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-ink',
+  link: 'text-ink underline decoration-rule-strong underline-offset-4 hover:decoration-ink touch:min-h-11',
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3',
-  md: 'h-10 px-4',
+  sm: 'h-8 px-3 touch:h-11',
+  md: 'h-10 px-4 touch:h-11',
 };
 
 export function buttonClass(
@@ -219,14 +225,21 @@ export function Card({
 }
 
 /* ------------------------------------------------------------------
-   Rail — the narrow metadata column. Mono lives here.
+   Rail — the narrow metadata column. Values are body copy; set `mono`
+   on an item whose value is data (a date range, a figure, tags).
    ------------------------------------------------------------------ */
+
+export interface RailItem {
+  label: string;
+  value: React.ReactNode;
+  mono?: boolean;
+}
 
 export function Rail({
   items,
   className,
 }: {
-  items: { label: string; value: React.ReactNode }[];
+  items: RailItem[];
   className?: string;
 }) {
   if (items.length === 0) return null;
@@ -235,10 +248,13 @@ export function Rail({
     <dl className={cn('space-y-5', className)}>
       {items.map((item) => (
         <div key={item.label}>
-          <dt className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-slate">
-            {item.label}
-          </dt>
-          <dd className="mt-1.5 font-mono text-[0.8125rem] leading-relaxed text-ink">
+          <dt className={labelClass}>{item.label}</dt>
+          <dd
+            className={cn(
+              'mt-1 leading-relaxed text-ink',
+              item.mono ? 'font-mono text-[0.8125rem]' : 'font-body text-[0.9375rem]'
+            )}
+          >
             {item.value}
           </dd>
         </div>
@@ -260,8 +276,9 @@ export function Chip({
 }) {
   return (
     <span
+      data-chip
       className={cn(
-        'inline-flex items-center border border-rule bg-surface px-2 py-0.5 font-mono text-[0.6875rem] text-graphite',
+        'inline-flex items-center border border-rule bg-surface px-2 py-0.5 font-mono text-[0.8125rem] text-graphite',
         className
       )}
     >

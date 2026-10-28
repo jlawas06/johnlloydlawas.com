@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Phones and coarse pointers get 44px hit areas (WCAG 2.5.5). A desktop
+   with a mouse keeps the compact 32px chrome. */
+@custom-variant touch {
+  @media (max-width: 640px), (pointer: coarse) {
+    @slot;
+  }
+}
+
 /* ============================================================
    INSTRUMENT — design tokens
 
@@ -18,15 +26,13 @@
   --surface: #ffffff;
   --surface-sunk: #e3e6ea;
 
-  /* Ink — a three-step value ramp. Every step clears WCAG AA on --paper,
-     because the tertiary step carries eyebrows, captions and rail labels. */
-  --ink: #14181d;      /* 15.2:1 */
-  --graphite: #434c56; /* 7.4:1  */
-  --slate: #616b76;    /* 4.6:1  */
-
-  /* The "before" state in a measurement. Deliberately not --slate: it must
-     stay light enough to separate from --measure by value, not hue alone. */
-  --baseline: #8a939e;
+  /* Ink — a four-step value ramp. Every text step clears WCAG AA (4.5:1) on
+     paper, surface and sunk, because --slate carries labels and captions.
+     Ratios: paper / surface / sunk. */
+  --ink: #14181d;      /* 15.19 / 17.82 / 14.24 */
+  --graphite: #434c56; /*  7.43 /  8.73 /  6.97 */
+  --slate: #4f5964;    /*  6.07 /  7.13 /  5.69 */
+  --baseline: #5a6470; /*  5.12 /  6.01 /  4.80 */
 
   /* Rules */
   --rule: #d3d8de;
@@ -53,11 +59,10 @@
   --surface: #161b21;
   --surface-sunk: #1d242b;
 
-  --ink: #e7eaed;      /* 15.3:1 */
-  --graphite: #98a2ae; /* 7.2:1  */
-  --slate: #7c8794;    /* 5.1:1  */
-
-  --baseline: #6b7681;
+  --ink: #e7eaed;      /* 15.32 / 14.34 / 12.98 */
+  --graphite: #98a2ae; /*  7.15 /  6.69 /  6.06 */
+  --slate: #8d97a3;    /*  6.24 /  5.84 /  5.29 */
+  --baseline: #848e9a; /*  5.56 /  5.21 /  4.72 */
 
   --rule: #262d35;
   --rule-strong: #384049;
@@ -155,47 +160,6 @@ body {
   }
 }
 
-/* ============================================================
-   Signature: the delta rule
-   ============================================================ */
-
-@keyframes delta-draw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-/* Bar length is the inline width; the animation only draws it in. With
-   reduced motion the animation is dropped and the bar renders at full
-   length immediately. */
-.delta-track {
-  transform-origin: left center;
-}
-
-/* The baseline is hatched, the measured result is solid.
-   Red-green deficiency collapses these two greens to the same value, so the
-   difference between "before" and "after" cannot rest on colour. Hatching is
-   a shape cue no colour vision deficiency defeats — and it borrows the
-   convention engineering drawings already use for a reference region. */
-.delta-track--baseline {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--baseline) 0 1.5px,
-    transparent 1.5px 5px
-  );
-}
-
-.delta-track--measured {
-  background: var(--measure);
-}
-
-.delta-track[data-animate="true"] {
-  animation: delta-draw 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
 @keyframes rise {
   from {
     opacity: 0;
@@ -212,8 +176,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise,
-  .delta-track[data-animate="true"] {
+  .rise {
     animation: none !important;
   }
   *,
@@ -368,9 +331,8 @@ body {
 }
 
 .prose th {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
   font-weight: 500;
   color: var(--graphite);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
 }

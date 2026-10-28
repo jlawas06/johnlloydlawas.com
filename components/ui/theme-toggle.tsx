@@ -11,7 +11,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink"
+      className="inline-flex h-8 w-8 items-center justify-center rounded-[3px] text-graphite transition-colors hover:bg-surface hover:text-ink touch:h-11 touch:w-11"
     >
       {theme === 'dark' ? (
         <Sun size={15} strokeWidth={1.75} />

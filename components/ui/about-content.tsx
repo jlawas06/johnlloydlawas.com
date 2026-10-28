@@ -49,7 +49,7 @@ export default function AboutContent() {
                 { label: 'Role', value: personalInfo.title },
                 { label: 'Based in', value: 'Cebu City, Philippines' },
                 { label: 'Timezone', value: 'UTC+8' },
-                { label: 'Experience', value: `${totalYears} years` },
+                { label: 'Experience', value: `${totalYears} years`, mono: true },
                 {
                   label: 'Status',
                   value: (
@@ -104,7 +104,7 @@ export default function AboutContent() {
               <dl className="mt-6 divide-y divide-rule border-y border-rule">
                 {principles.map((item) => (
                   <div key={item.title} className="grid gap-2 py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
-                    <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate sm:pt-1">
+                    <dt className="font-body text-[0.875rem] leading-snug text-slate sm:pt-1">
                       {item.title}
                     </dt>
                     <dd className="text-[1.0625rem] leading-relaxed text-ink">
@@ -158,7 +158,7 @@ export default function AboutContent() {
             </div>
             <Link
               href="/skills"
-              className="mt-5 inline-block font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-slate underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
+              className="mt-5 inline-block font-body text-[0.875rem] text-slate touch:inline-flex touch:min-h-11 touch:items-center underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
             >
               Full stack breakdown
             </Link>
